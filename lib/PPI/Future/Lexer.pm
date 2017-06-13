@@ -1045,6 +1045,13 @@ sub _square {
 			# $foo[], @foo[]
 			return 'PPI::Future::Structure::Subscript';
 		}
+		if ( $Element->isa('PPI::Future::Token::Cast') and $Element->content =~ /^(?:\@|\%)/ ) {
+			my $prior = $Parent->schild(-2);
+			if ( $prior and $prior->isa('PPI::Future::Token::Operator') and $prior->content eq '->' ) {
+				# Postfix dereference: ->@[...] ->%[...]
+				return 'PPI::Future::Structure::Subscript';
+			}
+		}
 		# FIXME - More cases to catch
 	}
 
@@ -1120,6 +1127,13 @@ sub _curly {
 		if ( $content =~ /^(?:\$|\@)/ and $Element->isa('PPI::Future::Token::Symbol') ) {
 			# $foo{}, @foo{}
 			return 'PPI::Future::Structure::Subscript';
+		}
+		if ( $Element->isa('PPI::Future::Token::Cast') and $Element->content =~ /^(?:\@|\%|\*)/ ) {
+			my $prior = $Parent->schild(-2);
+			if ( $prior and $prior->isa('PPI::Future::Token::Operator') and $prior->content eq '->' ) {
+				# Postfix dereference: ->@{...} ->%{...} ->*{...}
+				return 'PPI::Future::Structure::Subscript';
+			}
 		}
 		if ( $Element->isa('PPI::Future::Structure::Block') ) {
 			# deference - ${$hash_ref}{foo}

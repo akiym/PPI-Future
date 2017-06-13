@@ -4,7 +4,7 @@
 
 use lib 't/lib';
 use PPI::Future::Test::pragmas;
-use Test::More tests => 765 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
+use Test::More tests => 776 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use PPI::Future;
 use B 'perlstring';
@@ -460,6 +460,143 @@ OPERATOR_CAST: {
 			'PPI::Future::Token::Symbol' => '$i',
 			'PPI::Future::Token::Operator' => '%',
 			'PPI::Future::Token::Symbol' => '$f',
+		]
+	);
+
+	# Postfix dereference
+
+	test_statement(
+		'$foo->$*',
+		[
+			'PPI::Future::Statement' => '$foo->$*',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '$*',
+		]
+	);
+
+	test_statement(
+		'$foo->@*',
+		[
+			'PPI::Future::Statement' => '$foo->@*',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '@*',
+		]
+	);
+
+	test_statement(
+		'$foo->$#*',
+		[
+			'PPI::Future::Statement' => '$foo->$#*',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '$#*',
+		]
+	);
+
+	test_statement(
+		'$foo->%*',
+		[
+			'PPI::Future::Statement' => '$foo->%*',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '%*',
+		]
+	);
+
+	test_statement(
+		'$foo->&*',
+		[
+			'PPI::Future::Statement' => '$foo->&*',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '&*',
+		]
+	);
+
+	test_statement(
+		'$foo->**',
+		[
+			'PPI::Future::Statement' => '$foo->**',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '**',
+		]
+	);
+
+	test_statement(
+		'$foo->@[0]',
+		[
+			'PPI::Future::Statement' => '$foo->@[0]',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '@',
+			'PPI::Future::Structure::Subscript' => '[0]',
+			'PPI::Future::Token::Structure' => '[',
+			'PPI::Future::Statement::Expression' => '0',
+			'PPI::Future::Token::Number' => '0',
+			'PPI::Future::Token::Structure' => ']',
+		]
+	);
+
+	test_statement(
+		'$foo->@{0}',
+		[
+			'PPI::Future::Statement' => '$foo->@{0}',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '@',
+			'PPI::Future::Structure::Subscript' => '{0}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => '0',
+			'PPI::Future::Token::Number' => '0',
+			'PPI::Future::Token::Structure' => '}',
+		]
+	);
+
+	test_statement(
+		'$foo->%["bar"]',
+		[
+			'PPI::Future::Statement' => '$foo->%["bar"]',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '%',
+			'PPI::Future::Structure::Subscript' => '["bar"]',
+			'PPI::Future::Token::Structure' => '[',
+			'PPI::Future::Statement::Expression' => '"bar"',
+			'PPI::Future::Token::Quote::Double' => '"bar"',
+			'PPI::Future::Token::Structure' => ']',
+		]
+	);
+
+	test_statement(
+		'$foo->%{bar}',
+		[
+			'PPI::Future::Statement' => '$foo->%{bar}',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '%',
+			'PPI::Future::Structure::Subscript' => '{bar}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => 'bar',
+			'PPI::Future::Token::Word' => 'bar',
+			'PPI::Future::Token::Structure' => '}',
+		]
+	);
+
+	test_statement(
+		'$foo->*{CODE}',
+		[
+			'PPI::Future::Statement' => '$foo->*{CODE}',
+			'PPI::Future::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Cast' => '*',
+			'PPI::Future::Structure::Subscript' => '{CODE}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => 'CODE',
+			'PPI::Future::Token::Word' => 'CODE',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 
