@@ -87,7 +87,7 @@ sub new {
 sub set_class {
 	my $self  = shift;
 	# @_ or throw Exception("No arguments to set_class");
-	my $class = substr( $_[0], 0, 12 ) eq 'PPI::Future::Token::' ? shift : 'PPI::Future::Token::' . shift;
+	my $class = substr( $_[0], 0, 20 ) eq 'PPI::Future::Token::' ? shift : 'PPI::Future::Token::' . shift;
 
 	# Find out if the current and new classes are complex
 	my $old_quote = (ref($self) =~ /\b(?:Quote|Regex)\b/o) ? 1 : 0;

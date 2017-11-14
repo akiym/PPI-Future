@@ -808,7 +808,7 @@ sub _flush_locations {
 sub _xml_name {
 	my $class = ref $_[0] || $_[0];
 	my $name  = lc join( '_', split /::/, $class );
-	substr($name, 4);
+	substr($name, 11);
 }
 
 sub _xml_attr {

@@ -594,7 +594,7 @@ sub _wanted {
 	}
 
 	# The first argument should be an Element class, possibly in shorthand
-	$it = "PPI::Future::$it" unless substr($it, 0, 5) eq 'PPI::Future::';
+	$it = "PPI::Future::$it" unless substr($it, 0, 13) eq 'PPI::Future::';
 	unless ( _CLASS($it) and $it->isa('PPI::Future::Element') ) {
 		# We got something, but it isn't an element
 		Carp::carp("Cannot create search condition for '$it': Not a PPI::Future::Element") if $^W;

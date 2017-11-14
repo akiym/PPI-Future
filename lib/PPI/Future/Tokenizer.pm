@@ -640,7 +640,7 @@ sub _finalize_token {
 sub _new_token {
 	my $self = shift;
 	# throw PPI::Future::Exception() unless @_;
-	my $class = substr( $_[0], 0, 12 ) eq 'PPI::Future::Token::'
+	my $class = substr( $_[0], 0, 20 ) eq 'PPI::Future::Token::'
 		? shift : 'PPI::Future::Token::' . shift;
 
 	# Finalize any existing token
