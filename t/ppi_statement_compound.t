@@ -1,16 +1,16 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Statement::Compound
+# Unit testing for PPI::Future::Statement::Compound
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 52 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 TYPE: {
-	my $Document = PPI::Document->new(\<<'END_PERL');
+	my $Document = PPI::Future::Document->new(\<<'END_PERL');
        while (1) { }
        until (1) { }
 LABEL: while (1) { }
@@ -66,7 +66,7 @@ LABEL: foreach ($x = 0       ; $x < 1; $x++) { }
 LABEL: for     (my $x = 0    ; $x < 1; $x++) { }
 LABEL: foreach (my $x = 0    ; $x < 1; $x++) { }
 END_PERL
-	isa_ok( $Document, 'PPI::Document' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 
 	my $statements = $Document->find('Statement::Compound');
 	is( scalar @{$statements}, 50, 'Found the 50 test statements' );

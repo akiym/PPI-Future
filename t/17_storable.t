@@ -3,7 +3,7 @@
 # Test compatibility with Storable
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More;
 BEGIN {
 	# Is Storable installed?
@@ -16,24 +16,24 @@ BEGIN {
 }
 
 use Scalar::Util  'refaddr';
-use PPI;
+use PPI::Future;
 
 
 
 
 
 #####################################################################
-# Test freeze/thaw of PPI::Document objects
+# Test freeze/thaw of PPI::Future::Document objects
 
 SCOPE: {
 	# Create a document with various example package statements
-	my $Document = PPI::Lexer->lex_source( <<'END_PERL' );
+	my $Document = PPI::Future::Lexer->lex_source( <<'END_PERL' );
 package Foo;
 @ISA = (qw/File::Spec/);
 
 1;
 END_PERL
-	Test::More::isa_ok( $Document, 'PPI::Document' );
+	Test::More::isa_ok( $Document, 'PPI::Future::Document' );
 	{
 	my $isa = $Document->find_first(sub { $_[1] eq '@ISA'; });
 	Test::More::ok( $isa, "Found ISA var");

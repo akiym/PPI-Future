@@ -1,17 +1,17 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Symbol  	'$p'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Statement::Expression
-        PPI::Token::Word  	'package'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Symbol  	'$p'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Token::Whitespace  	' '
-      PPI::Statement::Expression
-        PPI::Token::Word  	'package'
-      PPI::Token::Whitespace  	' '
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$p'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'package'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$p'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Token::Whitespace  	' '
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'package'
+      PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

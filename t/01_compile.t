@@ -3,20 +3,20 @@
 # This test script only tests that the tree compiles
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 17 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 
 # Do the modules load
 use_all_ok( qw{
-	PPI
-	PPI::Tokenizer
-	PPI::Lexer
-	PPI::Dumper
-	PPI::Find
-	PPI::Normal
-	PPI::Util
-	PPI::Cache
+	PPI::Future
+	PPI::Future::Tokenizer
+	PPI::Future::Lexer
+	PPI::Future::Dumper
+	PPI::Future::Find
+	PPI::Future::Normal
+	PPI::Future::Util
+	PPI::Future::Cache
 	} );
 
 sub use_all_ok {
@@ -37,4 +37,4 @@ sub use_all_ok {
 	}
 }
 
-ok( ! $PPI::XS::VERSION, 'PPI::XS is correctly NOT loaded' );
+ok( ! $PPI::Future::XS::VERSION, 'PPI::Future::XS is correctly NOT loaded' );

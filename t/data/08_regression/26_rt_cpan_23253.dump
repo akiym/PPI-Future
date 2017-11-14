@@ -1,34 +1,34 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Word  	'print'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$h'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Statement::Expression
-        PPI::Token::Word  	'local'
-    PPI::Token::Operator  	','
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$h'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Statement::Expression
-        PPI::Token::Word  	'my'
-    PPI::Token::Operator  	','
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$h'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Statement::Expression
-        PPI::Token::Word  	'our'
-    PPI::Token::Operator  	','
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$h'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Statement::Expression
-        PPI::Token::Word  	'state'
-    PPI::Token::Operator  	','
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$h'
-    PPI::Structure::Subscript  	{ ... }
-      PPI::Statement::Expression
-        PPI::Token::Word  	'foo'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'print'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$h'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'local'
+    PPI::Future::Token::Operator  	','
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$h'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'my'
+    PPI::Future::Token::Operator  	','
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$h'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'our'
+    PPI::Future::Token::Operator  	','
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$h'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'state'
+    PPI::Future::Token::Operator  	','
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$h'
+    PPI::Future::Structure::Subscript  	{ ... }
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'foo'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

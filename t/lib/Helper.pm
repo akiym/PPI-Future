@@ -11,8 +11,8 @@ our @EXPORT_OK = qw( check_with );
 
 sub check_with {
     my ( $code, $checker ) = @_;
-    my $Document = PPI::Document->new( \$code );
-    is( PPI::Document->errstr, undef ) if PPI::Document->errstr;
+    my $Document = PPI::Future::Document->new( \$code );
+    is( PPI::Future::Document->errstr, undef ) if PPI::Future::Document->errstr;
     local $_ = $Document;
     $checker->();
 }

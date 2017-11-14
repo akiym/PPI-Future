@@ -3,11 +3,11 @@
 # Standalone tests to check "foreach qw{foo} {}"
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 12 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 #use File::Spec::Functions ':ALL';
-use PPI;
+use PPI::Future;
 
 
 
@@ -18,8 +18,8 @@ use PPI;
 
 SCOPE: {
 	my $string   = 'for qw{foo} {} foreach';
-	my $document = PPI::Document->new( \$string );
-	isa_ok( $document, 'PPI::Document' );
+	my $document = PPI::Future::Document->new( \$string );
+	isa_ok( $document, 'PPI::Future::Document' );
 	my $statements = $document->find('Statement::Compound');
 	is( scalar(@$statements), 2, 'Found 2 statements' );
 	is( $statements->[0]->type, 'foreach', '->type ok' );
@@ -28,8 +28,8 @@ SCOPE: {
 
 SCOPE: {
 	my $string   = 'foreach qw{foo} {} foreach';
-	my $document = PPI::Document->new( \$string );
-	isa_ok( $document, 'PPI::Document' );
+	my $document = PPI::Future::Document->new( \$string );
+	isa_ok( $document, 'PPI::Future::Document' );
 	my $statements = $document->find('Statement::Compound');
 	is( scalar(@$statements), 2, 'Found 2 statements' );
 	is( $statements->[0]->type, 'foreach', '->type ok' );
@@ -38,8 +38,8 @@ SCOPE: {
 
 SCOPE: {
 	my $string   = 'for my $foo qw{bar} {} foreach';
-	my $document = PPI::Document->new( \$string );
-	isa_ok( $document, 'PPI::Document' );
+	my $document = PPI::Future::Document->new( \$string );
+	isa_ok( $document, 'PPI::Future::Document' );
 	my $statements = $document->find('Statement::Compound');
 	is( scalar(@$statements), 2, 'Found 2 statements' );
 	is( $statements->[0]->type, 'foreach', '->type ok' );

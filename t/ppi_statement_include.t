@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Statement::Include
+# Unit testing for PPI::Future::Statement::Include
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 2065 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
-use PPI::Singletons '%KEYWORDS';
+use PPI::Future;
+use PPI::Future::Singletons '%KEYWORDS';
 
 
 TYPE: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 require 5.6;
 require Module;
 require 'Module.pm';
@@ -21,8 +21,8 @@ use Module 1.00;
 no Module;
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $statements = $document->find('PPI::Statement::Include');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $statements = $document->find('PPI::Future::Statement::Include');
 	is( scalar(@$statements), 7, 'Found 7 include statements' );
 	my @expected = qw{ require require require use use use no };
 	foreach ( 0 .. 6 ) {
@@ -32,7 +32,7 @@ END_PERL
 
 
 MODULE_VERSION: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 use Integer::Version 1;
 use Float::Version 1.5;
 use Version::With::Argument 1 2;
@@ -44,8 +44,8 @@ use VString::Version v10;
 use VString::Version::Decimal v1.5;
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $statements = $document->find('PPI::Statement::Include');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $statements = $document->find('PPI::Future::Statement::Include');
 	is( scalar @{$statements}, 9, 'Found expected include statements.' );
 	is( $statements->[0]->module_version, 1, 'Integer version' );
 	is( $statements->[1]->module_version, 1.5, 'Float version' );
@@ -60,7 +60,7 @@ END_PERL
 
 
 VERSION: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 # Examples from perlfunc in 5.10.
 use v5.6.1;
 use 5.6.1;
@@ -77,8 +77,8 @@ require 5.006; require 5.6.1;
 use Float::Version 1.5;
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $statements = $document->find('PPI::Statement::Include');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $statements = $document->find('PPI::Future::Statement::Include');
 	is( scalar @{$statements}, 11, 'Found expected include statements.' );
 
 	is( $statements->[0]->version, 'v5.6.1', 'use v-string' );
@@ -98,7 +98,7 @@ END_PERL
 
 
 VERSION_LITERAL: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 # Examples from perlfunc in 5.10.
 use v5.6.1;
 use 5.6.1;
@@ -115,8 +115,8 @@ require 5.006; require 5.6.1;
 use Float::Version 1.5;
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $statements = $document->find('PPI::Statement::Include');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $statements = $document->find('PPI::Future::Statement::Include');
 	is( scalar @{$statements}, 11, 'Found expected include statements.' );
 
 	is( $statements->[0]->version_literal, v5.6.1, 'use v-string' );
@@ -136,7 +136,7 @@ END_PERL
 
 
 ARGUMENTS: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 use 5.006;       # Don't expect anything.
 use Foo;         # Don't expect anything.
 use Foo 5;       # Don't expect anything.
@@ -146,8 +146,8 @@ use Foo qw< bar >, "baz";
 use Test::More tests => 5 * 9   # Don't get tripped up by the lack of the ";"
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $statements = $document->find('PPI::Statement::Include');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $statements = $document->find('PPI::Future::Statement::Include');
 	is( scalar @{$statements}, 7, 'Found expected include statements.' );
 
 	is(
@@ -259,25 +259,25 @@ KEYWORDS_AS_MODULE_NAMES: {
 			for my $version ( '', 'v1.2.3', '1.2.3', 'v10' ) {
 				my $code = "$include $name $version;";
 
-				my $Document = PPI::Document->new( \"$code 999;" );
+				my $Document = PPI::Future::Document->new( \"$code 999;" );
 
 				subtest "'$code'", => sub {
 {
 				local $TODO = $known_bad{$code} ? "known bug" : undef;
 				is( $Document->schildren(), 2, "$code number of statements in document" );
 }
-				isa_ok( $Document->schild(0), 'PPI::Statement::Include', $code );
+				isa_ok( $Document->schild(0), 'PPI::Future::Statement::Include', $code );
 {
 				local $TODO = ($known_bad{$code}||$known_badish{$code}) ? "known bug" : undef;
 				# first child is the include statement
 				my $expected_tokens = [
-					[ 'PPI::Token::Word', $include ],
-					[ 'PPI::Token::Word', $name ],
+					[ 'PPI::Future::Token::Word', $include ],
+					[ 'PPI::Future::Token::Word', $name ],
 				];
 				if ( $version ) {
-					push @$expected_tokens, [ 'PPI::Token::Number::Version', $version ];
+					push @$expected_tokens, [ 'PPI::Future::Token::Number::Version', $version ];
 				}
-				push @$expected_tokens, [ 'PPI::Token::Structure', ';' ];
+				push @$expected_tokens, [ 'PPI::Future::Token::Structure', ';' ];
 				my $got_tokens = [ map { [ ref $_, "$_" ] } $Document->schild(0)->schildren() ];
 				is_deeply( $got_tokens, $expected_tokens, "$code tokens as expected" );
 }
@@ -285,8 +285,8 @@ KEYWORDS_AS_MODULE_NAMES: {
 {
 				local $TODO = $known_bad{$code} ? "known bug" : undef;
 				# second child not swallowed up by the first
-				isa_ok( $Document->schild(1), 'PPI::Statement', "$code prior statement end recognized" );
-				isa_ok( eval { $Document->schild(1)->schild(0) }, 'PPI::Token::Number', $code );
+				isa_ok( $Document->schild(1), 'PPI::Future::Statement', "$code prior statement end recognized" );
+				isa_ok( eval { $Document->schild(1)->schild(0) }, 'PPI::Future::Token::Number', $code );
 				is(     eval { $Document->schild(1)->schild(0) }, '999', "$code number correct"  );
 }
 				};

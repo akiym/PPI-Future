@@ -1,16 +1,16 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Symbol
+# Unit testing for PPI::Future::Token::Symbol
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 128 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
-my $Token = PPI::Token::Symbol->new( '$foo' );
-isa_ok( $Token, 'PPI::Token::Symbol' );
+my $Token = PPI::Future::Token::Symbol->new( '$foo' );
+isa_ok( $Token, 'PPI::Future::Token::Symbol' );
 
 
 TOKEN_FROM_PARSE: {
@@ -38,11 +38,11 @@ TOKEN_FROM_PARSE: {
 
 
 CONSTRUCT_OWN_TOKEN: {
-	# Test behavior that parsing does not support as of PPI 1.220.
-	test_symbol( PPI::Token::Symbol->new('$ foo'),             { content => '$ foo',             canonical => '$foo',                 raw_type => '$', symbol_type => '$', symbol => '$foo' }, '$ foo' );
-	test_symbol( PPI::Token::Symbol->new('$ foo\'bar'),        { content => '$ foo\'bar',        canonical => '$foo::bar',            raw_type => '$', symbol_type => '$', symbol => '$foo::bar' }, '$ foo\'bar' );
-	# example from PPI::Token::Symbol->canonical documentation
-	test_symbol( PPI::Token::Symbol->new('$ ::foo\'bar::baz'), { content => '$ ::foo\'bar::baz', canonical => '$main::foo::bar::baz', raw_type => '$', symbol_type => '$', symbol => '$main::foo::bar::baz' }, '$ ::foo\'bar::baz' );
+	# Test behavior that parsing does not support as of PPI::Future 1.220.
+	test_symbol( PPI::Future::Token::Symbol->new('$ foo'),             { content => '$ foo',             canonical => '$foo',                 raw_type => '$', symbol_type => '$', symbol => '$foo' }, '$ foo' );
+	test_symbol( PPI::Future::Token::Symbol->new('$ foo\'bar'),        { content => '$ foo\'bar',        canonical => '$foo::bar',            raw_type => '$', symbol_type => '$', symbol => '$foo::bar' }, '$ foo\'bar' );
+	# example from PPI::Future::Token::Symbol->canonical documentation
+	test_symbol( PPI::Future::Token::Symbol->new('$ ::foo\'bar::baz'), { content => '$ ::foo\'bar::baz', canonical => '$main::foo::bar::baz', raw_type => '$', symbol_type => '$', symbol => '$main::foo::bar::baz' }, '$ ::foo\'bar::baz' );
 }
 
 
@@ -52,10 +52,10 @@ sub parse_and_test {
 	my ( $code, $symbol_expected, $msg ) = @_;
 	$msg = $code if !defined $msg;
 
-	my $Document = PPI::Document->new( \$code );
-	isa_ok( $Document, 'PPI::Document', "$msg got document" );
+	my $Document = PPI::Future::Document->new( \$code );
+	isa_ok( $Document, 'PPI::Future::Document', "$msg got document" );
 
-	my $symbols = $Document->find( 'PPI::Token::Symbol') || [];
+	my $symbols = $Document->find( 'PPI::Future::Token::Symbol') || [];
 	is( scalar(@$symbols), 1, "$msg got exactly one symbol" );
 	test_symbol( $symbols->[0], $symbol_expected, $msg );
 

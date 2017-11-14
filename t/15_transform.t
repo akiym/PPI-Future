@@ -1,13 +1,13 @@
 #!/usr/bin/perl
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More 0.86 tests => 24 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use File::Spec::Functions ':ALL';
 use File::Remove;
-use PPI;
-use PPI::Transform;
+use PPI::Future;
+use PPI::Future::Transform;
 use Scalar::Util 'refaddr';
 use File::Copy;
 
@@ -34,7 +34,7 @@ APPLY: {
 	is( $code, 'my$foo="bar";', 'MyCleaner->apply( \$code ) modifies code as expected' );
 
 	ok(
-		PPI::Transform->register_apply_handler( 'Foo', \&Foo::get, \&Foo::set ),
+		PPI::Future::Transform->register_apply_handler( 'Foo', \&Foo::get, \&Foo::set ),
 		"register_apply_handler worked",
 	);
 	$Foo::VALUE = 'my $foo = "bar";';
@@ -78,32 +78,32 @@ foreach my $input ( @files ) {
 	push @cleanup, $copy2;
 	ok( copy( $input, $copy ), "Copied $input to $copy" );
 
-	my $Original = new_ok( 'PPI::Document' => [ $input  ] );
-	my $Input    = new_ok( 'PPI::Document' => [ $input  ] );
-	my $Output   = new_ok( 'PPI::Document' => [ $output ] );
+	my $Original = new_ok( 'PPI::Future::Document' => [ $input  ] );
+	my $Input    = new_ok( 'PPI::Future::Document' => [ $input  ] );
+	my $Output   = new_ok( 'PPI::Future::Document' => [ $output ] );
 
 	# Process the file
 	my $rv = MyCleaner->document( $Input );
-	isa_ok( $rv, 'PPI::Document' );
+	isa_ok( $rv, 'PPI::Future::Document' );
 	is( refaddr($rv), refaddr($Input), '->document returns original document' );
 	is_deeply( $Input, $Output, 'Transform works as expected' );
 
 	# Squish to another location
 	ok( MyCleaner->file( $copy, $copy2 ), '->file returned true' );
-	my $Copy  = new_ok( 'PPI::Document' => [ $copy ] );
+	my $Copy  = new_ok( 'PPI::Future::Document' => [ $copy ] );
 	is_deeply( $Copy, $Original, 'targeted transform leaves original unchanged' );
-	my $Copy2 = new_ok( 'PPI::Document' => [ $copy2 ] );
+	my $Copy2 = new_ok( 'PPI::Future::Document' => [ $copy2 ] );
 	is_deeply( $Copy2, $Output, 'targeted transform works as expected' );
 
 	# Copy the file and process in-place
 	ok( MyCleaner->file( $copy ), '->file returned true' );
-	$Copy = new_ok( 'PPI::Document' => [ $copy ] );
+	$Copy = new_ok( 'PPI::Future::Document' => [ $copy ] );
 	is_deeply( $Copy, $Output, 'In-place transform works as expected' );
 }
 
 
-eval { PPI::Transform->document };
-like $@, qr/PPI::Transform does not implement the required ->document method/,
+eval { PPI::Future::Transform->document };
+like $@, qr/PPI::Future::Transform does not implement the required ->document method/,
   "transform classes need to implement ->document";
 
 
@@ -117,16 +117,16 @@ like $@, qr/PPI::Transform does not implement the required ->document method/,
 package MyCleaner;
 
 use Params::Util   qw{_INSTANCE};
-use PPI::Transform ();
+use PPI::Future::Transform ();
 
 our @ISA;
 BEGIN {
-	@ISA = 'PPI::Transform'; # in a BEGIN block due to being an inline package
+	@ISA = 'PPI::Future::Transform'; # in a BEGIN block due to being an inline package
 }
 
 sub document {
 	my $self     = shift;
-	my $Document = _INSTANCE(shift, 'PPI::Document') or return undef;
+	my $Document = _INSTANCE(shift, 'PPI::Future::Document') or return undef;
 	$Document->prune( 'Token::Whitespace' );
 	$Document;
 }
@@ -140,7 +140,7 @@ sub new {
 our $VALUE = '';
 
 sub get {
-	PPI::Document->new( \$VALUE );
+	PPI::Future::Document->new( \$VALUE );
 }
 
 sub set {

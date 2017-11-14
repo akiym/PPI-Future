@@ -1,23 +1,23 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Quote::Literal
+# Unit testing for PPI::Future::Token::Quote::Literal
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 14 + ( $ENV{AUTHOR_TESTING} ? 1 : 0 );
 use B 'perlstring';
 
-use PPI;
+use PPI::Future;
 
 
 STRING: {
-	my $Document = PPI::Document->new( \"print q{foo}, q!bar!, q <foo>;" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print q{foo}, q!bar!, q <foo>;" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $literal = $Document->find('Token::Quote::Literal');
 	is( scalar(@$literal), 3, '->find returns three objects' );
-	isa_ok( $literal->[0], 'PPI::Token::Quote::Literal' );
-	isa_ok( $literal->[1], 'PPI::Token::Quote::Literal' );
-	isa_ok( $literal->[2], 'PPI::Token::Quote::Literal' );
+	isa_ok( $literal->[0], 'PPI::Future::Token::Quote::Literal' );
+	isa_ok( $literal->[1], 'PPI::Future::Token::Quote::Literal' );
+	isa_ok( $literal->[2], 'PPI::Future::Token::Quote::Literal' );
 	is( $literal->[0]->string, 'foo', '->string returns as expected' );
 	is( $literal->[1]->string, 'bar', '->string returns as expected' );
 	is( $literal->[2]->string, 'foo', '->string returns as expected' );
@@ -25,8 +25,8 @@ STRING: {
 
 
 LITERAL: {
-	my $Document = PPI::Document->new( \"print q{foo}, q!bar!, q <foo>;" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print q{foo}, q!bar!, q <foo>;" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $literal = $Document->find('Token::Quote::Literal');
 	is( $literal->[0]->literal, 'foo', '->literal returns as expected' );
 	is( $literal->[1]->literal, 'bar', '->literal returns as expected' );
@@ -36,27 +36,27 @@ LITERAL: {
 test_statement(
 	"use 'SomeModule';",
 	[
-		'PPI::Statement::Include'   => "use 'SomeModule';",
-		'PPI::Token::Word'          => 'use',
-		'PPI::Token::Quote::Single' => "'SomeModule'",
-		'PPI::Token::Structure'     => ';',
+		'PPI::Future::Statement::Include'   => "use 'SomeModule';",
+		'PPI::Future::Token::Word'          => 'use',
+		'PPI::Future::Token::Quote::Single' => "'SomeModule'",
+		'PPI::Future::Token::Structure'     => ';',
 	]
 );
 
 test_statement(
 	"use q{OtherModule.pm};",
 	[
-		'PPI::Statement::Include'     => 'use q{OtherModule.pm};',
-		'PPI::Token::Word'            => 'use',
-		'PPI::Token::Word'            => 'q',
-		'PPI::Structure::Constructor' => '{OtherModule.pm}',
-		'PPI::Token::Structure'       => '{',
-		'PPI::Statement'              => 'OtherModule.pm',
-		'PPI::Token::Word'            => 'OtherModule',
-		'PPI::Token::Operator'        => '.',
-		'PPI::Token::Word'            => 'pm',
-		'PPI::Token::Structure'       => '}',
-		'PPI::Token::Structure'       => ';',
+		'PPI::Future::Statement::Include'     => 'use q{OtherModule.pm};',
+		'PPI::Future::Token::Word'            => 'use',
+		'PPI::Future::Token::Word'            => 'q',
+		'PPI::Future::Structure::Constructor' => '{OtherModule.pm}',
+		'PPI::Future::Token::Structure'       => '{',
+		'PPI::Future::Statement'              => 'OtherModule.pm',
+		'PPI::Future::Token::Word'            => 'OtherModule',
+		'PPI::Future::Token::Operator'        => '.',
+		'PPI::Future::Token::Word'            => 'pm',
+		'PPI::Future::Token::Structure'       => '}',
+		'PPI::Future::Token::Structure'       => ';',
 	],
 	"invalid syntax is identified correctly",
 );
@@ -83,12 +83,12 @@ sub test_statement {
 	my ( $code, $expected, $msg ) = @_;
 	$msg = perlstring $code if !defined $msg;
 
-	my $d = PPI::Document->new( \$code );
+	my $d = PPI::Future::Document->new( \$code );
 	my $tokens = $d->find( sub { $_[1]->significant } );
 	$tokens = [ map { ref( $_ ), $_->content } @$tokens ];
 
-	if ( $expected->[0] !~ /^PPI::Statement/ ) {
-		$expected = [ 'PPI::Statement', $code, @$expected ];
+	if ( $expected->[0] !~ /^PPI::Future::Statement/ ) {
+		$expected = [ 'PPI::Future::Statement', $code, @$expected ];
 	}
 	my $ok = is_deeply( $tokens, $expected, main_level_line . $msg );
 	if ( !$ok ) {

@@ -1,6 +1,6 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Symbol  	'@foo'
-    PPI::Token::Operator  	'~~'
-    PPI::Token::Symbol  	'@bar'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'@foo'
+    PPI::Future::Token::Operator  	'~~'
+    PPI::Future::Token::Symbol  	'@bar'
+  PPI::Future::Token::Whitespace  	'\n'

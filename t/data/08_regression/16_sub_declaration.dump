@@ -1,16 +1,16 @@
-PPI::Document
-  PPI::Statement::Compound
-    PPI::Structure::Block  	{ ... }
-      PPI::Statement
-        PPI::Token::Word  	'print'
-        PPI::Token::Whitespace  	' '
-        PPI::Token::Number  	'123'
-        PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement::Sub
-    PPI::Token::Word  	'sub'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Word  	'foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::Block  	{ ... }
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement::Compound
+    PPI::Future::Structure::Block  	{ ... }
+      PPI::Future::Statement
+        PPI::Future::Token::Word  	'print'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Token::Number  	'123'
+        PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement::Sub
+    PPI::Future::Token::Word  	'sub'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Word  	'foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::Block  	{ ... }
+  PPI::Future::Token::Whitespace  	'\n'

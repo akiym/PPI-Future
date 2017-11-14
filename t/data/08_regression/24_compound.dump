@@ -1,14 +1,14 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Word  	'eval'
-    PPI::Structure::List  	( ... )
-      PPI::Statement::Compound
-        PPI::Token::Whitespace  	' '
-        PPI::Structure::Block  	{ ... }
-          PPI::Statement
-            PPI::Token::Word  	'some_code'
-            PPI::Structure::List  	( ... )
-          PPI::Token::Whitespace  	' '
-      PPI::Token::Whitespace  	' '
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'eval'
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Statement::Compound
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Structure::Block  	{ ... }
+          PPI::Future::Statement
+            PPI::Future::Token::Word  	'some_code'
+            PPI::Future::Structure::List  	( ... )
+          PPI::Future::Token::Whitespace  	' '
+      PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

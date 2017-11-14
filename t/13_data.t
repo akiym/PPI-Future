@@ -3,22 +3,22 @@
 # Tests functionality relating to __DATA__ sections of files
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 7 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use File::Spec::Functions ':ALL';
-use PPI;
+use PPI::Future;
 
 
 my $module = catfile('t', 'data', '13_data', 'Foo.pm');
 ok( -f $module, 'Test file exists' );
 
-my $Document = PPI::Document->new( $module );
-isa_ok( $Document, 'PPI::Document' );
+my $Document = PPI::Future::Document->new( $module );
+isa_ok( $Document, 'PPI::Future::Document' );
 
 # Get the data token
 my $Token = $Document->find_first( 'Token::Data' );
-isa_ok( $Token, 'PPI::Token::Data' );
+isa_ok( $Token, 'PPI::Future::Token::Data' );
 
 # Get the handle
 my $handle = $Token->handle;

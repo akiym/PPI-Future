@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Word
+# Unit testing for PPI::Future::Token::Word
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 1762 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 use lib 't/lib';
@@ -21,17 +21,17 @@ LITERAL: {
 	while ( @pairs ) {
 		my $from  = shift @pairs;
 		my $to	= shift @pairs;
-		my $doc   = PPI::Document->new( \"$from;" );
-		isa_ok( $doc, 'PPI::Document' );
+		my $doc   = PPI::Future::Document->new( \"$from;" );
+		isa_ok( $doc, 'PPI::Future::Document' );
 		my $word = $doc->find_first('Token::Word');
-		isa_ok( $word, 'PPI::Token::Word' );
+		isa_ok( $word, 'PPI::Future::Token::Word' );
 		is( $word->literal, $to, "The source $from becomes $to ok" );
 	}
 }
 
 
 METHOD_CALL: {
-	my $Document = PPI::Document->new(\<<'END_PERL');
+	my $Document = PPI::Future::Document->new(\<<'END_PERL');
 indirect $foo;
 indirect_class_with_colon Foo::;
 $bar->method_with_parentheses;
@@ -47,7 +47,7 @@ $buz{hash_key};
 fat_comma_left_side => $thingy;
 END_PERL
 
-	isa_ok( $Document, 'PPI::Document' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $words = $Document->find('Token::Word');
 	is( scalar @{$words}, 23, 'Found the 23 test words' );
 	my %words = map { $_ => $_ } @{$words};
@@ -131,7 +131,7 @@ END_PERL
 
 
 __TOKENIZER__ON_CHAR: {
-	# PPI::Statement::Operator
+	# PPI::Future::Statement::Operator
 	for my $test (
 		[ q{$foo and'bar';}, 'and' ],
 		[ q{$foo cmp'bar';}, 'cmp' ],
@@ -147,46 +147,46 @@ __TOKENIZER__ON_CHAR: {
 		[ q{$foo xor'bar';}, 'xor' ],
 	) {
 		my ( $code, $expected ) = @$test;
-		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Statement' );
+		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Future::Statement' );
 		is( $statement, $code, "$code: statement text matches" );
-		_compare_child( $statement, 2, 'PPI::Token::Operator', $expected, $code );
-		_compare_child( $statement, 3, 'PPI::Token::Quote::Single', "'bar'", $code );
-		_compare_child( $statement, 4, 'PPI::Token::Structure', ';', $code );
+		_compare_child( $statement, 2, 'PPI::Future::Token::Operator', $expected, $code );
+		_compare_child( $statement, 3, 'PPI::Future::Token::Quote::Single', "'bar'", $code );
+		_compare_child( $statement, 4, 'PPI::Future::Token::Structure', ';', $code );
 	}
 
 
-	# PPI::Token::Quote::*
+	# PPI::Future::Token::Quote::*
 	for my $test (
-		[ q{q'foo';},  q{q'foo'},  'PPI::Token::Quote::Literal' ],
-		[ q{qq'foo';}, q{qq'foo'}, 'PPI::Token::Quote::Interpolate' ],
-		[ q{qr'foo';}, q{qr'foo'}, 'PPI::Token::QuoteLike::Regexp' ],
-		[ q{qw'foo';}, q{qw'foo'}, 'PPI::Token::QuoteLike::Words' ],
-		[ q{qx'foo';}, q{qx'foo'}, 'PPI::Token::QuoteLike::Command' ],
+		[ q{q'foo';},  q{q'foo'},  'PPI::Future::Token::Quote::Literal' ],
+		[ q{qq'foo';}, q{qq'foo'}, 'PPI::Future::Token::Quote::Interpolate' ],
+		[ q{qr'foo';}, q{qr'foo'}, 'PPI::Future::Token::QuoteLike::Regexp' ],
+		[ q{qw'foo';}, q{qw'foo'}, 'PPI::Future::Token::QuoteLike::Words' ],
+		[ q{qx'foo';}, q{qx'foo'}, 'PPI::Future::Token::QuoteLike::Command' ],
 	) {
 		my ( $code, $expected, $type ) = @$test;
-		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Statement' );
+		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Future::Statement' );
 		is( $statement, $code, "$code: statement text matches" );
 		_compare_child( $statement, 0, $type, $expected, $code );
-		_compare_child( $statement, 1, 'PPI::Token::Structure', ';', $code );
+		_compare_child( $statement, 1, 'PPI::Future::Token::Structure', ';', $code );
 	}
 
 
-	# PPI::Token::Regexp::*
+	# PPI::Future::Token::Regexp::*
 	for my $test (
-		[ q{m'foo';},     q{m'foo'},     'PPI::Token::Regexp::Match' ],
-		[ q{s'foo'bar';}, q{s'foo'bar'}, 'PPI::Token::Regexp::Substitute' ],
-		[ q{tr'fo'ba';},  q{tr'fo'ba'},  'PPI::Token::Regexp::Transliterate' ],
-		[ q{y'fo'ba';},   q{y'fo'ba'},   'PPI::Token::Regexp::Transliterate' ],
+		[ q{m'foo';},     q{m'foo'},     'PPI::Future::Token::Regexp::Match' ],
+		[ q{s'foo'bar';}, q{s'foo'bar'}, 'PPI::Future::Token::Regexp::Substitute' ],
+		[ q{tr'fo'ba';},  q{tr'fo'ba'},  'PPI::Future::Token::Regexp::Transliterate' ],
+		[ q{y'fo'ba';},   q{y'fo'ba'},   'PPI::Future::Token::Regexp::Transliterate' ],
 	) {
 		my ( $code, $expected, $type ) = @$test;
-		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Statement' );
+		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Future::Statement' );
 		is( $statement, $code, "$code: statement text matches" );
 		_compare_child( $statement, 0, $type, $expected, $code );
-		_compare_child( $statement, 1, 'PPI::Token::Structure', ';', $code );
+		_compare_child( $statement, 1, 'PPI::Future::Token::Structure', ';', $code );
 	}
 
 
-	# PPI::Token::Word
+	# PPI::Future::Token::Word
 	for my $test (
 		[ q{abs'3';},             'abs' ],
 		[ q{accept'1234',2345;},  'accept' ],
@@ -396,10 +396,10 @@ __TOKENIZER__ON_CHAR: {
 		[ q{write'foo';},         'write' ],
 	) {
 		my ( $code, $expected ) = @$test;
-		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Statement' );
+		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Future::Statement' );
 		is( $statement, $code, "$code: statement text matches" );
-		_compare_child( $statement, 0, 'PPI::Token::Word', $expected, $code );
-		isa_ok( $statement->child(1), 'PPI::Token::Quote::Single', "$code: second child is a 'PPI::Token::Quote::Single'" );
+		_compare_child( $statement, 0, 'PPI::Future::Token::Word', $expected, $code );
+		isa_ok( $statement->child(1), 'PPI::Future::Token::Quote::Single', "$code: second child is a 'PPI::Future::Token::Quote::Single'" );
 	}
 	for my $test (
 		[ q{1 for'foo';},        'for' ],
@@ -410,35 +410,35 @@ __TOKENIZER__ON_CHAR: {
 		[ q{1 while'foo';},       'while' ],
 	) {
 		my ( $code, $expected ) = @$test;
-		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Statement' );
+		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Future::Statement' );
 		is( $statement, $code, "$code: statement text matches" );
-		_compare_child( $statement, 2, 'PPI::Token::Word', $expected, $code );
-		_compare_child( $statement, 3, 'PPI::Token::Quote::Single', "'foo'", $code );
+		_compare_child( $statement, 2, 'PPI::Future::Token::Word', $expected, $code );
+		_compare_child( $statement, 3, 'PPI::Future::Token::Quote::Single', "'foo'", $code );
 	}
 	# Untested: given, grep map, sort, sub
 
 
-	# PPI::Statement::Include
+	# PPI::Future::Statement::Include
 	for my $test (
 		[ "no'foo';",      'no' ],
 		[ "require'foo';", 'require' ],
 		[ "use'foo';",     'use' ],
 	) {
 		my ( $code, $expected ) = @$test;
-		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Statement::Include' );
+		my ( $Document, $statement ) = _parse_to_statement( $code, 'PPI::Future::Statement::Include' );
 		is( $statement, $code, "$code: statement text matches" );
-		_compare_child( $statement, 0, 'PPI::Token::Word', $expected, $code );
-		_compare_child( $statement, 1, 'PPI::Token::Quote::Single', "'foo'", $code );
-		_compare_child( $statement, 2, 'PPI::Token::Structure', ';', $code );
+		_compare_child( $statement, 0, 'PPI::Future::Token::Word', $expected, $code );
+		_compare_child( $statement, 1, 'PPI::Future::Token::Quote::Single', "'foo'", $code );
+		_compare_child( $statement, 2, 'PPI::Future::Token::Structure', ';', $code );
 	}
 
 
-	# PPI::Statement::Package
-	my ( $PackageDocument, $statement ) = _parse_to_statement( "package'foo';", 'PPI::Statement::Package' );
+	# PPI::Future::Statement::Package
+	my ( $PackageDocument, $statement ) = _parse_to_statement( "package'foo';", 'PPI::Future::Statement::Package' );
 	is( $statement, q{package'foo';}, q{package'foo'} );
-	_compare_child( $statement, 0, 'PPI::Token::Word', 'package', 'package statement' );
-	_compare_child( $statement, 1, 'PPI::Token::Quote::Single', "'foo'", 'package statement' );
-	_compare_child( $statement, 2, 'PPI::Token::Structure', ';', 'package statement' );
+	_compare_child( $statement, 0, 'PPI::Future::Token::Word', 'package', 'package statement' );
+	_compare_child( $statement, 1, 'PPI::Future::Token::Quote::Single', "'foo'", 'package statement' );
+	_compare_child( $statement, 2, 'PPI::Future::Token::Structure', ';', 'package statement' );
 }
 
 
@@ -447,8 +447,8 @@ sub _parse_to_statement {
 	my $code = shift;
 	my $type = shift;
 
-	my $Document = PPI::Document->new( \$code );
-	isa_ok( $Document, 'PPI::Document', "$code: got the document" );
+	my $Document = PPI::Future::Document->new( \$code );
+	isa_ok( $Document, 'PPI::Future::Document', "$code: got the document" );
 	my $statements = $Document->find( $type );
 	is( scalar(@$statements), 1, "$code: got one $type" );
 	isa_ok( $statements->[0], $type, "$code: got the statement" );

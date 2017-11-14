@@ -1,84 +1,84 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Unknown
+# Unit testing for PPI::Future::Token::Unknown
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 765 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 use B 'perlstring';
 our %known_bad_seps;
 
 OPERATOR_CAST: {
 	my @nothing = ( '',  [] );
-	my @number =  ( '1', [ 'PPI::Token::Number' => '1' ] );
+	my @number =  ( '1', [ 'PPI::Future::Token::Number' => '1' ] );
 
-	my @asterisk_op =    ( '*',  [ 'PPI::Token::Operator' => '*' ] );
-	my @asteriskeq_op =  ( '*=', [ 'PPI::Token::Operator' => '*=' ] );
-	my @percent_op =     ( '%',  [ 'PPI::Token::Operator' => '%' ] );
-	my @percenteq_op =   ( '%=', [ 'PPI::Token::Operator' => '%=' ] );
-	my @ampersand_op =   ( '&',  [ 'PPI::Token::Operator' => '&' ] );
-	my @ampersandeq_op = ( '&=', [ 'PPI::Token::Operator' => '&=' ] );
-	my @exp_op =         ( '**', [ 'PPI::Token::Operator' => '**' ] );
+	my @asterisk_op =    ( '*',  [ 'PPI::Future::Token::Operator' => '*' ] );
+	my @asteriskeq_op =  ( '*=', [ 'PPI::Future::Token::Operator' => '*=' ] );
+	my @percent_op =     ( '%',  [ 'PPI::Future::Token::Operator' => '%' ] );
+	my @percenteq_op =   ( '%=', [ 'PPI::Future::Token::Operator' => '%=' ] );
+	my @ampersand_op =   ( '&',  [ 'PPI::Future::Token::Operator' => '&' ] );
+	my @ampersandeq_op = ( '&=', [ 'PPI::Future::Token::Operator' => '&=' ] );
+	my @exp_op =         ( '**', [ 'PPI::Future::Token::Operator' => '**' ] );
 
-	my @asterisk_cast =  ( '*', [ 'PPI::Token::Cast' => '*' ] );
-	my @percent_cast =   ( '%', [ 'PPI::Token::Cast' => '%' ] );
-	my @ampersand_cast = ( '&', [ 'PPI::Token::Cast' => '&' ] );
-	my @at_cast =        ( '@',  [ 'PPI::Token::Cast' => '@' ] );
+	my @asterisk_cast =  ( '*', [ 'PPI::Future::Token::Cast' => '*' ] );
+	my @percent_cast =   ( '%', [ 'PPI::Future::Token::Cast' => '%' ] );
+	my @ampersand_cast = ( '&', [ 'PPI::Future::Token::Cast' => '&' ] );
+	my @at_cast =        ( '@',  [ 'PPI::Future::Token::Cast' => '@' ] );
 
-	my @scalar = ( '$a', [ 'PPI::Token::Symbol' => '$a' ] );
-	my @list = ( '@a', [ 'PPI::Token::Symbol' => '@a' ] );
-	my @hash = ( '%a', [ 'PPI::Token::Symbol' => '%a' ] );
-	my @glob = ( '*a', [ 'PPI::Token::Symbol' => '*a' ] );
-	my @bareword = ( 'word', [ 'PPI::Token::Word' => 'word' ] );
+	my @scalar = ( '$a', [ 'PPI::Future::Token::Symbol' => '$a' ] );
+	my @list = ( '@a', [ 'PPI::Future::Token::Symbol' => '@a' ] );
+	my @hash = ( '%a', [ 'PPI::Future::Token::Symbol' => '%a' ] );
+	my @glob = ( '*a', [ 'PPI::Future::Token::Symbol' => '*a' ] );
+	my @bareword = ( 'word', [ 'PPI::Future::Token::Word' => 'word' ] );
 	my @hashctor1 = (
 		'{2}',
 		[
-#			'PPI::Structure::Constructor' => '{2}',
-			'PPI::Structure::Block' => '{2}',  # should be constructor
-			'PPI::Token::Structure' => '{',
-#			'PPI::Statement::Expression' => '2',
-			'PPI::Statement' => '2',  # should be expression
-			'PPI::Token::Number' => '2',
-			'PPI::Token::Structure' => '}',
+#			'PPI::Future::Structure::Constructor' => '{2}',
+			'PPI::Future::Structure::Block' => '{2}',  # should be constructor
+			'PPI::Future::Token::Structure' => '{',
+#			'PPI::Future::Statement::Expression' => '2',
+			'PPI::Future::Statement' => '2',  # should be expression
+			'PPI::Future::Token::Number' => '2',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	my @hashctor2 = (
 		'{x=>2}',
 		[
-#			'PPI::Structure::Constructor' => '{x=>2}',
-			'PPI::Structure::Block' => '{x=>2}',  # should be constructor
-			'PPI::Token::Structure' => '{',
-#			'PPI::Statement::Expression' => 'x=>2',
-			'PPI::Statement' => 'x=>2',  # should be expression
-			'PPI::Token::Word' => 'x',
-			'PPI::Token::Operator' => '=>',
-			'PPI::Token::Number' => '2',
-			'PPI::Token::Structure' => '}',
+#			'PPI::Future::Structure::Constructor' => '{x=>2}',
+			'PPI::Future::Structure::Block' => '{x=>2}',  # should be constructor
+			'PPI::Future::Token::Structure' => '{',
+#			'PPI::Future::Statement::Expression' => 'x=>2',
+			'PPI::Future::Statement' => 'x=>2',  # should be expression
+			'PPI::Future::Token::Word' => 'x',
+			'PPI::Future::Token::Operator' => '=>',
+			'PPI::Future::Token::Number' => '2',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	my @hashctor3 = (
 		'{$args}',
 		[
-#			'PPI::Structure::Constructor' => '{$args}',
-			'PPI::Structure::Block' => '{$args}',  # should be constructor
-			'PPI::Token::Structure' => '{',
-#			'PPI::Statement::Expression' => '$args',
-			'PPI::Statement' => '$args',  # should be expression
-			'PPI::Token::Symbol' => '$args',
-			'PPI::Token::Structure' => '}',
+#			'PPI::Future::Structure::Constructor' => '{$args}',
+			'PPI::Future::Structure::Block' => '{$args}',  # should be constructor
+			'PPI::Future::Token::Structure' => '{',
+#			'PPI::Future::Statement::Expression' => '$args',
+			'PPI::Future::Statement' => '$args',  # should be expression
+			'PPI::Future::Token::Symbol' => '$args',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	my @listctor = (
 		'[$args]',
 		[
-			'PPI::Structure::Constructor' => '[$args]',
-			'PPI::Token::Structure' => '[',
-#			'PPI::Statement::Expression' => '$args',
-			'PPI::Statement' => '$args',  # should be expression
-			'PPI::Token::Symbol' => '$args',
-			'PPI::Token::Structure' => ']',
+			'PPI::Future::Structure::Constructor' => '[$args]',
+			'PPI::Future::Token::Structure' => '[',
+#			'PPI::Future::Statement::Expression' => '$args',
+			'PPI::Future::Statement' => '$args',  # should be expression
+			'PPI::Future::Token::Symbol' => '$args',
+			'PPI::Future::Token::Structure' => ']',
 		]
 	);
 
@@ -126,8 +126,8 @@ OPERATOR_CAST: {
 	test_varying_whitespace( @nothing, @ampersand_cast, @scalar );
 }
 
-	my @plus = ( '+', [ 'PPI::Token::Operator' => '+', ] );
-	my @ex = ( 'x', [ 'PPI::Token::Word' => 'x', ] );
+	my @plus = ( '+', [ 'PPI::Future::Token::Operator' => '+', ] );
+	my @ex = ( 'x', [ 'PPI::Future::Token::Word' => 'x', ] );
 {
 	local %known_bad_seps = map { $_ => 1 } qw( space );
 	test_varying_whitespace( @plus, @asterisk_cast, @scalar );
@@ -144,7 +144,7 @@ OPERATOR_CAST: {
 	test_varying_whitespace( @ex, @ampersand_cast, @hashctor3 );
 }
 
-	my @single = ( "'3'", [ 'PPI::Token::Quote::Single' => "'3'", ] );
+	my @single = ( "'3'", [ 'PPI::Future::Token::Quote::Single' => "'3'", ] );
 	test_varying_whitespace( @single, @asterisk_op, @scalar );
 	test_varying_whitespace( @single, @asterisk_op, @hashctor3 );
 	test_varying_whitespace( @single, @percent_op, @scalar );
@@ -152,7 +152,7 @@ OPERATOR_CAST: {
 	test_varying_whitespace( @single, @ampersand_op, @scalar );
 	test_varying_whitespace( @single, @ampersand_op, @hashctor3 );
 
-	my @double = ( '"3"', [ 'PPI::Token::Quote::Double' => '"3"', ] );
+	my @double = ( '"3"', [ 'PPI::Future::Token::Quote::Double' => '"3"', ] );
 	test_varying_whitespace( @double, @asterisk_op, @scalar );
 	test_varying_whitespace( @double, @asterisk_op, @hashctor3 );
 	test_varying_whitespace( @double, @percent_op, @scalar );
@@ -167,12 +167,12 @@ OPERATOR_CAST: {
 	my @package = (
 		'package foo {}',
 		[
-			'PPI::Statement::Package' => 'package foo {}',
-			'PPI::Token::Word' => 'package',
-			'PPI::Token::Word' => 'foo',
-			'PPI::Structure::Block' => '{}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Statement::Package' => 'package foo {}',
+			'PPI::Future::Token::Word' => 'package',
+			'PPI::Future::Token::Word' => 'foo',
+			'PPI::Future::Structure::Block' => '{}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 {
@@ -190,12 +190,12 @@ OPERATOR_CAST: {
 	my @sub = (
 		'sub foo {}',
 		[
-			'PPI::Statement::Sub' => 'sub foo {}',
-			'PPI::Token::Word' => 'sub',
-			'PPI::Token::Word' => 'foo',
-			'PPI::Structure::Block' => '{}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Statement::Sub' => 'sub foo {}',
+			'PPI::Future::Token::Word' => 'sub',
+			'PPI::Future::Token::Word' => 'foo',
+			'PPI::Future::Structure::Block' => '{}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 {
@@ -213,9 +213,9 @@ OPERATOR_CAST: {
 	my @statement = (
 		'1;',
 		[
-			'PPI::Statement' => '1;',
-			'PPI::Token::Number' => '1',
-			'PPI::Token::Structure' => ';',
+			'PPI::Future::Statement' => '1;',
+			'PPI::Future::Token::Number' => '1',
+			'PPI::Future::Token::Structure' => ';',
 		]
 	);
 {
@@ -233,8 +233,8 @@ OPERATOR_CAST: {
 	my @label = (
 		'LABEL:',
 		[
-			'PPI::Statement::Compound' => 'LABEL:',
-			'PPI::Token::Label' => 'LABEL:',
+			'PPI::Future::Statement::Compound' => 'LABEL:',
+			'PPI::Future::Token::Label' => 'LABEL:',
 		]
 	);
 {
@@ -252,12 +252,12 @@ OPERATOR_CAST: {
 	my @map = (
 		'map {1}',
 		[
-			'PPI::Token::Word' => 'map',
-			'PPI::Structure::Block' => '{1}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement' => '1',
-			'PPI::Token::Number' => '1',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Token::Word' => 'map',
+			'PPI::Future::Structure::Block' => '{1}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement' => '1',
+			'PPI::Future::Token::Number' => '1',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 {
@@ -275,12 +275,12 @@ OPERATOR_CAST: {
 	my @evalblock = (
 		'eval {2}',
 		[
-			'PPI::Token::Word' => 'eval',
-			'PPI::Structure::Block' => '{2}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement' => '2',
-			'PPI::Token::Number' => '2',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Token::Word' => 'eval',
+			'PPI::Future::Structure::Block' => '{2}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement' => '2',
+			'PPI::Future::Token::Number' => '2',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	test_varying_whitespace( @evalblock, @asterisk_op, @scalar );
@@ -293,8 +293,8 @@ OPERATOR_CAST: {
 	my @evalstring = (
 		'eval "2"',
 		[
-			'PPI::Token::Word' => 'eval',
-			'PPI::Token::Quote::Double' => '"2"',
+			'PPI::Future::Token::Word' => 'eval',
+			'PPI::Future::Token::Quote::Double' => '"2"',
 		]
 	);
 	test_varying_whitespace( @evalstring, @asterisk_op, @scalar );
@@ -307,59 +307,59 @@ OPERATOR_CAST: {
 	my @curly_subscript1 = (
 		'$y->{x}',
 		[
-			'PPI::Token::Symbol' => '$y',
-			'PPI::Token::Operator' => '->',
-			'PPI::Structure::Subscript' => '{x}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement::Expression' => 'x',
-			'PPI::Token::Word' => 'x',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Token::Symbol' => '$y',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Structure::Subscript' => '{x}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => 'x',
+			'PPI::Future::Token::Word' => 'x',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	my @curly_subscript2 = (
 		'$y->{z}{x}',
 		[
-			'PPI::Token::Symbol' => '$y',
-			'PPI::Token::Operator' => '->',
-			'PPI::Structure::Subscript' => '{z}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement::Expression' => 'z',
-			'PPI::Token::Word' => 'z',
-			'PPI::Token::Structure' => '}',
-			'PPI::Structure::Subscript' => '{x}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement::Expression' => 'x',
-			'PPI::Token::Word' => 'x',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Token::Symbol' => '$y',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Structure::Subscript' => '{z}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => 'z',
+			'PPI::Future::Token::Word' => 'z',
+			'PPI::Future::Token::Structure' => '}',
+			'PPI::Future::Structure::Subscript' => '{x}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => 'x',
+			'PPI::Future::Token::Word' => 'x',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	my @curly_subscript3 = (
 		'$y->[z]{x}',
 		[
-			'PPI::Token::Symbol' => '$y',
-			'PPI::Token::Operator' => '->',
-			'PPI::Structure::Subscript' => '[z]',
-			'PPI::Token::Structure' => '[',
-			'PPI::Statement::Expression' => 'z',
-			'PPI::Token::Word' => 'z',
-			'PPI::Token::Structure' => ']',
-			'PPI::Structure::Subscript' => '{x}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement::Expression' => 'x',
-			'PPI::Token::Word' => 'x',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Token::Symbol' => '$y',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Structure::Subscript' => '[z]',
+			'PPI::Future::Token::Structure' => '[',
+			'PPI::Future::Statement::Expression' => 'z',
+			'PPI::Future::Token::Word' => 'z',
+			'PPI::Future::Token::Structure' => ']',
+			'PPI::Future::Structure::Subscript' => '{x}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => 'x',
+			'PPI::Future::Token::Word' => 'x',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	my @square_subscript1 = (
 		'$y->[x]',
 		[
-			'PPI::Token::Symbol' => '$y',
-			'PPI::Token::Operator' => '->',
-			'PPI::Structure::Subscript' => '[x]',
-			'PPI::Token::Structure' => '[',
-			'PPI::Statement::Expression' => 'x',
-			'PPI::Token::Word' => 'x',
-			'PPI::Token::Structure' => ']',
+			'PPI::Future::Token::Symbol' => '$y',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Structure::Subscript' => '[x]',
+			'PPI::Future::Token::Structure' => '[',
+			'PPI::Future::Statement::Expression' => 'x',
+			'PPI::Future::Token::Word' => 'x',
+			'PPI::Future::Token::Structure' => ']',
 		]
 	);
 
@@ -378,124 +378,124 @@ OPERATOR_CAST: {
 
 {
 	local %known_bad_seps = map { $_ => 1 } qw( space );
-	test_varying_whitespace( 'keys', [ 'PPI::Token::Word' => 'keys' ],     @percent_cast, @scalar );
-	test_varying_whitespace( 'values', [ 'PPI::Token::Word' => 'values' ], @percent_cast, @scalar );
+	test_varying_whitespace( 'keys', [ 'PPI::Future::Token::Word' => 'keys' ],     @percent_cast, @scalar );
+	test_varying_whitespace( 'values', [ 'PPI::Future::Token::Word' => 'values' ], @percent_cast, @scalar );
 
-	test_varying_whitespace( 'keys', [ 'PPI::Token::Word' => 'keys' ],     @percent_cast, @hashctor3 );
-	test_varying_whitespace( 'values', [ 'PPI::Token::Word' => 'values' ], @percent_cast, @hashctor3 );
+	test_varying_whitespace( 'keys', [ 'PPI::Future::Token::Word' => 'keys' ],     @percent_cast, @hashctor3 );
+	test_varying_whitespace( 'values', [ 'PPI::Future::Token::Word' => 'values' ], @percent_cast, @hashctor3 );
 }
 
 	test_statement(
 		'} *$a', # unbalanced '}' before '*', arbitrary decision
 		[
-			'PPI::Statement::UnmatchedBrace' => '}',
-			'PPI::Token::Structure' => '}',
-			'PPI::Statement' => '*$a',
-			'PPI::Token::Operator' => '*',
-			'PPI::Token::Symbol' => '$a',
+			'PPI::Future::Statement::UnmatchedBrace' => '}',
+			'PPI::Future::Token::Structure' => '}',
+			'PPI::Future::Statement' => '*$a',
+			'PPI::Future::Token::Operator' => '*',
+			'PPI::Future::Token::Symbol' => '$a',
 		]
 	);
 
 	test_statement(
 		'$bar = \%*$foo', # multiple consecutive casts
 		[
-			'PPI::Token::Symbol' => '$bar',
-			'PPI::Token::Operator' => '=',
-			'PPI::Token::Cast' => '\\',
-			'PPI::Token::Cast' => '%',
-			'PPI::Token::Cast' => '*',
-			'PPI::Token::Symbol' => '$foo',
+			'PPI::Future::Token::Symbol' => '$bar',
+			'PPI::Future::Token::Operator' => '=',
+			'PPI::Future::Token::Cast' => '\\',
+			'PPI::Future::Token::Cast' => '%',
+			'PPI::Future::Token::Cast' => '*',
+			'PPI::Future::Token::Symbol' => '$foo',
 		]
 	);
 
 	test_statement(
 		'$#tmp*$#tmp2',
 		[
-			'PPI::Token::ArrayIndex' => '$#tmp',
-			'PPI::Token::Operator' => '*',
-			'PPI::Token::ArrayIndex' => '$#tmp2',
+			'PPI::Future::Token::ArrayIndex' => '$#tmp',
+			'PPI::Future::Token::Operator' => '*',
+			'PPI::Future::Token::ArrayIndex' => '$#tmp2',
 		]
 	);
 
 	test_statement(
 		'[ %{$req->parameters} ]',  # preceded by '['
 		[
-			'PPI::Structure::Constructor' => '[ %{$req->parameters} ]',
-			'PPI::Token::Structure' => '[',
-			'PPI::Statement' => '%{$req->parameters}',
-			'PPI::Token::Cast' => '%',
-			'PPI::Structure::Block' => '{$req->parameters}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement' => '$req->parameters',
-			'PPI::Token::Symbol' => '$req',
-			'PPI::Token::Operator' => '->',
-			'PPI::Token::Word' => 'parameters',
-			'PPI::Token::Structure' => '}',
-			'PPI::Token::Structure' => ']',
+			'PPI::Future::Structure::Constructor' => '[ %{$req->parameters} ]',
+			'PPI::Future::Token::Structure' => '[',
+			'PPI::Future::Statement' => '%{$req->parameters}',
+			'PPI::Future::Token::Cast' => '%',
+			'PPI::Future::Structure::Block' => '{$req->parameters}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement' => '$req->parameters',
+			'PPI::Future::Token::Symbol' => '$req',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Word' => 'parameters',
+			'PPI::Future::Token::Structure' => '}',
+			'PPI::Future::Token::Structure' => ']',
 		]
 	);
 	test_statement(
 		'( %{$req->parameters} )',  # preceded by '('
 		[
-			'PPI::Structure::List' => '( %{$req->parameters} )',
-			'PPI::Token::Structure' => '(',
-			'PPI::Statement::Expression' => '%{$req->parameters}',
-			'PPI::Token::Cast' => '%',
-			'PPI::Structure::Block' => '{$req->parameters}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement' => '$req->parameters',
-			'PPI::Token::Symbol' => '$req',
-			'PPI::Token::Operator' => '->',
-			'PPI::Token::Word' => 'parameters',
-			'PPI::Token::Structure' => '}',
-			'PPI::Token::Structure' => ')',
+			'PPI::Future::Structure::List' => '( %{$req->parameters} )',
+			'PPI::Future::Token::Structure' => '(',
+			'PPI::Future::Statement::Expression' => '%{$req->parameters}',
+			'PPI::Future::Token::Cast' => '%',
+			'PPI::Future::Structure::Block' => '{$req->parameters}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement' => '$req->parameters',
+			'PPI::Future::Token::Symbol' => '$req',
+			'PPI::Future::Token::Operator' => '->',
+			'PPI::Future::Token::Word' => 'parameters',
+			'PPI::Future::Token::Structure' => '}',
+			'PPI::Future::Token::Structure' => ')',
 		]
 	);
 
 	test_statement(
 		'++$i%$f',  # '%' wrongly a cast through 1.220.
 		[
-			'PPI::Statement' => '++$i%$f',
-			'PPI::Token::Operator' => '++',
-			'PPI::Token::Symbol' => '$i',
-			'PPI::Token::Operator' => '%',
-			'PPI::Token::Symbol' => '$f',
+			'PPI::Future::Statement' => '++$i%$f',
+			'PPI::Future::Token::Operator' => '++',
+			'PPI::Future::Token::Symbol' => '$i',
+			'PPI::Future::Token::Operator' => '%',
+			'PPI::Future::Token::Symbol' => '$f',
 		]
 	);
 
-{   # these need to be fixed in PPI::Lexer->_statement, fixing these will break other tests that need to be changed
+{   # these need to be fixed in PPI::Future::Lexer->_statement, fixing these will break other tests that need to be changed
 	local $TODO = "clarify type of statement in constructor";
 	test_statement(
 		'[$args]',
 		[
-			'PPI::Structure::Constructor' => '[$args]',
-			'PPI::Token::Structure' => '[',
-			'PPI::Statement::Expression' => '$args',
-			'PPI::Token::Symbol' => '$args',
-			'PPI::Token::Structure' => ']',
+			'PPI::Future::Structure::Constructor' => '[$args]',
+			'PPI::Future::Token::Structure' => '[',
+			'PPI::Future::Statement::Expression' => '$args',
+			'PPI::Future::Token::Symbol' => '$args',
+			'PPI::Future::Token::Structure' => ']',
 		]
 	);
 	test_statement(
 		'{$args}',
 		[
-			'PPI::Structure::Constructor' => '{$args}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement::Expression' => '$args',
-			'PPI::Token::Symbol' => '$args',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Structure::Constructor' => '{$args}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement::Expression' => '$args',
+			'PPI::Future::Token::Symbol' => '$args',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	);
 	local $TODO = "hash constructors are currently mistaken for blocks";
 	test_statement(
 		'1 * {2}',
 		[
-			'PPI::Token::Number' => '1' ,
-			'PPI::Token::Operator' => '*',
-			'PPI::Structure::Constructor' => '{2}',
-			'PPI::Token::Structure' => '{',
-			'PPI::Statement' => '2',
-			'PPI::Token::Number' => '2',
-			'PPI::Token::Structure' => '}',
+			'PPI::Future::Token::Number' => '1' ,
+			'PPI::Future::Token::Operator' => '*',
+			'PPI::Future::Structure::Constructor' => '{2}',
+			'PPI::Future::Token::Structure' => '{',
+			'PPI::Future::Statement' => '2',
+			'PPI::Future::Token::Number' => '2',
+			'PPI::Future::Token::Structure' => '}',
 		]
 	)
 }
@@ -523,12 +523,12 @@ sub test_statement {
 	my ( $code, $expected, $msg ) = @_;
 	$msg = perlstring $code if !defined $msg;
 
-	my $d = PPI::Document->new( \$code );
+	my $d = PPI::Future::Document->new( \$code );
 	my $tokens = $d->find( sub { $_[1]->significant } );
 	$tokens = [ map { ref($_), $_->content } @$tokens ];
 
-	if ( $expected->[0] !~ /^PPI::Statement/ ) {
-		$expected = [ 'PPI::Statement', $code, @$expected ];
+	if ( $expected->[0] !~ /^PPI::Future::Statement/ ) {
+		$expected = [ 'PPI::Future::Statement', $code, @$expected ];
 	}
 	my $ok = is_deeply( $tokens, $expected, main_level_line.$msg );
 	if ( !$ok ) {
@@ -569,7 +569,7 @@ sub assemble_and_test {
 	my $code = $left eq '' ? "$cast_or_op$whitespace$right" : "$left$whitespace$cast_or_op$whitespace$right";
 
 	if ( $right_is_statement ) {
-		$cast_or_op_expected = [ 'PPI::Statement' => "$cast_or_op$whitespace$right", @$cast_or_op_expected ];
+		$cast_or_op_expected = [ 'PPI::Future::Statement' => "$cast_or_op$whitespace$right", @$cast_or_op_expected ];
 	}
 
 	my $expected = [

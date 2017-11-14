@@ -1,5 +1,5 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Number  	'2'
-    PPI::Token::Operator  	'*'
-    PPI::Token::Word  	'foo'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Number  	'2'
+    PPI::Future::Token::Operator  	'*'
+    PPI::Future::Token::Word  	'foo'

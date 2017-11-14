@@ -1,11 +1,11 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Number::Float  	'1.'
-    PPI::Token::Word  	'exp'
-    PPI::Structure::List  	( ... )
-      PPI::Statement::Expression
-        PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	' '
-  PPI::Token::Comment  	'# don't really care, keyword here is a syntax error'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Float  	'1.'
+    PPI::Future::Token::Word  	'exp'
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	' '
+  PPI::Future::Token::Comment  	'# don't really care, keyword here is a syntax error'
+  PPI::Future::Token::Whitespace  	'\n'

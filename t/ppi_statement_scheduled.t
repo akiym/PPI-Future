@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Test PPI::Statement::Scheduled
+# Test PPI::Future::Statement::Scheduled
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 240 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 SUB_WORD_OPTIONAL: {
@@ -27,17 +27,17 @@ sub test_sub_as {
 	my ( $sub, $name, $followed_by ) = @_;
 
 	my $code     = "$sub$name$followed_by";
-	my $Document = PPI::Document->new( \$code );
-	isa_ok( $Document, 'PPI::Document', "$code: got document" );
+	my $Document = PPI::Future::Document->new( \$code );
+	isa_ok( $Document, 'PPI::Future::Document', "$code: got document" );
 
 	my ( $sub_statement, $dummy ) = $Document->schildren;
-	isa_ok( $sub_statement, 'PPI::Statement::Scheduled', "$code: document child is a scheduled statement" );
+	isa_ok( $sub_statement, 'PPI::Future::Statement::Scheduled', "$code: document child is a scheduled statement" );
 	is( $dummy, undef, "$code: document has exactly one child" );
 	ok( $sub_statement->reserved, "$code: is reserved" );
 	is( $sub_statement->name, $name, "$code: name() correct" );
 
 	if ( $followed_by =~ /}/ ) {
-		isa_ok( $sub_statement->block, 'PPI::Structure::Block', "$code: has a block" );
+		isa_ok( $sub_statement->block, 'PPI::Future::Structure::Block', "$code: has a block" );
 	}
 	else {
 		ok( !$sub_statement->block, "$code: has no block" );

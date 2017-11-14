@@ -1,7 +1,7 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Symbol  	'$one'
-    PPI::Token::Operator  	'*'
-    PPI::Token::Symbol  	'$two'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$one'
+    PPI::Future::Token::Operator  	'*'
+    PPI::Future::Token::Symbol  	'$two'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

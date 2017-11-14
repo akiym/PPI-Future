@@ -1,17 +1,17 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Word  	'ok'
-    PPI::Structure::List  	( ... )
-      PPI::Token::Whitespace  	' '
-      PPI::Statement
-        PPI::Token::Word  	'sub'
-        PPI::Token::Whitespace  	' '
-        PPI::Structure::Block  	{ ... }
-          PPI::Statement
-            PPI::Token::Word  	'die'
-            PPI::Structure::List  	( ... )
-              PPI::Statement::Expression
-                PPI::Token::Quote::Double  	'"goodbye"'
-      PPI::Token::Whitespace  	' '
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'ok'
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Token::Whitespace  	' '
+      PPI::Future::Statement
+        PPI::Future::Token::Word  	'sub'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Structure::Block  	{ ... }
+          PPI::Future::Statement
+            PPI::Future::Token::Word  	'die'
+            PPI::Future::Structure::List  	( ... )
+              PPI::Future::Statement::Expression
+                PPI::Future::Token::Quote::Double  	'"goodbye"'
+      PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

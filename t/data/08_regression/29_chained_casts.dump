@@ -1,13 +1,13 @@
-PPI::Document
-  PPI::Statement::Variable
-    PPI::Token::Word  	'my'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$bar'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'='
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Cast  	'\'
-    PPI::Token::Cast  	'%'
-    PPI::Token::Cast  	'*'
-    PPI::Token::Symbol  	'$foo'
-    PPI::Token::Structure  	';'
+PPI::Future::Document
+  PPI::Future::Statement::Variable
+    PPI::Future::Token::Word  	'my'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$bar'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Cast  	'\'
+    PPI::Future::Token::Cast  	'%'
+    PPI::Future::Token::Cast  	'*'
+    PPI::Future::Token::Symbol  	'$foo'
+    PPI::Future::Token::Structure  	';'

@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/perl
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More;
 BEGIN {
 	if ($] < 5.008007) {
@@ -13,15 +13,15 @@ BEGIN {
 
 use utf8;  # perl version check above says this is okay
 use Params::Util qw{_INSTANCE};
-use PPI;
+use PPI::Future;
 
 sub good_ok {
 	my $source  = shift;
 	my $message = shift;
-	my $doc = PPI::Document->new( \$source );
-	ok( _INSTANCE($doc, 'PPI::Document'), $message );
-	if ( ! _INSTANCE($doc, 'PPI::Document') ) {
-		diag($PPI::Document::errstr);
+	my $doc = PPI::Future::Document->new( \$source );
+	ok( _INSTANCE($doc, 'PPI::Future::Document'), $message );
+	if ( ! _INSTANCE($doc, 'PPI::Future::Document') ) {
+		diag($PPI::Future::Document::errstr);
 	}
 }
 

@@ -1,7 +1,7 @@
-PPI::Document
-  PPI::Token::Comment  	'# something\n'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement::End
-    PPI::Token::Separator  	'__END__'
-    PPI::Token::Whitespace  	'\n'
-    PPI::Token::End  	'\nThis is after the end of the file\n\n'
+PPI::Future::Document
+  PPI::Future::Token::Comment  	'# something\n'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement::End
+    PPI::Future::Token::Separator  	'__END__'
+    PPI::Future::Token::Whitespace  	'\n'
+    PPI::Future::Token::End  	'\nThis is after the end of the file\n\n'

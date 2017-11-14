@@ -4,8 +4,8 @@ use strict;
 use File::Spec::Functions ':ALL';
 
 use lib 't/lib';
-use PPI::Test::pragmas;
-use PPI;
+use PPI::Future::Test::pragmas;
+use PPI::Future;
 
 # Execute the tests
 use Test::More tests => 7 + ($ENV{AUTHOR_TESTING} ? 1 : 0);

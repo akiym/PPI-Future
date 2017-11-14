@@ -1,15 +1,15 @@
 #!/usr/bin/perl
 
-# Load ALL of the PPI files, lex them in, dump them
+# Load ALL of the PPI::Future files, lex them in, dump them
 # out, and verify that the code goes in and out cleanly.
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More; # Plan comes later
 
 use File::Spec::Functions ':ALL';
-use PPI;
-use PPI::Test 'find_files';
+use PPI::Future;
+use PPI::Future::Test 'find_files';
 
 
 
@@ -17,7 +17,7 @@ use PPI::Test 'find_files';
 # Prepare
 
 # Find all of the files to be checked
-my %tests = map { $_ => $INC{$_} } grep { ! /\bXS\.pm/ } grep { /^PPI\b/ } keys %INC;
+my %tests = map { $_ => $INC{$_} } grep { ! /\bXS\.pm/ } grep { /^PPI::Future\b/ } keys %INC;
 my @files = sort values %tests;
 unless ( @files ) {
 	Test::More::plan( tests => ($ENV{AUTHOR_TESTING} ? 1 : 0) + 1 );
@@ -78,23 +78,23 @@ sub roundtrip_ok {
 		SKIP: {
 			skip( 'Ignoring 14_charset.t', 7 ) if $file =~ /14_charset/;
 
-			my $Document = PPI::Document->new( $file );
+			my $Document = PPI::Future::Document->new( $file );
 			ok( $Document, "$file: ->new returned true" );
-			isa_ok( $Document, 'PPI::Document' );
+			isa_ok( $Document, 'PPI::Future::Document' );
 
 			# Serialize it back out, and compare with the raw version
 			skip( "Ignoring failed parse of $file", 5 ) unless defined $Document;
 			my $content = $Document->serialize;
-			ok( length($content), "$file: PPI::Document serializes" );
+			ok( length($content), "$file: PPI::Future::Document serializes" );
 			is( $content, $source, "$file: Round trip was successful" );
 
 			# Are there any unknown things?
 			is( $Document->find_any('Token::Unknown'), '',
-				"$file: Contains no PPI::Token::Unknown elements" );
+				"$file: Contains no PPI::Future::Token::Unknown elements" );
 			is( $Document->find_any('Structure::Unknown'), '',
-				"$file: Contains no PPI::Structure::Unknown elements" );
+				"$file: Contains no PPI::Future::Structure::Unknown elements" );
 			is( $Document->find_any('Statement::Unknown'), '',
-				"$file: Contains no PPI::Statement::Unknown elements" );
+				"$file: Contains no PPI::Future::Statement::Unknown elements" );
 		}
 	}	
 }

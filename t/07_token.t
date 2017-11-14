@@ -1,16 +1,16 @@
 #!/usr/bin/perl
 
-# Formal unit tests for specific PPI::Token classes
+# Formal unit tests for specific PPI::Future::Token classes
 
 sub warns_on_misplaced_underscore { $] >= 5.006 and $] < 5.008 }
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 568 + (warns_on_misplaced_underscore() ? 2 : 0 ) + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use File::Spec::Functions ':ALL';
-use PPI;
-use PPI::Test::Run;
+use PPI::Future;
+use PPI::Future::Test::Run;
 
 
 
@@ -19,14 +19,14 @@ use PPI::Test::Run;
 #####################################################################
 # Code/Dump Testing
 
-PPI::Test::Run->run_testdir( catdir( 't', 'data', '07_token' ) );
+PPI::Future::Test::Run->run_testdir( catdir( 't', 'data', '07_token' ) );
 
 
 
 
 
 #####################################################################
-# PPI::Token::Number Unit Tests
+# PPI::Future::Token::Number Unit Tests
 
 SCOPE: {
 	my @examples = (
@@ -80,19 +80,19 @@ SCOPE: {
 		}
 		my $exp   = $base =~ s/e//;
 		my $float = $exp || $base =~ s/f//;
-		my $T     = PPI::Tokenizer->new( \$code );
+		my $T     = PPI::Future::Tokenizer->new( \$code );
 		my $token = $T->get_token;
 		is("$token", $code, "'$code' is a single token");
 		is($token->base, $base, "base of '$code' is $base");
 		if ($float) {
-			ok($token->isa('PPI::Token::Number::Float'), "'$code' is ::Float");
+			ok($token->isa('PPI::Future::Token::Number::Float'), "'$code' is ::Float");
 		} else {
-			ok(!$token->isa('PPI::Token::Number::Float'), "'$code' not ::Float");
+			ok(!$token->isa('PPI::Future::Token::Number::Float'), "'$code' not ::Float");
 		}
 		if ($exp) {
-			ok($token->isa('PPI::Token::Number::Exp'), "'$code' is ::Exp");
+			ok($token->isa('PPI::Future::Token::Number::Exp'), "'$code' is ::Exp");
 		} else {
-			ok(!$token->isa('PPI::Token::Number::Exp'), "'$code' not ::Exp");
+			ok(!$token->isa('PPI::Future::Token::Number::Exp'), "'$code' not ::Exp");
 		}
 
 		if ($base != 256) {
@@ -114,16 +114,16 @@ SCOPE: {
 }
 
 foreach my $code ( '1.0._0', '1.0.0.0_0' ) {
-	my $T = PPI::Tokenizer->new( \$code );
+	my $T = PPI::Future::Tokenizer->new( \$code );
 	my $token = $T->get_token;
 	isnt("$token", $code, 'tokenize bad version');
 }
 
 
 foreach my $code ( '08', '09', '0778', '0779' ) {
-	my $T = PPI::Tokenizer->new( \$code );
+	my $T = PPI::Future::Tokenizer->new( \$code );
 	my $token = $T->get_token;
-	isa_ok($token, 'PPI::Token::Number::Octal');
+	isa_ok($token, 'PPI::Future::Token::Number::Octal');
 	is("$token", $code, "tokenize bad octal '$code'");
 	ok($token->{_error} && $token->{_error} =~ m/octal/i,
 	   'invalid octal number should trigger parse error');
@@ -149,9 +149,9 @@ BINARY: {
         );
 	foreach my $test ( @tests ) {
 		my $code = $test->{code};
-		my $T = PPI::Tokenizer->new( \$code );
+		my $T = PPI::Future::Tokenizer->new( \$code );
 		my $token = $T->get_token;
-		isa_ok($token, 'PPI::Token::Number::Binary');
+		isa_ok($token, 'PPI::Future::Token::Number::Binary');
                 if ( $test->{error} ) {
                     ok($token->{_error} && $token->{_error} =~ m/binary/i,
                        'invalid binary number should trigger parse error');
@@ -199,9 +199,9 @@ HEX: {
 	);
 	foreach my $test ( @tests ) {
 		my $code = $test->{code};
-		my $T = PPI::Tokenizer->new( \$code );
+		my $T = PPI::Future::Tokenizer->new( \$code );
 		my $token = $T->get_token;
-		isa_ok($token, 'PPI::Token::Number::Hex');
+		isa_ok($token, 'PPI::Future::Token::Number::Hex');
 		ok(!$token->{_error}, "no error for '$code' even on invalid digits");
 		is($token->content, $test->{parsed}, "correctly parsed everything expected");
                 is($token->literal, $test->{value}, "literal('$code') is $test->{value}");

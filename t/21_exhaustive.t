@@ -3,12 +3,12 @@
 # Exhaustively test all possible Perl programs to a particular length
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More; # Plan comes later
 
 use Params::Util qw{_INSTANCE};
-use PPI;
-use PPI::Test 'quotable';
+use PPI::Future;
+use PPI::Future::Test 'quotable';
 
 # When distributing, keep this in to verify the test script
 # is working correctly, but limit to 2 (maaaaybe 3) so we
@@ -146,12 +146,12 @@ sub compare_code {
                 diag( qq{shorted failing substring: "$shortest"} );
 	}
 
-	if ( scalar(keys %PPI::Element::PARENT) != 0 ) {
+	if ( scalar(keys %PPI::Future::Element::PARENT) != 0 ) {
 		$ok = 0;
 		my $code_quoted = quotable($code);
 		diag( qq{ Stale \%PARENT entries at the end of testing of "$code_quoted"} );
 	}
-	%PPI::Element::PARENT = %PPI::Element::PARENT;
+	%PPI::Future::Element::PARENT = %PPI::Future::Element::PARENT;
 
 	return $ok;
 }
@@ -164,9 +164,9 @@ sub round_trip_code {
 
 	my $Document  = eval {
 		# use Carp 'croak'; $SIG{__WARN__} = sub { croak('Triggered a warning') };
-		PPI::Document->new(\$code);
+		PPI::Future::Document->new(\$code);
 	};
-	if ( _INSTANCE($Document, 'PPI::Document') ) {
+	if ( _INSTANCE($Document, 'PPI::Future::Document') ) {
 		$result = $Document->serialize;
 	}
 
@@ -182,13 +182,13 @@ sub quickcheck {
 
 	while ( length $fails ) {
 		chop $code;
-		PPI::Document->new(\$code) or last;
+		PPI::Future::Document->new(\$code) or last;
 		$fails = $code;
 	}
 
 	while ( length $fails ) {
 		substr( $code, 0, 1, '' );
-		PPI::Document->new(\$code) or return $fails;
+		PPI::Future::Document->new(\$code) or return $fails;
 		$fails = $code;
 	}
 

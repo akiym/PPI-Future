@@ -1,5 +1,5 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Symbol  	'$a'
-    PPI::Token::Operator  	'='
-    PPI::Structure::Constructor  	{ ... }
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$a'
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Structure::Constructor  	{ ... }

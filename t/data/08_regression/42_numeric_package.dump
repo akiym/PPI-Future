@@ -1,7 +1,7 @@
-PPI::Document
-  PPI::Statement::Package
-    PPI::Token::Word  	'package'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Word  	'Foo::100'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement::Package
+    PPI::Future::Token::Word  	'package'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Word  	'Foo::100'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

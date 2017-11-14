@@ -1,21 +1,21 @@
 #!/usr/bin/perl
 
-# Load ALL of the PPI files, and look for a collection
-# of known problems, implemented using PPI itself.
+# Load ALL of the PPI::Future files, and look for a collection
+# of known problems, implemented using PPI::Future itself.
 
-# Using PPI to analyse its own code at install-time? Fuck yeah! :)
+# Using PPI::Future to analyse its own code at install-time? Fuck yeah! :)
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More; # Plan comes later
 
 use Test::Object;
 use File::Spec::Functions ':ALL';
 use Params::Util qw{_CLASS _ARRAY _INSTANCE _IDENTIFIER};
 use Class::Inspector;
-use PPI;
-use PPI::Test 'find_files';
-use PPI::Test::Object;
+use PPI::Future;
+use PPI::Future::Test 'find_files';
+use PPI::Future::Test::Object;
 
 use constant CI => 'Class::Inspector';
 
@@ -27,7 +27,7 @@ use constant CI => 'Class::Inspector';
 # Prepare
 
 # Find all of the files to be checked
-my %tests = map { $_ => $INC{$_} } grep { ! /\bXS\.pm/ } grep { /^PPI\b/ } keys %INC;
+my %tests = map { $_ => $INC{$_} } grep { ! /\bXS\.pm/ } grep { /^PPI::Future\b/ } keys %INC;
 unless ( %tests ) {
 	Test::More::plan( tests => 1 + ($ENV{AUTHOR_TESTING} ? 1 : 0) );
 	ok( undef, "Failed to find any files to test" );
@@ -52,16 +52,16 @@ Test::More::plan( tests => scalar(@files) * 14 + 3 + ($ENV{AUTHOR_TESTING} ? 1 :
 # Self-test the search functions before we use them
 
 # Check this actually finds something bad
-my $sample = PPI::Document->new(\<<'END_PERL');
+my $sample = PPI::Future::Document->new(\<<'END_PERL');
 isa($foo, 'Bad::Class1');
-isa($foo, 'PPI::Document');
+isa($foo, 'PPI::Future::Document');
 $foo->isa('Bad::Class2');
 $foo->isa("Bad::Class3");
 isa($foo, 'ARRAY'); # Not bad
 isa($foo->thing, qq <Bad::Class4> # ok?
 );
 END_PERL
-isa_ok( $sample, 'PPI::Document' );
+isa_ok( $sample, 'PPI::Future::Document' );
 
 my $bad = $sample->find( \&bug_bad_isa_class_name );
 ok( _ARRAY($bad), 'Found bad things' );
@@ -78,12 +78,12 @@ is_deeply( $bad, [ 'Bad::Class1', 'Bad::Class2', 'Bad::Class3', 'Bad::Class4' ],
 
 foreach my $file ( @files ) {
 	# MD5 the raw file
-	my $md5a = PPI::Util::md5hex_file($file);
+	my $md5a = PPI::Future::Util::md5hex_file($file);
 	like( $md5a, qr/^[[:xdigit:]]{32}\z/, 'md5hex_file ok' );
 
 	# Load the file
-	my $Document = PPI::Document->new($file);
-	ok( _INSTANCE($Document, 'PPI::Document'), "$file: Parsed ok" );
+	my $Document = PPI::Future::Document->new($file);
+	ok( _INSTANCE($Document, 'PPI::Future::Document'), "$file: Parsed ok" );
 
 	# Compare the preload signature to the post-load value
 	my $md5b = $Document->hex_id;
@@ -130,12 +130,12 @@ foreach my $file ( @files ) {
 
 # Check for accidental use of illegal or non-existant classes in
 # ->isa calls. This has happened at least once, presumably because
-# PPI has a LOT of classes and it can get confusing.
+# PPI::Future has a LOT of classes and it can get confusing.
 sub bug_bad_isa_class_name {
 	my ($Document, $Element) = @_;
 
 	# Find a quote containing a class name
-	$Element->isa('PPI::Token::Quote')             or return '';
+	$Element->isa('PPI::Future::Token::Quote')             or return '';
 	_CLASS($Element->string)                       or return '';
 	if ( $Element->string =~ /^(?:ARRAY|HASH|CODE|SCALAR|REF|GLOB)$/ ) {
 		return '';
@@ -143,16 +143,16 @@ sub bug_bad_isa_class_name {
 
 	# It should be the last thing in an expression in a list
 	my $Expression = $Element->parent              or return '';
-	$Expression->isa('PPI::Statement::Expression') or return '';
+	$Expression->isa('PPI::Future::Statement::Expression') or return '';
 	$Element == $Expression->schild(-1)            or return '';
 
 	my $List = $Expression->parent                 or return '';
-	$List->isa('PPI::Structure::List')             or return '';
+	$List->isa('PPI::Future::Structure::List')             or return '';
 	$List->schildren == 1                          or return '';
 
 	# The list should be the params list for an isa call
 	my $Word = $List->sprevious_sibling            or return '';
-	$Word->isa('PPI::Token::Word')                 or return '';
+	$Word->isa('PPI::Future::Token::Word')                 or return '';
 	$Word->content =~ /^(?:UNIVERSAL::)?isa\z/s    or return '';
 
 	# Is the class real and loaded?
@@ -168,17 +168,17 @@ sub bad_static_method {
 	my ($document, $element) = @_;
 
 	# Find a quote containing a class name
-	$element->isa('PPI::Token::Operator')   or return '';
+	$element->isa('PPI::Future::Token::Operator')   or return '';
 	$element->content eq '->'               or return '';
 
 	# Check the method
 	my $method = $element->snext_sibling    or return '';
-	$method->isa('PPI::Token::Word')        or return '';
+	$method->isa('PPI::Future::Token::Word')        or return '';
 	_IDENTIFIER($method->content)           or return '';
 
 	# Check the class
 	my $class = $element->sprevious_sibling or return '';
-	$class->isa('PPI::Token::Word')         or return '';
+	$class->isa('PPI::Future::Token::Word')         or return '';
 	_CLASS($class->content)                 or return '';
 
 	# It's usually a deep class

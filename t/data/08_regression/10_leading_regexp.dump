@@ -1,11 +1,11 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Regexp::Match  	'/./'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	' '
-  PPI::Statement
-    PPI::Token::Word  	'print'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Number  	'1'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Regexp::Match  	'/./'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	' '
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'print'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Number  	'1'
+  PPI::Future::Token::Whitespace  	'\n'

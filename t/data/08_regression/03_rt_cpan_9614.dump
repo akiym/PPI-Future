@@ -1,53 +1,53 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Symbol  	'$foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'<<'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Symbol  	'$foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'<<'
-    PPI::Token::Whitespace  	'\n'
-    PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Symbol  	'$foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'<<'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$bar'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Operator  	'<<'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Word  	'foo'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::HereDoc  	'<<foo'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Symbol  	'@foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'='
-    PPI::Token::Whitespace  	' '
-    PPI::Token::HereDoc  	'<<EOF'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Symbol  	'@foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'='
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::List  	( ... )
-      PPI::Statement::Expression
-        PPI::Token::HereDoc  	'<<EOF'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'<<'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'<<'
+    PPI::Future::Token::Whitespace  	'\n'
+    PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'$foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'<<'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$bar'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Operator  	'<<'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Word  	'foo'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::HereDoc  	'<<foo'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'@foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::HereDoc  	'<<EOF'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Symbol  	'@foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::HereDoc  	'<<EOF'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

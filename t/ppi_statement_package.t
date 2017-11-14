@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Statement::Package
+# Unit testing for PPI::Future::Statement::Package
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 2506 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
-use PPI::Singletons '%KEYWORDS';
+use PPI::Future;
+use PPI::Future::Singletons '%KEYWORDS';
 
 
 HASH_CONSTRUCTORS_DONT_CONTAIN_PACKAGES_RT52259: {
-	my $Document = PPI::Document->new(\<<'END_PERL');
+	my $Document = PPI::Future::Document->new(\<<'END_PERL');
 {    package  => "", };
 +{   package  => "", };
 {   'package' => "", };
@@ -19,9 +19,9 @@ HASH_CONSTRUCTORS_DONT_CONTAIN_PACKAGES_RT52259: {
 {   'package' ,  "", };
 +{  'package' ,  "", };
 END_PERL
-	isa_ok( $Document, 'PPI::Document' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 
-	my $packages = $Document->find('PPI::Statement::Package');
+	my $packages = $Document->find('PPI::Future::Statement::Package');
 	my $test_name = 'Found no package statements in hash constructors - RT #52259';
 	if (not $packages) {
 		pass $test_name;
@@ -34,7 +34,7 @@ END_PERL
 
 INSIDE_SCOPE: {
 	# Create a document with various example package statements
-	my $Document = PPI::Document->new( \<<'END_PERL' );
+	my $Document = PPI::Future::Document->new( \<<'END_PERL' );
 package Foo;
 SCOPE: {
 	package # comment
@@ -45,7 +45,7 @@ package Other v1.23;
 package Again 0.09;
 1;
 END_PERL
-	isa_ok( $Document, 'PPI::Document' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 
 	# Check that both of the package statements are detected
 	my $packages = $Document->find('Statement::Package');
@@ -83,15 +83,15 @@ PERL_5_12_SYNTAX: {
 		'AUTOLOAD',
 	);
 	my @versions = (
-		[ 'v1.2.3 ', 'PPI::Token::Number::Version' ],
-		[ 'v1.2.3', 'PPI::Token::Number::Version' ],
-		[ '0.50 ', 'PPI::Token::Number::Float' ],
-		[ '0.50', 'PPI::Token::Number::Float' ],
+		[ 'v1.2.3 ', 'PPI::Future::Token::Number::Version' ],
+		[ 'v1.2.3', 'PPI::Future::Token::Number::Version' ],
+		[ '0.50 ', 'PPI::Future::Token::Number::Float' ],
+		[ '0.50', 'PPI::Future::Token::Number::Float' ],
 		[ '', '' ],  # omit version, traditional
 	);
 	my @blocks = (
-		[ ';', 'PPI::Token::Structure' ],  # traditional package syntax
-		[ '{ 1 }', 'PPI::Structure::Block' ],  # 5.12 package syntax
+		[ ';', 'PPI::Future::Token::Structure' ],  # traditional package syntax
+		[ '{ 1 }', 'PPI::Future::Structure::Block' ],  # 5.12 package syntax
 	);
 	$_->[2] = strip_ws_padding( $_->[0] ) for @versions, @blocks;
 
@@ -120,8 +120,8 @@ sub prepare_package_test {
 	my $code = "package $name $version$block";
 
 	my $expected_package_tokens = [
-		[ 'PPI::Token::Word', 'package' ],
-		[ 'PPI::Token::Word', $name ],
+		[ 'PPI::Future::Token::Word', 'package' ],
+		[ 'PPI::Future::Token::Word', $name ],
 		($version ne '') ? [ $version_type, $version_stripped ] : (),
 		[ $block_type, $block_stripped ],
 	];
@@ -134,17 +134,17 @@ sub test_package_blocks {
 
 	subtest "'$code'", sub {
 
-	my $Document = PPI::Document->new( \"$code 999;" );
+	my $Document = PPI::Future::Document->new( \"$code 999;" );
 	is(     $Document->schildren, 2, "correct number of statements in document" );
-	isa_ok( $Document->schild(0), 'PPI::Statement::Package', "entire code" );
+	isa_ok( $Document->schild(0), 'PPI::Future::Statement::Package', "entire code" );
 
 	# first child is the package statement
 	my $got_tokens = [ map { [ ref $_, "$_" ] } $Document->schild(0)->schildren ];
 	is_deeply( $got_tokens, $expected_package_tokens, "tokens as expected" );
 
 	# second child not swallowed up by the first
-	isa_ok( $Document->schild(1), 'PPI::Statement', "code prior statement end recognized" );
-	isa_ok( eval { $Document->schild(1)->schild(0) }, 'PPI::Token::Number', "inner code" );
+	isa_ok( $Document->schild(1), 'PPI::Future::Statement', "code prior statement end recognized" );
+	isa_ok( eval { $Document->schild(1)->schild(0) }, 'PPI::Future::Token::Number', "inner code" );
 	is(     eval { $Document->schild(1)->schild(0) }, '999', "number correct"  );
 
 	};

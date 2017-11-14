@@ -1,22 +1,22 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Element
+# Unit testing for PPI::Future::Element
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 57 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 __INSERT_AFTER: {
-	my $Document = PPI::Document->new( \"print 'Hello World';" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print 'Hello World';" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $string = $Document->find_first('Token::Quote');
-	isa_ok( $string, 'PPI::Token::Quote' );
+	isa_ok( $string, 'PPI::Future::Token::Quote' );
 	is( $string->content, "'Hello World'", 'Got expected token' );
-	my $foo = PPI::Token::Word->new('foo');
-	isa_ok( $foo, 'PPI::Token::Word' );
+	my $foo = PPI::Future::Token::Word->new('foo');
+	isa_ok( $foo, 'PPI::Future::Token::Word' );
 	is( $foo->content, 'foo', 'Created Word token' );
 	$string->__insert_after( $foo );
 	is( $Document->serialize, "print 'Hello World'foo;",
@@ -25,13 +25,13 @@ __INSERT_AFTER: {
 
 
 __INSERT_BEFORE: {
-	my $Document = PPI::Document->new( \"print 'Hello World';" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print 'Hello World';" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $semi = $Document->find_first('Token::Structure');
-	isa_ok( $semi, 'PPI::Token::Structure' );
+	isa_ok( $semi, 'PPI::Future::Token::Structure' );
 	is( $semi->content, ';', 'Got expected token' );
-	my $foo = PPI::Token::Word->new('foo');
-	isa_ok( $foo, 'PPI::Token::Word' );
+	my $foo = PPI::Future::Token::Word->new('foo');
+	isa_ok( $foo, 'PPI::Future::Token::Word' );
 	is( $foo->content, 'foo', 'Created Word token' );
 	$semi->__insert_before( $foo );
 	is( $Document->serialize, "print 'Hello World'foo;",
@@ -40,8 +40,8 @@ __INSERT_BEFORE: {
 
 
 ANCESTOR_OF: {
-	my $Document = PPI::Document->new( \'( [ thingy ] ); $blarg = 1' );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \'( [ thingy ] ); $blarg = 1' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	ok(
 		$Document->ancestor_of($Document),
 		'Document is an ancestor of itself.',
@@ -78,22 +78,22 @@ ANCESTOR_OF: {
 
 
 COLUMN_NUMBER: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 
 
    foo
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $words = $document->find('PPI::Token::Word');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $words = $document->find('PPI::Future::Token::Word');
 	is( scalar @{$words}, 1, 'Found expected word token.' );
 	is( $words->[0]->column_number, 4, 'Got correct column number.' );
 }
 
 
 DESCENDANT_OF: {
-	my $Document = PPI::Document->new( \'( [ thingy ] ); $blarg = 1' );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \'( [ thingy ] ); $blarg = 1' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	ok(
 		$Document->descendant_of($Document),
 		'Document is a descendant of itself.',
@@ -130,13 +130,13 @@ DESCENDANT_OF: {
 
 
 INSERT_AFTER: {
-	my $Document = PPI::Document->new( \"print 'Hello World';" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print 'Hello World';" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $string = $Document->find_first('Token::Quote');
-	isa_ok( $string, 'PPI::Token::Quote' );
+	isa_ok( $string, 'PPI::Future::Token::Quote' );
 	is( $string->content, "'Hello World'", 'Got expected token' );
-	my $foo = PPI::Token::Word->new('foo');
-	isa_ok( $foo, 'PPI::Token::Word' );
+	my $foo = PPI::Future::Token::Word->new('foo');
+	isa_ok( $foo, 'PPI::Future::Token::Word' );
 	is( $foo->content, 'foo', 'Created Word token' );
 	$string->insert_after( $foo );
 	is( $Document->serialize, "print 'Hello World'foo;",
@@ -145,13 +145,13 @@ INSERT_AFTER: {
 
 
 INSERT_BEFORE: {
-	my $Document = PPI::Document->new( \"print 'Hello World';" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print 'Hello World';" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $semi = $Document->find_first('Token::Structure');
-	isa_ok( $semi, 'PPI::Token::Structure' );
+	isa_ok( $semi, 'PPI::Future::Token::Structure' );
 	is( $semi->content, ';', 'Got expected token' );
-	my $foo = PPI::Token::Word->new('foo');
-	isa_ok( $foo, 'PPI::Token::Word' );
+	my $foo = PPI::Future::Token::Word->new('foo');
+	isa_ok( $foo, 'PPI::Future::Token::Word' );
 	is( $foo->content, 'foo', 'Created Word token' );
 	$semi->insert_before( $foo );
 	is( $Document->serialize, "print 'Hello World'foo;",
@@ -160,14 +160,14 @@ INSERT_BEFORE: {
 
 
 LINE_NUMBER: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 
 
    foo
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $words = $document->find('PPI::Token::Word');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $words = $document->find('PPI::Future::Token::Word');
 	is( scalar @{$words}, 1, 'Found expected word token.' );
 	is( $words->[0]->line_number, 3, 'Got correct line number.' );
 }
@@ -176,15 +176,15 @@ END_PERL
 LOGICAL_FILENAME: {
 	# Double quoted so that we don't really have a "#line" at the beginning and
 	# errors in this file itself aren't affected by this.
-	my $document = PPI::Document->new(\<<"END_PERL");
+	my $document = PPI::Future::Document->new(\<<"END_PERL");
 
 
 \#line 1 test-file
    foo
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $words = $document->find('PPI::Token::Word');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $words = $document->find('PPI::Future::Token::Word');
 	is( scalar @{$words}, 1, 'Found expected word token.' );
 	is(
 		$words->[0]->logical_filename,
@@ -197,31 +197,31 @@ END_PERL
 LOGICAL_LINE_NUMBER: {
 	# Double quoted so that we don't really have a "#line" at the beginning and
 	# errors in this file itself aren't affected by this.
-	my $document = PPI::Document->new(\<<"END_PERL");
+	my $document = PPI::Future::Document->new(\<<"END_PERL");
 
 
 \#line 1 test-file
    foo
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	my $words = $document->find('PPI::Token::Word');
+	isa_ok( $document, 'PPI::Future::Document' );
+	my $words = $document->find('PPI::Future::Token::Word');
 	is( scalar @{$words}, 1, 'Found expected word token.' );
 	is( $words->[0]->logical_line_number, 1, 'Got correct logical line number.' );
 }
 
 
 VISUAL_COLUMN_NUMBER: {
-	my $document = PPI::Document->new(\<<"END_PERL");
+	my $document = PPI::Future::Document->new(\<<"END_PERL");
 
 
 \t foo
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
+	isa_ok( $document, 'PPI::Future::Document' );
 	my $tab_width = 5;
 	$document->tab_width($tab_width);  # don't use a "usual" value.
-	my $words = $document->find('PPI::Token::Word');
+	my $words = $document->find('PPI::Future::Token::Word');
 	is( scalar @{$words}, 1, 'Found expected word token.' );
 	is(
 		$words->[0]->visual_column_number,

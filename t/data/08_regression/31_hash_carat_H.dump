@@ -1,6 +1,6 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Magic  	'%^H'
-    PPI::Token::Operator  	'='
-    PPI::Structure::List  	( ... )
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Magic  	'%^H'
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Structure::List  	( ... )
+  PPI::Future::Token::Whitespace  	'\n'

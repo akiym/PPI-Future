@@ -1,21 +1,21 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::HereDoc
+# Unit testing for PPI::Future::Token::HereDoc
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 11 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 use Test::Deep;
 
 sub h;
 
 # List of tests to perform. Each test requires the following information:
 #     - 'name': the name of the test in the output.
-#     - 'content': the Perl string to parse using PPI.
+#     - 'content': the Perl string to parse using PPI::Future.
 #     - 'expected': a hashref with the keys being property names on the
-#       PPI::Token::HereDoc object, and the values being the expected value of
+#       PPI::Future::Token::HereDoc object, and the values being the expected value of
 #       that property after the heredoc block has been parsed.
 
 	# Tests with a carriage return after the termination marker.
@@ -141,15 +141,15 @@ sub h {
 		sub {
 			plan tests => 6 + keys %{ $test->{expected} };
 
-			my $document = PPI::Document->new( \$test->{content} );
-			isa_ok( $document, 'PPI::Document' );
+			my $document = PPI::Future::Document->new( \$test->{content} );
+			isa_ok( $document, 'PPI::Future::Document' );
 
 			my $heredocs = $document->find( 'Token::HereDoc' );
 			is( ref $heredocs,     'ARRAY', 'Found heredocs.' );
 			is( scalar @$heredocs, 1,       'Found 1 heredoc block.' );
 
 			my $heredoc = $heredocs->[0];
-			isa_ok( $heredoc, 'PPI::Token::HereDoc' );
+			isa_ok( $heredoc, 'PPI::Future::Token::HereDoc' );
 			can_ok( $heredoc, 'heredoc' );
 
 			my @content = $heredoc->heredoc;

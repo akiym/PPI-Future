@@ -5,10 +5,10 @@
 # down through the entire set of regression tests.
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 2 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 # Define the test code
@@ -21,7 +21,7 @@ my $code = 'sub f:f(';
 #####################################################################
 # Run the actual tests
 
-my $document = eval { PPI::Document->new(\$code) };
+my $document = eval { PPI::Future::Document->new(\$code) };
 $DB::single = $DB::single = 1 if $@; # Catch exceptions
 is( $@, '', 'Parsed without error' );
-isa_ok( $document, 'PPI::Document' );
+isa_ok( $document, 'PPI::Future::Document' );

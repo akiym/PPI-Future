@@ -1,15 +1,15 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token
+# Unit testing for PPI::Future::Token
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 5 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 MODIFICATION: {
-	my $one = PPI::Token->new( "" );
+	my $one = PPI::Future::Token->new( "" );
 	is $one->length, 0, "empty token has no length";
 	ok $one->add_content( "abcde" ), "can add strings";
 	is $one->length, 5, "adding actually adds";

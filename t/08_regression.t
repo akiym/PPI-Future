@@ -5,20 +5,20 @@
 # Some other regressions tests are included here for simplicity.
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 925 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
-use PPI::Test 'pause';
-use PPI::Test::Run;
-use PPI::Singletons '%_PARENT';
+use PPI::Future;
+use PPI::Future::Test 'pause';
+use PPI::Future::Test::Run;
+use PPI::Future::Singletons '%_PARENT';
 
 
 
 #####################################################################
 # Code/Dump Testing
 
-PPI::Test::Run->run_testdir(qw{ t data 08_regression });
+PPI::Future::Test::Run->run_testdir(qw{ t data 08_regression });
 
 
 
@@ -32,7 +32,7 @@ foreach ( 1 .. 3 ) {
 	pause();
 	is( scalar(keys(%_PARENT)), 0, "No parent links at start of loop $_" );
 	# Keep the document from going out of scope before the _PARENT test below.
-	my $Document = PPI::Document->new(\q[print "Foo!"]);  ## no critic ( Variables::ProhibitUnusedVarsStricter )
+	my $Document = PPI::Future::Document->new(\q[print "Foo!"]);  ## no critic ( Variables::ProhibitUnusedVarsStricter )
 	is( scalar(keys(%_PARENT)), 4, 'Correct number of keys created' );
 }
 
@@ -46,12 +46,12 @@ foreach ( 1 .. 3 ) {
 
 # Create a document with a complete braced regexp
 SCOPE: {
-	my $Document = PPI::Document->new( \"s {foo} <bar>i" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"s {foo} <bar>i" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $stmt   = $Document->first_element;
-	isa_ok( $stmt, 'PPI::Statement' );
+	isa_ok( $stmt, 'PPI::Future::Statement' );
 	my $regexp = $stmt->first_element;
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 
 	# Check the regexp matches what we would expect (specifically
 	# the fine details about the sections.
@@ -77,12 +77,12 @@ SCOPE: {
 
 # Also test the handling of a screwed up single part multi-regexp
 SCOPE: {
-	my $Document = PPI::Document->new( \"s {foo}_" );
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"s {foo}_" );
+	isa_ok( $Document, 'PPI::Future::Document' );
 	my $stmt   = $Document->first_element;
-	isa_ok( $stmt, 'PPI::Statement' );
+	isa_ok( $stmt, 'PPI::Future::Statement' );
 	my $regexp = $stmt->first_element;
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 
 	# Check the internal details as before
 	my $expected = {
@@ -114,12 +114,12 @@ is( substr('foo', 3, 0), '', 'substr one char after string end returns ""' );
 
 # rt.cpan.org: Ticket #16671 $_ is not localized 
 # Apparently I DID fix the localisation during parsing, but I forgot to 
-# localise in PPI::Node::DESTROY (ack).
+# localise in PPI::Future::Node::DESTROY (ack).
 $_ = 1234;
 is( $_, 1234, 'Set $_ to 1234' );
 SCOPE: {
-	my $Document = PPI::Document->new( \"print 'Hello World';");
-	isa_ok( $Document, 'PPI::Document' );
+	my $Document = PPI::Future::Document->new( \"print 'Hello World';");
+	isa_ok( $Document, 'PPI::Future::Document' );
 }
 is( $_, 1234, 'Remains after document creation and destruction' );
 
@@ -132,8 +132,8 @@ is( $_, 1234, 'Remains after document creation and destruction' );
 
 SCOPE: {
 	my $code = '@foo = (1,2)';
-	my $doc = PPI::Document->new(\$code);
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\$code);
+	isa_ok( $doc, 'PPI::Future::Document' );
 	ok( $doc->find_first('Structure::List')->location, '->location for a ::List returns true' );
 }
 
@@ -142,10 +142,10 @@ SCOPE: {
 
 
 #####################################################################
-# Bug 18413: PPI::Node prune() implementation broken
+# Bug 18413: PPI::Future::Node prune() implementation broken
 
 SCOPE: {
-	my $doc = PPI::Document->new( \<<'END_PERL' );
+	my $doc = PPI::Future::Document->new( \<<'END_PERL' );
 #!/usr/bin/perl
 
 use warnings;
@@ -161,8 +161,8 @@ print "\n";
 
 exit;
 END_PERL
-	isa_ok( $doc, 'PPI::Document' );
-	ok( defined $doc->prune('PPI::Statement::Sub'), '->prune ok' );
+	isa_ok( $doc, 'PPI::Future::Document' );
+	ok( defined $doc->prune('PPI::Future::Statement::Sub'), '->prune ok' );
 }
 
 
@@ -173,10 +173,10 @@ END_PERL
 # Bug 19883: 'package' bareword used as hash key is detected as package statement
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'(package => 123)' );
-	isa_ok( $doc, 'PPI::Document' );
-	isa_ok( $doc->child(0)->child(0)->child(0), 'PPI::Statement' );
-	isa_ok( $doc->child(0)->child(0)->child(0), 'PPI::Statement::Expression' );
+	my $doc = PPI::Future::Document->new( \'(package => 123)' );
+	isa_ok( $doc, 'PPI::Future::Document' );
+	isa_ok( $doc->child(0)->child(0)->child(0), 'PPI::Future::Statement' );
+	isa_ok( $doc->child(0)->child(0)->child(0), 'PPI::Future::Statement::Expression' );
 }
 
 
@@ -187,21 +187,21 @@ SCOPE: {
 # Bug 19629: End of list mistakenly seen as end of statement
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'()' );
-	isa_ok( $doc, 'PPI::Document' );
-	isa_ok( $doc->child(0), 'PPI::Statement' );
+	my $doc = PPI::Future::Document->new( \'()' );
+	isa_ok( $doc, 'PPI::Future::Document' );
+	isa_ok( $doc->child(0), 'PPI::Future::Statement' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'{}' );
-	isa_ok( $doc, 'PPI::Document' );
-	isa_ok( $doc->child(0), 'PPI::Statement' );
+	my $doc = PPI::Future::Document->new( \'{}' );
+	isa_ok( $doc, 'PPI::Future::Document' );
+	isa_ok( $doc->child(0), 'PPI::Future::Statement' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'[]' );
-	isa_ok( $doc, 'PPI::Document' );
-	isa_ok( $doc->child(0), 'PPI::Statement' );
+	my $doc = PPI::Future::Document->new( \'[]' );
+	isa_ok( $doc, 'PPI::Future::Document' );
+	isa_ok( $doc->child(0), 'PPI::Future::Statement' );
 }
 
 
@@ -209,13 +209,13 @@ SCOPE: {
 
 
 #####################################################################
-# Bug 21575: PPI::Statement::Variable::variables breaks for lists
+# Bug 21575: PPI::Future::Statement::Variable::variables breaks for lists
 #            with leading whitespace
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'my ( $self, $param ) = @_;' );
+	my $doc = PPI::Future::Document->new( \'my ( $self, $param ) = @_;' );
 	my $stmt = $doc->child(0);
-	isa_ok( $stmt, 'PPI::Statement::Variable' );
+	isa_ok( $stmt, 'PPI::Future::Statement::Variable' );
 	is_deeply( [$stmt->variables], ['$self', '$param'], 'variables() for my list with whitespace' );
 }
 
@@ -224,11 +224,11 @@ SCOPE: {
 
 
 #####################################################################
-# Bug #23788: PPI::Statement::location() returns undef for C<({})>.
+# Bug #23788: PPI::Future::Statement::location() returns undef for C<({})>.
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'({})' );
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new( \'({})' );
+	isa_ok( $doc, 'PPI::Future::Document' );
 
 	my $bad = $doc->find( sub {
 		not defined $_[1]->location
@@ -246,8 +246,8 @@ SCOPE: {
 # Empty constructor has no location
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'$h={};' );
-	my $hash = $doc->find('PPI::Structure::Constructor')->[0];
+	my $doc = PPI::Future::Document->new( \'$h={};' );
+	my $hash = $doc->find('PPI::Future::Structure::Constructor')->[0];
 	ok($hash, 'location for empty constructor - fetched a constructor');
 	is_deeply( $hash->location, [1,4,4,1,undef], 'location for empty constructor');
 }
@@ -260,9 +260,9 @@ SCOPE: {
 # Perl::MinimumVersion regression
 
 SCOPE: {
-	my $doc = PPI::Document->new( \'use utf8;' );
+	my $doc = PPI::Future::Document->new( \'use utf8;' );
 	my $stmt = $doc->child(0);
-	isa_ok( $stmt, 'PPI::Statement::Include' );
+	isa_ok( $stmt, 'PPI::Future::Statement::Include' );
 	is( $stmt->pragma, 'utf8', 'pragma() with numbers' );
 }
 
@@ -274,10 +274,10 @@ SCOPE: {
 # Proof that _new_token must return "1"
 
 SCOPE: {
-	my $doc = PPI::Document->new(\<<'END_PERL');
+	my $doc = PPI::Future::Document->new(\<<'END_PERL');
 $$content =~ s/(?:\015{1,2}\012|\015|\012)/\n/gs;
 END_PERL
-	isa_ok( $doc, 'PPI::Document' );
+	isa_ok( $doc, 'PPI::Future::Document' );
 }
 
 
@@ -287,86 +287,86 @@ END_PERL
 # Check quoteengine token behaviour at end of file
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s/');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s/');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 0, 'Found 0 section' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s{');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s{');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 0, 'Found 0 section' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s/foo');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s/foo');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 1, 'Found 1 section' );
 	is( $regexp->_section_content(0), 'foo', 's/foo correct at EOL' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s{foo');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s{foo');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 1, 'Found 1 section' );
 	is( $regexp->_section_content(0), 'foo', 's{foo correct at EOL' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s/foo/');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s/foo/');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 1, 'Found 1 section' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s{foo}{');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s{foo}{');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 1, 'Found 1 section' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s{foo}/');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s{foo}/');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 1, 'Found 1 section' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s/foo/bar');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s/foo/bar');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 2, 'Found 2 sections' );
 	is( $regexp->_section_content(1), 'bar', 's/foo/bar correct at EOL' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s{foo}{bar');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s{foo}{bar');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 2, 'Found 2 sections' );
 	is( $regexp->_section_content(1), 'bar', 's{foo}{bar correct at EOL' );
 }
 
 SCOPE: {
-	my $doc = PPI::Document->new(\'s{foo}/bar');
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new(\'s{foo}/bar');
+	isa_ok( $doc, 'PPI::Future::Document' );
 	my $regexp = $doc->child(0)->child(0);
-	isa_ok( $regexp, 'PPI::Token::Regexp::Substitute' );
+	isa_ok( $regexp, 'PPI::Future::Token::Regexp::Substitute' );
 	is( $regexp->_sections, 2, 'Found 2 sections' );
 	is( $regexp->_section_content(1), 'bar', 's{foo}/bar correct at EOL' );
 }
@@ -379,12 +379,12 @@ SCOPE: {
 # Confirmation of cases where we special case / to a regex
 
 SCOPE: {
-	my $doc = PPI::Document->new(\<<'END_PERL');
+	my $doc = PPI::Future::Document->new(\<<'END_PERL');
 @foo = split /foo/, $var;
 return / Special /x ? 0 : 1;
 print "Hello" if /regex/;
 END_PERL
-	isa_ok( $doc, 'PPI::Document' );
-	my $match = $doc->find('PPI::Token::Regexp::Match');
+	isa_ok( $doc, 'PPI::Future::Document' );
+	my $match = $doc->find('PPI::Future::Token::Regexp::Match');
 	is( scalar(@$match), 3, 'Found expected number of matches' );
 }

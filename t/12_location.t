@@ -3,10 +3,10 @@
 # Tests the accuracy and features for location functionality
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 682 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 my $test_source = <<'END_PERL';
@@ -352,8 +352,8 @@ my @test_locations = (
 # Test the locations of everything in the test code
 
 # Prepare
-my $Document = PPI::Document->new( \$test_source );
-isa_ok( $Document, 'PPI::Document' );
+my $Document = PPI::Future::Document->new( \$test_source );
+isa_ok( $Document, 'PPI::Future::Document' );
 $Document->tab_width(4);
 is($Document->tab_width, 4, 'Tab width set correctly');
 ok( $Document->index_locations, '->index_locations returns true' );

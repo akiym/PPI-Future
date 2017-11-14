@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 
-# Test PPI::Cache
+# Test PPI::Future::Cache
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 42 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use File::Spec::Unix;
 use File::Spec::Functions ':ALL';
 use Scalar::Util  'refaddr';
 use File::Remove  ();
-use PPI::Document ();
-use PPI::Cache    ();
+use PPI::Future::Document ();
+use PPI::Future::Cache    ();
 use Test::SubCalls;
 
 use constant VMS  => !! ( $^O eq 'VMS' );
@@ -38,16 +38,16 @@ my $sample_document = \'print "Hello World!\n";';
 # Basic Testing
 
 # Create a basic cache object
-my $Cache = PPI::Cache->new(
+my $Cache = PPI::Future::Cache->new(
 	path => $cache_dir,
 	);
-isa_ok( $Cache, 'PPI::Cache' );
+isa_ok( $Cache, 'PPI::Future::Cache' );
 is( scalar($Cache->path), $cache_dir, '->path returns the original path'    );
 is( scalar($Cache->readonly), '',      '->readonly returns false by default' );
 
 # Create a test document
-my $doc = PPI::Document->new( $sample_document );
-isa_ok( $doc, 'PPI::Document' );
+my $doc = PPI::Future::Document->new( $sample_document );
+isa_ok( $doc, 'PPI::Future::Document' );
 my $doc_md5  = '64568092e7faba16d99fa04706c46517';
 is( $doc->hex_id, $doc_md5, '->hex_id specifically matches the UNIX newline md5' );
 my $doc_file = catfile($cache_dir, '6', '64', '64568092e7faba16d99fa04706c46517.ppi');
@@ -58,7 +58,7 @@ my $bad_file = catfile($cache_dir, 'a', 'ab', 'abcdef1234567890abcdef1234567890.
 ok( $Cache->_store($bad_md5, $doc), '->_store returns true' );
 ok( -f $bad_file, 'Created file where expected' );
 my $loaded = $Cache->_load($bad_md5);
-isa_ok( $loaded, 'PPI::Document' );
+isa_ok( $loaded, 'PPI::Future::Document' );
 is_deeply( $doc, $loaded, '->_load loads the same document back in' );
 
 # Store the test document in the cache in it's proper place
@@ -67,9 +67,9 @@ is( scalar( $Cache->store_document($doc) ), 1,
 ok( -f $doc_file, 'The document was stored in the expected location' );
 
 # Check the _md5hex method
-is( PPI::Cache->_md5hex($sample_document), $doc_md5,
+is( PPI::Future::Cache->_md5hex($sample_document), $doc_md5,
 	'->_md5hex returns as expected for sample document' );
-is( PPI::Cache->_md5hex($doc_md5), $doc_md5,
+is( PPI::Future::Cache->_md5hex($doc_md5), $doc_md5,
 	'->_md5hex null transform works as expected' );
 is( $Cache->_md5hex($sample_document), $doc_md5,
 	'->_md5hex returns as expected for sample document' );
@@ -78,12 +78,12 @@ is( $Cache->_md5hex($doc_md5), $doc_md5,
 
 # Retrieve the Document by content
 $loaded = $Cache->get_document( $sample_document );
-isa_ok( $loaded, 'PPI::Document' );
+isa_ok( $loaded, 'PPI::Future::Document' );
 is_deeply( $doc, $loaded, '->get_document(\$source) loads the same document back in' );
 
 # Retrieve the Document by md5 directly
 $loaded = $Cache->get_document( $doc_md5 );
-isa_ok( $loaded, 'PPI::Document' );
+isa_ok( $loaded, 'PPI::Future::Document' );
 is_deeply( $doc, $loaded, '->get_document($md5hex) loads the same document back in' );
 
 
@@ -96,48 +96,48 @@ is_deeply( $doc, $loaded, '->get_document($md5hex) loads the same document back 
 
 # Load a test document twice, and see how many tokenizer objects get
 # created internally.
-is( PPI::Document->get_cache, undef,    'PPI::Document cache initially undef' );
-ok( PPI::Document->set_cache( $Cache ), 'PPI::Document->set_cache returned true' );
-isa_ok( PPI::Document->get_cache, 'PPI::Cache' );
-is( refaddr($Cache), refaddr(PPI::Document->get_cache),
+is( PPI::Future::Document->get_cache, undef,    'PPI::Future::Document cache initially undef' );
+ok( PPI::Future::Document->set_cache( $Cache ), 'PPI::Future::Document->set_cache returned true' );
+isa_ok( PPI::Future::Document->get_cache, 'PPI::Future::Cache' );
+is( refaddr($Cache), refaddr(PPI::Future::Document->get_cache),
 	'->get_cache returns the same cache object' );
 
 SCOPE: {
 	# Set the tracking on the Tokenizer constructor
-	ok( Test::SubCalls::sub_track( 'PPI::Tokenizer::new' ), 'Tracking calls to PPI::Tokenizer::new' );
-	Test::SubCalls::sub_calls( 'PPI::Tokenizer::new', 0 );
-	my $doc1 = PPI::Document->new( $this_file );
-	my $doc2 = PPI::Document->new( $this_file );
-	isa_ok( $doc1, 'PPI::Document' );
-	isa_ok( $doc2, 'PPI::Document' );
+	ok( Test::SubCalls::sub_track( 'PPI::Future::Tokenizer::new' ), 'Tracking calls to PPI::Future::Tokenizer::new' );
+	Test::SubCalls::sub_calls( 'PPI::Future::Tokenizer::new', 0 );
+	my $doc1 = PPI::Future::Document->new( $this_file );
+	my $doc2 = PPI::Future::Document->new( $this_file );
+	isa_ok( $doc1, 'PPI::Future::Document' );
+	isa_ok( $doc2, 'PPI::Future::Document' );
 
 	unless ( $doc1 and $doc2 ) {
 		skip( "Skipping due to previous failures", 3 );
 	}
-	Test::SubCalls::sub_calls( 'PPI::Tokenizer::new', 1,
-		'Two calls to PPI::Document->new results in one Tokenizer object creation' );
+	Test::SubCalls::sub_calls( 'PPI::Future::Tokenizer::new', 1,
+		'Two calls to PPI::Future::Document->new results in one Tokenizer object creation' );
 	ok( refaddr($doc1) != refaddr($doc2),
-		'PPI::Document->new with cache enabled does NOT return the same object' );
+		'PPI::Future::Document->new with cache enabled does NOT return the same object' );
 	is_deeply( $doc1, $doc2,
-		'PPI::Document->new with cache enabled returns two identical objects' );
+		'PPI::Future::Document->new with cache enabled returns two identical objects' );
 }
 
 SCOPE: {
 	# Done now, can we clear the cache?
-	is( PPI::Document->set_cache(undef), 1, '->set_cache(undef) returns true' );
-	is( PPI::Document->get_cache, undef,    '->get_cache returns undef' );
+	is( PPI::Future::Document->set_cache(undef), 1, '->set_cache(undef) returns true' );
+	is( PPI::Future::Document->get_cache, undef,    '->get_cache returns undef' );
 
 	# Next, test the import mechanism
-	is( eval "use PPI::Cache path => '$cache_dir'; 1", 1, 'use PPI::Cache path => ...; succeeded' );
-	isa_ok( PPI::Document->get_cache, 'PPI::Cache' );
-	is( scalar(PPI::Document->get_cache->path), $cache_dir, '->path returns the original path'    );
-	is( scalar(PPI::Document->get_cache->readonly), '',      '->readonly returns false by default' );
+	is( eval "use PPI::Future::Cache path => '$cache_dir'; 1", 1, 'use PPI::Future::Cache path => ...; succeeded' );
+	isa_ok( PPI::Future::Document->get_cache, 'PPI::Future::Cache' );
+	is( scalar(PPI::Future::Document->get_cache->path), $cache_dir, '->path returns the original path'    );
+	is( scalar(PPI::Future::Document->get_cache->readonly), '',      '->readonly returns false by default' );
 
 	# Does it still keep the previously cached documents
-	Test::SubCalls::sub_reset( 'PPI::Tokenizer::new' );
-	my $doc3 = PPI::Document->new( $this_file );
-	isa_ok( $doc3, 'PPI::Document' );
-	Test::SubCalls::sub_calls( 'PPI::Tokenizer::new', 0,
+	Test::SubCalls::sub_reset( 'PPI::Future::Tokenizer::new' );
+	my $doc3 = PPI::Future::Document->new( $this_file );
+	isa_ok( $doc3, 'PPI::Future::Document' );
+	Test::SubCalls::sub_calls( 'PPI::Future::Tokenizer::new', 0,
 		'Tokenizer was not created. Previous cache used ok' );
 }
 

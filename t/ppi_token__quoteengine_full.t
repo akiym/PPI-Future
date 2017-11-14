@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::_QuoteEngine::Full
+# Unit testing for PPI::Future::Token::_QuoteEngine::Full
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 93 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 NEW: {
@@ -18,7 +18,7 @@ NEW: {
 		my @functions = sort
 			grep { defined &{"${name}::$_"} }
 			grep { /$RE_SYMBOL/o }
-			keys %{"PPI::${name}::"};
+			keys %{"PPI::Future::${name}::"};
 		is( scalar(grep { $_ eq 'new' } @functions), 0,
 			"$name does not have a new function" );
 	}
@@ -33,7 +33,7 @@ QW: {
 	my @braced = ( qw{ 1 1 0 0 0 } );
 	my $i      = 0;
 	for my $q ('qw()', 'qw<>', 'qw//', 'qw##', 'qw,,') {
-		my $d = PPI::Document->new(\$q);
+		my $d = PPI::Future::Document->new(\$q);
 		my $o = $d->{children}->[0]->{children}->[0];
 		my $s = $o->{sections}->[0];
 		is( $o->{operator},  'qw',      "$q correct operator"  );
@@ -58,7 +58,7 @@ QW2: {
 	while ( @stuff ) {
 		my $opener = shift @stuff;
 		my $closer = shift @stuff;
-		my $d = PPI::Document->new(\"qw${opener}a");
+		my $d = PPI::Future::Document->new(\"qw${opener}a");
 		my $o = $d->{children}->[0]->{children}->[0];
 		my $s = $o->{sections}->[0];
 		is( $o->{operator},  'qw',        "qw$opener correct operator"  );
@@ -84,7 +84,7 @@ OTHER: {
 							    [ '{}' ] ],
 	) {
 		my ( $code, $match, $subst, $mods, $delims ) = @{ $_ };
-		my $doc = PPI::Document->new( \$code );
+		my $doc = PPI::Future::Document->new( \$code );
 		$doc or warn "'$code' did not create a document";
 		my $obj = $doc->child( 0 )->child( 0 );
 		is( $obj->_section_content( 0 ), $match, "$code correct match" );

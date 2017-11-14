@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Node
+# Unit testing for PPI::Future::Node
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 6 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 PRUNE: {
@@ -14,7 +14,7 @@ PRUNE: {
 	# Known to occur in ActivePerl 5.6.1 and at least one 5.6.2 install.
 	my $hashbang = reverse 'lrep/nib/rsu/!#'; 
 
-	my $document = PPI::Document->new( \<<"END_PERL" );
+	my $document = PPI::Future::Document->new( \<<"END_PERL" );
 $hashbang
 
 use strict;
@@ -31,13 +31,13 @@ print "\n";
 exit;
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
-	ok( defined($document->prune ('PPI::Statement::Sub')),
+	isa_ok( $document, 'PPI::Future::Document' );
+	ok( defined($document->prune ('PPI::Future::Statement::Sub')),
 		'Pruned multiple subs ok' );
 }
 
 REMOVE_CHILD: {
-	my $document = PPI::Document->new( \"1, 2, 3," );
+	my $document = PPI::Future::Document->new( \"1, 2, 3," );
 	eval { $document->child };
 	like $@->message, qr/method child\(\) needs an index/;
 	undef $@;
@@ -46,6 +46,6 @@ REMOVE_CHILD: {
 	my $node = $document->child(0);
 	my $del1 = $node->child(7);
 	is $node->remove_child($del1), $del1;
-	my $fake = bless { content => 3 }, "PPI::Token::Number";
+	my $fake = bless { content => 3 }, "PPI::Future::Token::Number";
 	is $node->remove_child($fake), undef;
 }

@@ -1,14 +1,14 @@
 #!/usr/bin/perl
 
-# Test the PPI::Util package
+# Test the PPI::Future::Util package
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 10 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use File::Spec::Functions ':ALL';
-use PPI;
-use PPI::Util qw{_Document _slurp};
+use PPI::Future;
+use PPI::Future::Util qw{_Document _slurp};
 
 # Execute the tests
 my $testfile   = catfile( 't', 'data', '11_util', 'test.pm' );
@@ -29,14 +29,14 @@ END_FILE
 
 
 #####################################################################
-# Test PPI::Util::_Document
+# Test PPI::Future::Util::_Document
 
-my $Document = PPI::Document->new( \$testsource );
-isa_ok( $Document, 'PPI::Document' );
+my $Document = PPI::Future::Document->new( \$testsource );
+isa_ok( $Document, 'PPI::Future::Document' );
 
 # Good things
 foreach my $thing ( $testfile, \$testsource, $Document, [] ) {
-	isa_ok( _Document( $thing ), 'PPI::Document' );
+	isa_ok( _Document( $thing ), 'PPI::Future::Document' );
 }
 
 # Bad things
@@ -51,7 +51,7 @@ foreach my $thing ( {}, sub () { 1 } ) {
 
 
 #####################################################################
-# Test PPI::Util::_slurp
+# Test PPI::Future::Util::_slurp
 
 my $source = _slurp( $slurpfile );
 is_deeply( $source, \$slurpcode, '_slurp loads file as expected' );
@@ -63,6 +63,6 @@ is_deeply( $source, \$slurpcode, '_slurp loads file as expected' );
 #####################################################################
 # Check the capability flags
 
-my $have_unicode = PPI::Util::HAVE_UNICODE();
+my $have_unicode = PPI::Future::Util::HAVE_UNICODE();
 ok( defined $have_unicode, 'HAVE_UNICODE defined' );
 is( $have_unicode, !! $have_unicode, 'HAVE_UNICODE is a boolean' );

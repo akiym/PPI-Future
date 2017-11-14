@@ -1,50 +1,50 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Number::Exp  	'0E0'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Exp  	'1.0e-02'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Exp  	'1.0E-2'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Exp  	'1e+10'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Exp  	'1E+10'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Word  	'e'
-    PPI::Token::Number  	'-1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number  	'0'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Word  	'e0'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Exp  	'1__E+__1__0'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Float  	'1.'
-    PPI::Token::Operator  	'ne'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement
-    PPI::Token::Number::Float  	'1.'
-    PPI::Token::Word  	'whatever'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Exp  	'0E0'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Exp  	'1.0e-02'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Exp  	'1.0E-2'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Exp  	'1e+10'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Exp  	'1E+10'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'e'
+    PPI::Future::Token::Number  	'-1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number  	'0'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Word  	'e0'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Exp  	'1__E+__1__0'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Float  	'1.'
+    PPI::Future::Token::Operator  	'ne'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Float  	'1.'
+    PPI::Future::Token::Word  	'whatever'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

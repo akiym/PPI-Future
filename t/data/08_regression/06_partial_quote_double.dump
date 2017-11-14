@@ -1,5 +1,5 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Word  	'print'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Quote::Double  	'"Hello...'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'print'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Quote::Double  	'"Hello...'

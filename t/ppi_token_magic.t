@@ -1,16 +1,16 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Magic
+# Unit testing for PPI::Future::Token::Magic
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 38 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 __TOKENIZER_ON_CHAR: {
-	my $document = PPI::Document->new(\<<'END_PERL');
+	my $document = PPI::Future::Document->new(\<<'END_PERL');
 $[;                     # Magic  $[
 $$;                     # Magic  $$
 %-;                     # Magic  %-
@@ -31,19 +31,19 @@ $10;                    # Magic  $10 -- capture variable
 $1100;                  # Magic  $1100 -- capture variable
 END_PERL
 
-	isa_ok( $document, 'PPI::Document' );
+	isa_ok( $document, 'PPI::Future::Document' );
 
 	$document->index_locations();
 
-	my $symbols = $document->find( 'PPI::Token::Symbol' );
+	my $symbols = $document->find( 'PPI::Future::Token::Symbol' );
 
 	is( scalar(@$symbols), 18, 'Found the correct number of symbols' );
-	my $comments = $document->find( 'PPI::Token::Comment' );
+	my $comments = $document->find( 'PPI::Future::Token::Comment' );
 
 	foreach my $token ( @$symbols ) {
 		my ($hash, $class, $name, $remk) =
 			split /\s+/, $comments->[$token->line_number - 1], 4;
-		isa_ok( $token, "PPI::Token::$class" );
+		isa_ok( $token, "PPI::Future::Token::$class" );
 		is( $token->symbol, $name, $remk || "The symbol is $name" );
 	}
 }

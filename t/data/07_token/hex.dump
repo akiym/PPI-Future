@@ -1,4 +1,4 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Number::Hex  	'0x'
-    PPI::Token::Word  	'g'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Number::Hex  	'0x'
+    PPI::Future::Token::Word  	'g'

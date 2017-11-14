@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::DashedWord
+# Unit testing for PPI::Future::Token::DashedWord
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 9 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 LITERAL: {
@@ -18,12 +18,12 @@ LITERAL: {
 	while ( @pairs ) {
 		my $from  = shift @pairs;
 		my $to    = shift @pairs;
-		my $doc   = PPI::Document->new( \"( $from => 1 );" );
-		isa_ok( $doc, 'PPI::Document' );
+		my $doc   = PPI::Future::Document->new( \"( $from => 1 );" );
+		isa_ok( $doc, 'PPI::Future::Document' );
 		my $word = $doc->find_first('Token::DashedWord');
 		SKIP: {
-			skip( "PPI::Token::DashedWord is deactivated", 2 );
-			isa_ok( $word, 'PPI::Token::DashedWord' );
+			skip( "PPI::Future::Token::DashedWord is deactivated", 2 );
+			isa_ok( $word, 'PPI::Future::Token::DashedWord' );
 			is( $word && $word->literal, $to, "The source $from becomes $to ok" );
 		}
 	}

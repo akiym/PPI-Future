@@ -1,35 +1,35 @@
-PPI::Document
-  PPI::Statement::Include
-    PPI::Token::Word  	'use'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Word  	'constant'
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::Constructor  	{ ... }
-      PPI::Token::Whitespace  	' '
-      PPI::Statement::Expression
-        PPI::Token::Word  	'foo'
-        PPI::Token::Whitespace  	' '
-        PPI::Token::Operator  	'=>'
-        PPI::Token::Whitespace  	' '
-        PPI::Token::Quote::Single  	''bar''
-      PPI::Token::Whitespace  	' '
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
-  PPI::Statement::Variable
-    PPI::Token::Word  	'my'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$code'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'='
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::Constructor  	{ ... }
-      PPI::Token::Whitespace  	' '
-      PPI::Statement::Expression
-        PPI::Token::Word  	'foo'
-        PPI::Token::Whitespace  	' '
-        PPI::Token::Operator  	'=>'
-        PPI::Token::Whitespace  	' '
-        PPI::Token::Quote::Single  	''bar''
-      PPI::Token::Whitespace  	' '
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement::Include
+    PPI::Future::Token::Word  	'use'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Word  	'constant'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::Constructor  	{ ... }
+      PPI::Future::Token::Whitespace  	' '
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'foo'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Token::Operator  	'=>'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Token::Quote::Single  	''bar''
+      PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'
+  PPI::Future::Statement::Variable
+    PPI::Future::Token::Word  	'my'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$code'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::Constructor  	{ ... }
+      PPI::Future::Token::Whitespace  	' '
+      PPI::Future::Statement::Expression
+        PPI::Future::Token::Word  	'foo'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Token::Operator  	'=>'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Token::Quote::Single  	''bar''
+      PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

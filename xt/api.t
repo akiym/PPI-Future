@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 
-# Basic first pass API testing for PPI
+# Basic first pass API testing for PPI::Future
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More;
 BEGIN {
         my $tests = 2931 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
@@ -15,10 +15,10 @@ BEGIN {
 }
 
 use Test::ClassAPI;
-use PPI;
-use PPI::Dumper;
-use PPI::Find;
-use PPI::Transform;
+use PPI::Future;
+use PPI::Future::Dumper;
+use PPI::Future::Find;
+use PPI::Future::Transform;
 
 # Ignore various imported or special functions
 $Test::ClassAPI::IGNORE{'DESTROY'}++;
@@ -34,26 +34,26 @@ exit(0);
 __DATA__
 
 # Explicitly list the core classes
-PPI=class
-PPI::Tokenizer=class
-PPI::Lexer=class
-PPI::Dumper=class
-PPI::Find=class
-PPI::Transform=abstract
-PPI::Normal=class
+PPI::Future=class
+PPI::Future::Tokenizer=class
+PPI::Future::Lexer=class
+PPI::Future::Dumper=class
+PPI::Future::Find=class
+PPI::Future::Transform=abstract
+PPI::Future::Normal=class
 
 # The abstract PDOM classes
-PPI::Element=abstract
-PPI::Node=abstract
-PPI::Token=abstract
-PPI::Token::_QuoteEngine=abstract
-PPI::Token::_QuoteEngine::Simple=abstract
-PPI::Token::_QuoteEngine::Full=abstract
-PPI::Token::Quote=abstract
-PPI::Token::QuoteLike=abstract
-PPI::Token::Regexp=abstract
-PPI::Structure=abstract
-PPI::Statement=abstract
+PPI::Future::Element=abstract
+PPI::Future::Node=abstract
+PPI::Future::Token=abstract
+PPI::Future::Token::_QuoteEngine=abstract
+PPI::Future::Token::_QuoteEngine::Simple=abstract
+PPI::Future::Token::_QuoteEngine::Full=abstract
+PPI::Future::Token::Quote=abstract
+PPI::Future::Token::QuoteLike=abstract
+PPI::Future::Token::Regexp=abstract
+PPI::Future::Structure=abstract
+PPI::Future::Statement=abstract
 
 
 
@@ -66,7 +66,7 @@ PPI::Statement=abstract
 #####################################################################
 # PDOM Classes
 
-[PPI::Element]
+[PPI::Future::Element]
 new=method
 clone=method
 parent=method
@@ -99,8 +99,8 @@ logical_line_number=method
 logical_filename=method
 class=method
 
-[PPI::Node]
-PPI::Element=isa
+[PPI::Future::Node]
+PPI::Future::Element=isa
 scope=method
 add_element=method
 elements=method
@@ -117,184 +117,184 @@ find_first=method
 remove_child=method
 prune=method
 
-[PPI::Token]
-PPI::Element=isa
+[PPI::Future::Token]
+PPI::Future::Element=isa
 new=method
 add_content=method
 set_class=method
 set_content=method
 length=method
 
-[PPI::Token::Whitespace]
-PPI::Token=isa
+[PPI::Future::Token::Whitespace]
+PPI::Future::Token=isa
 null=method
 tidy=method
 
-[PPI::Token::Pod]
-PPI::Token=isa
+[PPI::Future::Token::Pod]
+PPI::Future::Token=isa
 lines=method
 merge=method
 
-[PPI::Token::Data]
-PPI::Token=isa
+[PPI::Future::Token::Data]
+PPI::Future::Token=isa
 handle=method
 
-[PPI::Token::End]
-PPI::Token=isa
+[PPI::Future::Token::End]
+PPI::Future::Token=isa
 
-[PPI::Token::Comment]
-PPI::Token=isa
+[PPI::Future::Token::Comment]
+PPI::Future::Token=isa
 line=method
 
-[PPI::Token::Word]
-PPI::Token=isa
+[PPI::Future::Token::Word]
+PPI::Future::Token=isa
 literal=method
 method_call=method
 
-[PPI::Token::Separator]
-PPI::Token::Word=isa
+[PPI::Future::Token::Separator]
+PPI::Future::Token::Word=isa
 
-[PPI::Token::Label]
-PPI::Token=isa
+[PPI::Future::Token::Label]
+PPI::Future::Token=isa
 
-[PPI::Token::Structure]
-PPI::Token=isa
+[PPI::Future::Token::Structure]
+PPI::Future::Token=isa
 
-[PPI::Token::Number]
-PPI::Token=isa
+[PPI::Future::Token::Number]
+PPI::Future::Token=isa
 base=method
 literal=method
 
-[PPI::Token::Symbol]
-PPI::Token=isa
+[PPI::Future::Token::Symbol]
+PPI::Future::Token=isa
 canonical=method
 symbol=method
 raw_type=method
 symbol_type=method
 
-[PPI::Token::ArrayIndex]
-PPI::Token=isa
+[PPI::Future::Token::ArrayIndex]
+PPI::Future::Token=isa
 
-[PPI::Token::Operator]
-PPI::Token=isa
+[PPI::Future::Token::Operator]
+PPI::Future::Token=isa
 
-[PPI::Token::Magic]
-PPI::Token=isa
-PPI::Token::Symbol=isa
+[PPI::Future::Token::Magic]
+PPI::Future::Token=isa
+PPI::Future::Token::Symbol=isa
 
-[PPI::Token::Cast]
-PPI::Token=isa
+[PPI::Future::Token::Cast]
+PPI::Future::Token=isa
 
-[PPI::Token::Prototype]
-PPI::Token=isa
+[PPI::Future::Token::Prototype]
+PPI::Future::Token=isa
 prototype=method
 
-[PPI::Token::Attribute]
-PPI::Token=isa
+[PPI::Future::Token::Attribute]
+PPI::Future::Token=isa
 identifier=method
 parameters=method
 
-[PPI::Token::DashedWord]
-PPI::Token=isa
+[PPI::Future::Token::DashedWord]
+PPI::Future::Token=isa
 literal=method
 
-[PPI::Token::HereDoc]
-PPI::Token=isa
+[PPI::Future::Token::HereDoc]
+PPI::Future::Token=isa
 heredoc=method
 terminator=method
 
-[PPI::Token::_QuoteEngine]
+[PPI::Future::Token::_QuoteEngine]
 
-[PPI::Token::_QuoteEngine::Simple]
-PPI::Token::_QuoteEngine=isa
+[PPI::Future::Token::_QuoteEngine::Simple]
+PPI::Future::Token::_QuoteEngine=isa
 
-[PPI::Token::_QuoteEngine::Full]
-PPI::Token::_QuoteEngine=isa
+[PPI::Future::Token::_QuoteEngine::Full]
+PPI::Future::Token::_QuoteEngine=isa
 
-[PPI::Token::Quote]
-PPI::Token=isa
+[PPI::Future::Token::Quote]
+PPI::Future::Token=isa
 string=method
 
-[PPI::Token::Quote::Single]
-PPI::Token=isa
-PPI::Token::Quote=isa
+[PPI::Future::Token::Quote::Single]
+PPI::Future::Token=isa
+PPI::Future::Token::Quote=isa
 literal=method
 
-[PPI::Token::Quote::Double]
-PPI::Token=isa
-PPI::Token::Quote=isa
+[PPI::Future::Token::Quote::Double]
+PPI::Future::Token=isa
+PPI::Future::Token::Quote=isa
 interpolations=method
 simplify=method
 
-[PPI::Token::Quote::Literal]
-PPI::Token=isa
+[PPI::Future::Token::Quote::Literal]
+PPI::Future::Token=isa
 literal=method
 
-[PPI::Token::Quote::Interpolate]
-PPI::Token=isa
+[PPI::Future::Token::Quote::Interpolate]
+PPI::Future::Token=isa
 
-[PPI::Token::QuoteLike]
-PPI::Token=isa
+[PPI::Future::Token::QuoteLike]
+PPI::Future::Token=isa
 
-[PPI::Token::QuoteLike::Backtick]
-PPI::Token=isa
-PPI::Token::_QuoteEngine::Simple=isa
+[PPI::Future::Token::QuoteLike::Backtick]
+PPI::Future::Token=isa
+PPI::Future::Token::_QuoteEngine::Simple=isa
 
-[PPI::Token::QuoteLike::Command]
-PPI::Token=isa
-PPI::Token::_QuoteEngine::Full=isa
+[PPI::Future::Token::QuoteLike::Command]
+PPI::Future::Token=isa
+PPI::Future::Token::_QuoteEngine::Full=isa
 
-[PPI::Token::QuoteLike::Words]
-PPI::Token=isa
-PPI::Token::_QuoteEngine::Full=isa
+[PPI::Future::Token::QuoteLike::Words]
+PPI::Future::Token=isa
+PPI::Future::Token::_QuoteEngine::Full=isa
 literal=method
 
-[PPI::Token::QuoteLike::Regexp]
-PPI::Token=isa
-PPI::Token::_QuoteEngine::Full=isa
+[PPI::Future::Token::QuoteLike::Regexp]
+PPI::Future::Token=isa
+PPI::Future::Token::_QuoteEngine::Full=isa
 get_match_string=method
 get_substitute_string=method
 get_modifiers=method
 get_delimiters=method
 
-[PPI::Token::QuoteLike::Readline]
-PPI::Token=isa
-PPI::Token::_QuoteEngine::Full=isa
+[PPI::Future::Token::QuoteLike::Readline]
+PPI::Future::Token=isa
+PPI::Future::Token::_QuoteEngine::Full=isa
 
-[PPI::Token::Regexp]
-PPI::Token=isa
-PPI::Token::_QuoteEngine::Full=isa
+[PPI::Future::Token::Regexp]
+PPI::Future::Token=isa
+PPI::Future::Token::_QuoteEngine::Full=isa
 get_match_string=method
 get_substitute_string=method
 get_modifiers=method
 get_delimiters=method
 
-[PPI::Token::Regexp::Match]
-PPI::Token=isa
+[PPI::Future::Token::Regexp::Match]
+PPI::Future::Token=isa
 
-[PPI::Token::Regexp::Substitute]
-PPI::Token=isa
+[PPI::Future::Token::Regexp::Substitute]
+PPI::Future::Token=isa
 
-[PPI::Token::Regexp::Transliterate]
-PPI::Token=isa
+[PPI::Future::Token::Regexp::Transliterate]
+PPI::Future::Token=isa
 
-[PPI::Statement]
-PPI::Node=isa
+[PPI::Future::Statement]
+PPI::Future::Node=isa
 label=method
 specialized=method
 stable=method
 
-[PPI::Statement::Expression]
-PPI::Statement=isa
+[PPI::Future::Statement::Expression]
+PPI::Future::Statement=isa
 
-[PPI::Statement::Package]
-PPI::Statement=isa
+[PPI::Future::Statement::Package]
+PPI::Future::Statement=isa
 namespace=method
 version=method
 file_scoped=method
 
-[PPI::Statement::Include]
-PPI::Statement=isa
+[PPI::Future::Statement::Include]
+PPI::Future::Statement=isa
 type=method
 arguments=method
 module=method
@@ -303,92 +303,92 @@ pragma=method
 version=method
 version_literal=method
 
-[PPI::Statement::Include::Perl6]
-PPI::Statement::Include=isa
+[PPI::Future::Statement::Include::Perl6]
+PPI::Future::Statement::Include=isa
 perl6=method
 
-[PPI::Statement::Sub]
-PPI::Statement=isa
+[PPI::Future::Statement::Sub]
+PPI::Future::Statement=isa
 name=method
 prototype=method
 block=method
 forward=method
 reserved=method
 
-[PPI::Statement::Scheduled]
-PPI::Statement::Sub=isa
-PPI::Statement=isa
+[PPI::Future::Statement::Scheduled]
+PPI::Future::Statement::Sub=isa
+PPI::Future::Statement=isa
 type=method
 block=method
 
-[PPI::Statement::Variable]
-PPI::Statement=isa
-PPI::Statement::Expression=isa
+[PPI::Future::Statement::Variable]
+PPI::Future::Statement=isa
+PPI::Future::Statement::Expression=isa
 type=method
 variables=method
 symbols=method
 
-[PPI::Statement::Compound]
-PPI::Statement=isa
+[PPI::Future::Statement::Compound]
+PPI::Future::Statement=isa
 type=method
 
-[PPI::Statement::Given]
-PPI::Statement=isa
+[PPI::Future::Statement::Given]
+PPI::Future::Statement=isa
 
-[PPI::Statement::When]
-PPI::Statement=isa
+[PPI::Future::Statement::When]
+PPI::Future::Statement=isa
 
-[PPI::Statement::Break]
-PPI::Statement=isa
+[PPI::Future::Statement::Break]
+PPI::Future::Statement=isa
 
-[PPI::Statement::Null]
-PPI::Statement=isa
+[PPI::Future::Statement::Null]
+PPI::Future::Statement=isa
 
-[PPI::Statement::Data]
-PPI::Statement=isa
+[PPI::Future::Statement::Data]
+PPI::Future::Statement=isa
 
-[PPI::Statement::End]
-PPI::Statement=isa
+[PPI::Future::Statement::End]
+PPI::Future::Statement=isa
 
-[PPI::Statement::Unknown]
-PPI::Statement=isa
+[PPI::Future::Statement::Unknown]
+PPI::Future::Statement=isa
 
-[PPI::Structure]
-PPI::Node=isa
+[PPI::Future::Structure]
+PPI::Future::Node=isa
 braces=method
 complete=method
 start=method
 finish=method
 
-[PPI::Structure::Block]
-PPI::Structure=isa
+[PPI::Future::Structure::Block]
+PPI::Future::Structure=isa
 
-[PPI::Structure::Subscript]
-PPI::Structure=isa
+[PPI::Future::Structure::Subscript]
+PPI::Future::Structure=isa
 
-[PPI::Structure::Constructor]
-PPI::Structure=isa
+[PPI::Future::Structure::Constructor]
+PPI::Future::Structure=isa
 
-[PPI::Structure::Condition]
-PPI::Structure=isa
+[PPI::Future::Structure::Condition]
+PPI::Future::Structure=isa
 
-[PPI::Structure::List]
-PPI::Structure=isa
+[PPI::Future::Structure::List]
+PPI::Future::Structure=isa
 
-[PPI::Structure::For]
-PPI::Structure=isa
+[PPI::Future::Structure::For]
+PPI::Future::Structure=isa
 
-[PPI::Structure::Given]
-PPI::Structure=isa
+[PPI::Future::Structure::Given]
+PPI::Future::Structure=isa
 
-[PPI::Structure::When]
-PPI::Structure=isa
+[PPI::Future::Structure::When]
+PPI::Future::Structure=isa
 
-[PPI::Structure::Unknown]
-PPI::Structure=isa
+[PPI::Future::Structure::Unknown]
+PPI::Future::Structure=isa
 
-[PPI::Document]
-PPI::Node=isa
+[PPI::Future::Document]
+PPI::Future::Node=isa
 get_cache=method
 set_cache=method
 load=method
@@ -405,8 +405,8 @@ errstr=method
 STORABLE_freeze=method
 STORABLE_thaw=method
 
-[PPI::Document::Fragment]
-PPI::Document=isa
+[PPI::Future::Document::Fragment]
+PPI::Future::Document=isa
 
 
 
@@ -415,29 +415,29 @@ PPI::Document=isa
 #####################################################################
 # Non-PDOM Classes
 
-[PPI]
+[PPI::Future]
 
-[PPI::Tokenizer]
+[PPI::Future::Tokenizer]
 new=method
 get_token=method
 all_tokens=method
 increment_cursor=method
 decrement_cursor=method
 
-[PPI::Lexer]
+[PPI::Future::Lexer]
 new=method
 lex_file=method
 lex_source=method
 lex_tokenizer=method
 errstr=method
 
-[PPI::Dumper]
+[PPI::Future::Dumper]
 new=method
 print=method
 string=method
 list=method
 
-[PPI::Find]
+[PPI::Future::Find]
 new=method
 clone=method
 in=method
@@ -446,19 +446,19 @@ match=method
 finish=method
 errstr=method
 
-[PPI::Transform]
+[PPI::Future::Transform]
 new=method
 document=method
 apply=method
 file=method
 
-[PPI::Normal]
+[PPI::Future::Normal]
 register=method
 new=method
 layer=method
 process=method
 
-[PPI::Normal::Standard]
+[PPI::Future::Normal::Standard]
 import=method
 remove_insignificant_elements=method
 remove_useless_attributes=method
@@ -466,7 +466,7 @@ remove_useless_pragma=method
 remove_statement_separator=method
 remove_useless_return=method
 
-[PPI::Document::Normalized]
+[PPI::Future::Document::Normalized]
 new=method
 version=method
 functions=method

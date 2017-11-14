@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Attribute
+# Unit testing for PPI::Future::Token::Attribute
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 1788 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 use Test::Deep;
 
 sub execute_test;
@@ -60,7 +60,7 @@ PARSING_AND_METHODS: {
 	# Mixed separators
 	execute_test 'sub foo : Attr1(a) Attr2(b) : Attr3(c) Attr4(d) {}', [ [ 'Attr1', 'a' ], [ 'Attr2', 'b' ], [ 'Attr3', 'c' ], [ 'Attr4', 'd' ] ];
 
-	# When PPI supports anonymous subs, we'll need tests for
+	# When PPI::Future supports anonymous subs, we'll need tests for
 	# attributes on them, too.
 }
 
@@ -68,10 +68,10 @@ sub execute_test {
 	my ( $code, $expected, $msg ) = @_;
 	$msg = $code if !defined $msg;
 
-	my $Document = PPI::Document->new( \$code );
-	isa_ok( $Document, 'PPI::Document', "$msg got document" );
+	my $Document = PPI::Future::Document->new( \$code );
+	isa_ok( $Document, 'PPI::Future::Document', "$msg got document" );
 
-	my $attributes = $Document->find( 'PPI::Token::Attribute') || [];
+	my $attributes = $Document->find( 'PPI::Future::Token::Attribute') || [];
 	is( scalar(@$attributes), scalar(@$expected), "'$msg' got expected number of attributes" );
 	is_deeply(
 		[ map { [ $_->identifier, $_->parameters ] } @$attributes ],
@@ -79,7 +79,7 @@ sub execute_test {
 		"'$msg' attribute properties as expected"
 	);
 
-	my $blocks = $Document->find( 'PPI::Structure::Block') || [];
+	my $blocks = $Document->find( 'PPI::Future::Structure::Block') || [];
 	my $blocks_expected = $code =~ m/{}$/ ? [ '{}' ] : [];
 	is_deeply(
 		[ map { $_->content } @$blocks ],
@@ -112,7 +112,7 @@ sub assemble_and_run {
 sub permute_test {
 	my ( $name, $attributes ) = @_;
 
-	# Vertical tab \x{b} is whitespace since perl 5.20, but PPI currently
+	# Vertical tab \x{b} is whitespace since perl 5.20, but PPI::Future currently
 	# (1.220) only supports it as whitespace when running on 5.20
 	# or greater.
 

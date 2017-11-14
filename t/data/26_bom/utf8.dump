@@ -1,8 +1,8 @@
-PPI::Document
-  PPI::Token::BOM  	'﻿'
-  PPI::Statement
-    PPI::Token::Word  	'print'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Token::BOM  	'﻿'
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'print'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

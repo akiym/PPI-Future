@@ -6,11 +6,11 @@
 # all of them parse as legal documents and don't crash the parser.
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 3875 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
-use PPI::Test::Run;
+use PPI::Future;
+use PPI::Future::Test::Run;
 
 
 
@@ -19,4 +19,4 @@ use PPI::Test::Run;
 #####################################################################
 # Code/Dump Testing
 
-PPI::Test::Run->increment_testdir(qw{ t data 08_regression });
+PPI::Future::Test::Run->increment_testdir(qw{ t data 08_regression });

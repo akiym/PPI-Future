@@ -1,17 +1,17 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Statement::Variable
+# Unit testing for PPI::Future::Statement::Variable
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 17 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 VARIABLES: {
 	# Test the things we assert to work in the synopsis
-	my $Document = PPI::Document->new(\<<'END_PERL');
+	my $Document = PPI::Future::Document->new(\<<'END_PERL');
 package Bar;
 my $foo = 1;
 my ( $foo, $bar) = (1, 2);
@@ -23,14 +23,14 @@ LABEL: my $foo = 1;
 # As well as those basics, lets also try some harder ones
 local($foo = $bar->$bar(), $bar);
 END_PERL
-	isa_ok( $Document, 'PPI::Document' );
+	isa_ok( $Document, 'PPI::Future::Document' );
 
 	# There should be 6 statement objects
 	my $ST = $Document->find('Statement::Variable');
 	is( ref($ST), 'ARRAY', 'Found statements' );
 	is( scalar(@$ST), 7, 'Found 7 ::Variable objects' );
 	foreach my $Var ( @$ST ) {
-		isa_ok( $Var, 'PPI::Statement::Variable' );
+		isa_ok( $Var, 'PPI::Future::Statement::Variable' );
 	}
 	is_deeply( [ $ST->[0]->variables ], [ '$foo' ],         '1: Found $foo' );
 	is_deeply( [ $ST->[1]->variables ], [ '$foo', '$bar' ], '2: Found $foo and $bar' );

@@ -1,9 +1,9 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Magic  	'$^WIDE_SYSTEM_CALLS'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Operator  	'='
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Number  	'1'
-    PPI::Token::Structure  	';'
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Magic  	'$^WIDE_SYSTEM_CALLS'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Operator  	'='
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Number  	'1'
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Token::Whitespace  	'\n'

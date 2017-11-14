@@ -1,15 +1,15 @@
-PPI::Document
-  PPI::Statement
-    PPI::Structure::List  	( ... )
-      PPI::Statement
-        PPI::Structure::Constructor  	[ ... ]
-        PPI::Token::Operator  	','
-        PPI::Structure::Constructor  	[ ... ]
-    PPI::Token::Structure  	';'
-  PPI::Statement
-    PPI::Structure::List  	( ... )
-      PPI::Statement
-        PPI::Structure::Constructor  	{ ... }
-        PPI::Token::Operator  	','
-        PPI::Structure::Constructor  	{ ... }
-    PPI::Token::Structure  	';'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Statement
+        PPI::Future::Structure::Constructor  	[ ... ]
+        PPI::Future::Token::Operator  	','
+        PPI::Future::Structure::Constructor  	[ ... ]
+    PPI::Future::Token::Structure  	';'
+  PPI::Future::Statement
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Statement
+        PPI::Future::Structure::Constructor  	{ ... }
+        PPI::Future::Token::Operator  	','
+        PPI::Future::Structure::Constructor  	{ ... }
+    PPI::Future::Token::Structure  	';'

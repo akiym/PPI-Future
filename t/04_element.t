@@ -1,19 +1,19 @@
 #!/usr/bin/perl
 
-# Formal testing for PPI
+# Formal testing for PPI::Future
 
 # This does an empiric test that when we try to parse something,
 # something ( anything ) comes out the other side.
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 220 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use File::Spec::Functions ':ALL';
-use PPI;
+use PPI::Future;
 use Scalar::Util 'refaddr';
-use PPI::Test 'pause';
-use PPI::Singletons '%_PARENT';
+use PPI::Future::Test 'pause';
+use PPI::Future::Singletons '%_PARENT';
 
 my $RE_IDENTIFIER = qr/[^\W\d]\w*/;
 
@@ -119,35 +119,35 @@ SCOPE: {
 
 # Build a basic source tree to test with
 my $source   = 'my@foo =  (1,   2);';
-my $Document = PPI::Lexer->lex_source( $source );
-isa_ok( $Document, 'PPI::Document' );
+my $Document = PPI::Future::Lexer->lex_source( $source );
+isa_ok( $Document, 'PPI::Future::Document' );
 is( $Document->content, $source, "Document round-trips ok" );
 is( scalar($Document->tokens), 12, "Basic source contains the correct number of tokens" );
 is( scalar(@{$Document->{children}}), 1, "Document contains one element" );
 my $Statement = $Document->{children}->[0];
-isa_ok( $Statement, 'PPI::Statement' );
-isa_ok( $Statement, 'PPI::Statement::Variable' );
+isa_ok( $Statement, 'PPI::Future::Statement' );
+isa_ok( $Statement, 'PPI::Future::Statement::Variable' );
 is( scalar(@{$Statement->{children}}), 7, "Statement contains the correct number of elements" );
 my $Token1 = $Statement->{children}->[0];
 my $Token2 = $Statement->{children}->[1];
 my $Token3 = $Statement->{children}->[2];
 my $Braces = $Statement->{children}->[5];
 my $Token7 = $Statement->{children}->[6];
-isa_ok( $Token1, 'PPI::Token::Word'   );
-isa_ok( $Token2, 'PPI::Token::Symbol'     );
-isa_ok( $Token3, 'PPI::Token::Whitespace' );
-isa_ok( $Braces, 'PPI::Structure::List'   );
-isa_ok( $Token7, 'PPI::Token::Structure'  );
-ok( ($Token1->isa('PPI::Token::Word') and $Token1->content eq 'my'), 'First token is correct'   );
-ok( ($Token2->isa('PPI::Token::Symbol') and $Token2->content eq '@foo'), 'Second token is correct'  );
-ok( ($Token3->isa('PPI::Token::Whitespace') and $Token3->content eq ' '), 'Third token is correct'  );
+isa_ok( $Token1, 'PPI::Future::Token::Word'   );
+isa_ok( $Token2, 'PPI::Future::Token::Symbol'     );
+isa_ok( $Token3, 'PPI::Future::Token::Whitespace' );
+isa_ok( $Braces, 'PPI::Future::Structure::List'   );
+isa_ok( $Token7, 'PPI::Future::Token::Structure'  );
+ok( ($Token1->isa('PPI::Future::Token::Word') and $Token1->content eq 'my'), 'First token is correct'   );
+ok( ($Token2->isa('PPI::Future::Token::Symbol') and $Token2->content eq '@foo'), 'Second token is correct'  );
+ok( ($Token3->isa('PPI::Future::Token::Whitespace') and $Token3->content eq ' '), 'Third token is correct'  );
 is( $Braces->braces, '()', 'Braces seem correct' );
-ok( ($Token7->isa('PPI::Token::Structure') and $Token7->content eq ';'), 'Seventh token is correct' );
-isa_ok( $Braces->start, 'PPI::Token::Structure' );
-ok( ($Braces->start->isa('PPI::Token::Structure') and $Braces->start->content eq '('),
+ok( ($Token7->isa('PPI::Future::Token::Structure') and $Token7->content eq ';'), 'Seventh token is correct' );
+isa_ok( $Braces->start, 'PPI::Future::Token::Structure' );
+ok( ($Braces->start->isa('PPI::Future::Token::Structure') and $Braces->start->content eq '('),
 	'Start brace token matches expected' );
-isa_ok( $Braces->finish, 'PPI::Token::Structure' );
-ok( ($Braces->finish->isa('PPI::Token::Structure') and $Braces->finish->content eq ')'),
+isa_ok( $Braces->finish, 'PPI::Future::Token::Structure' );
+ok( ($Braces->finish->isa('PPI::Future::Token::Structure') and $Braces->finish->content eq ')'),
 	'Finish brace token matches expected' );
 
 
@@ -155,7 +155,7 @@ ok( ($Braces->finish->isa('PPI::Token::Structure') and $Braces->finish->content 
 
 
 #####################################################################
-# Testing of PPI::Element basic information methods
+# Testing of PPI::Future::Element basic information methods
 
 # Testing the ->content method
 is( $Document->content,  $source,    "Document content is correct" );
@@ -169,11 +169,11 @@ is( $Token7->content,    ';',        "Token content is correct" );
 # Testing the ->tokens method
 is( scalar($Document->tokens),  12, "Document token count is correct" );
 is( scalar($Statement->tokens), 12, "Statement token count is correct" );
-isa_ok( $Token1->tokens, 'PPI::Token',  "Token token count is correct" );
-isa_ok( $Token2->tokens, 'PPI::Token',  "Token token count is correct" );
-isa_ok( $Token3->tokens, 'PPI::Token',  "Token token count is correct" );
+isa_ok( $Token1->tokens, 'PPI::Future::Token',  "Token token count is correct" );
+isa_ok( $Token2->tokens, 'PPI::Future::Token',  "Token token count is correct" );
+isa_ok( $Token3->tokens, 'PPI::Future::Token',  "Token token count is correct" );
 is( scalar($Braces->tokens),    6,  "Token token count is correct" );
-isa_ok( $Token7->tokens, 'PPI::Token',  "Token token count is correct" );
+isa_ok( $Token7->tokens, 'PPI::Future::Token',  "Token token count is correct" );
 
 # Testing the ->significant method
 is( $Document->significant,  1,  'Document is significant' );
@@ -189,7 +189,7 @@ is( $Token7->significant,    1,  'Token is significant' );
 
 
 #####################################################################
-# Testing of PPI::Element navigation
+# Testing of PPI::Future::Element navigation
 
 # Test the ->parent method
 is( $Document->parent, undef, "Document does not have a parent" );
@@ -201,8 +201,8 @@ is_object( $Braces->parent,     $Statement, "Braces sees statement as parent" );
 is_object( $Token7->parent,     $Statement, "Token sees statement as parent" );
 
 # Test the special case of parents for the Braces opening and closing braces
-is_object( $Braces->start->parent, $Braces, "Start brace sees the PPI::Structure as it's parent" );
-is_object( $Braces->finish->parent, $Braces, "Finish brace sees the PPI::Structure as it's parent" );
+is_object( $Braces->start->parent, $Braces, "Start brace sees the PPI::Future::Structure as it's parent" );
+is_object( $Braces->finish->parent, $Braces, "Finish brace sees the PPI::Future::Structure as it's parent" );
 
 # Test the ->top method
 is_object( $Document->top,  $Document, "Document sees itself as top" );
@@ -232,16 +232,16 @@ is( $Token7->next_sibling, '', 'Last token returns false for next_sibling' );
 
 # More extensive test for next_sibling
 SCOPE: {
-	my $doc = PPI::Document->new( \"sub foo { bar(); }" );
+	my $doc = PPI::Future::Document->new( \"sub foo { bar(); }" );
 	my $end = $doc->last_token;
-	isa_ok( $end, 'PPI::Token::Structure' );
+	isa_ok( $end, 'PPI::Future::Token::Structure' );
 	is( $end->content, '}', 'Got end token' );
 	is( $end->next_sibling, '', '->next_sibling for an end closing brace returns false' );
 	my $braces = $doc->find_first( sub {
-		$_[1]->isa('PPI::Structure') and $_[1]->braces eq '()'
+		$_[1]->isa('PPI::Future::Structure') and $_[1]->braces eq '()'
 		} );
-	isa_ok( $braces, 'PPI::Structure' );
-	isa_ok( $braces->next_token, 'PPI::Token::Structure' );
+	isa_ok( $braces, 'PPI::Future::Structure' );
+	isa_ok( $braces->next_token, 'PPI::Future::Token::Structure' );
 	is( $braces->next_token->content, ';', 'Got the correct next_token for structure' );
 }
 
@@ -255,16 +255,16 @@ is_object( $Token7->previous_sibling, $Braces, "Last token sees braces as previo
 
 # More extensive test for next_sibling
 SCOPE: {
-	my $doc = PPI::Document->new( \"{ no strict; bar(); }" );
+	my $doc = PPI::Future::Document->new( \"{ no strict; bar(); }" );
 	my $start = $doc->first_token;
-	isa_ok( $start, 'PPI::Token::Structure' );
+	isa_ok( $start, 'PPI::Future::Token::Structure' );
 	is( $start->content, '{', 'Got start token' );
 	is( $start->previous_sibling, '', '->previous_sibling for a start opening brace returns false' );
 	my $braces = $doc->find_first( sub {
-		$_[1]->isa('PPI::Structure') and $_[1]->braces eq '()'
+		$_[1]->isa('PPI::Future::Structure') and $_[1]->braces eq '()'
 		} );
-	isa_ok( $braces, 'PPI::Structure' );
-	isa_ok( $braces->previous_token, 'PPI::Token::Word' );
+	isa_ok( $braces, 'PPI::Future::Structure' );
+	isa_ok( $braces->previous_token, 'PPI::Future::Token::Word' );
 	is( $braces->previous_token->content, 'bar', 'Got the correct previous_token for structure' );
 }
 
@@ -287,10 +287,10 @@ is_object( $Token7->sprevious_sibling, $Braces, "Last token sees braces as sprev
 
 # Test snext_sibling and sprevious_sibling cases when inside a parent block
 SCOPE: {
-	my $cpan13454 = PPI::Document->new( \'{ 1 }' );
-	isa_ok( $cpan13454, 'PPI::Document' );
+	my $cpan13454 = PPI::Future::Document->new( \'{ 1 }' );
+	isa_ok( $cpan13454, 'PPI::Future::Document' );
 	my $num = $cpan13454->find_first('Token::Number');
-	isa_ok( $num, 'PPI::Token::Number' );
+	isa_ok( $num, 'PPI::Future::Token::Number' );
 	my $prev = $num->sprevious_sibling;
 	is( $prev, '', '->sprevious_sibling returns false' );
 	my $next = $num->snext_sibling;
@@ -302,13 +302,13 @@ SCOPE: {
 
 
 #####################################################################
-# Test the PPI::Element and PPI::Node analysis methods
+# Test the PPI::Future::Element and PPI::Future::Node analysis methods
 
 # Test the find method
 SCOPE: {
-	is( $Document->find('PPI::Token::End'), '', '->find returns false if nothing found' );
-	isa_ok( $Document->find('PPI::Structure')->[0], 'PPI::Structure' );
-	my $found = $Document->find('PPI::Token::Number');
+	is( $Document->find('PPI::Future::Token::End'), '', '->find returns false if nothing found' );
+	isa_ok( $Document->find('PPI::Future::Structure')->[0], 'PPI::Future::Structure' );
+	my $found = $Document->find('PPI::Future::Token::Number');
 	ok( $found, 'Multiple find succeeded' );
 	is( ref $found, 'ARRAY', '->find returned an array' );
 	is( scalar(@$found), 2, 'Multiple find returned expected number of items' );
@@ -332,30 +332,30 @@ SCOPE: {
 
 # Test the find_first method
 SCOPE: {
-	is( $Document->find_first('PPI::Token::End'), '', '->find_first returns false if nothing found' );
-	isa_ok( $Document->find_first('PPI::Structure'), 'PPI::Structure' );
-	my $found = $Document->find_first('PPI::Token::Number');
+	is( $Document->find_first('PPI::Future::Token::End'), '', '->find_first returns false if nothing found' );
+	isa_ok( $Document->find_first('PPI::Future::Structure'), 'PPI::Future::Structure' );
+	my $found = $Document->find_first('PPI::Future::Token::Number');
 	ok( $found, 'Multiple find_first succeeded' );
-	isa_ok( $found, 'PPI::Token::Number' );
+	isa_ok( $found, 'PPI::Future::Token::Number' );
 
 	# Test for the ability to shorten the names
 	$found = $Document->find_first('Token::Number');
 	ok( $found, 'Multiple find_first succeeded' );
-	isa_ok( $found, 'PPI::Token::Number' );
+	isa_ok( $found, 'PPI::Future::Token::Number' );
 }
 
 # Test the find_any method
 SCOPE: {
-	is( $Document->find_any('PPI::Token::End'), '', '->find_any returns false if nothing found' );
-	is( $Document->find_any('PPI::Structure'), 1, '->find_any returns true is something found' );
-	is( $Document->find_any('PPI::Token::Number'), 1, '->find_any returns true for multiple find' );
+	is( $Document->find_any('PPI::Future::Token::End'), '', '->find_any returns false if nothing found' );
+	is( $Document->find_any('PPI::Future::Structure'), 1, '->find_any returns true is something found' );
+	is( $Document->find_any('PPI::Future::Token::Number'), 1, '->find_any returns true for multiple find' );
 	is( $Document->find_any('Token::Number'), 1, '->find_any returns true for shortened multiple find' );
 }
 
 # Test the contains method
 SCOPE: {
 	omethod_fails( $Document, 'contains', [ undef, '', 1, [], bless( {}, 'Foo') ] );
-	my $found = $Document->find('PPI::Element');
+	my $found = $Document->find('PPI::Future::Element');
 	is( ref $found, 'ARRAY', '(preparing for contains tests) ->find returned an array' );
 	is( scalar(@$found), 15, '(preparing for contains tests) ->find returns correctly for all elements' );
 	foreach my $Element ( @$found ) {
@@ -372,13 +372,13 @@ SCOPE: {
 
 
 #####################################################################
-# Test the PPI::Element manipulation methods
+# Test the PPI::Future::Element manipulation methods
 
 # Cloning an Element/Node
 SCOPE: {
 	my $Doc2 = $Document->clone;
-	isa_ok( $Doc2, 'PPI::Document' );
-	isa_ok( $Doc2->schild(0), 'PPI::Statement' );
+	isa_ok( $Doc2, 'PPI::Future::Document' );
+	isa_ok( $Doc2->schild(0), 'PPI::Future::Statement' );
 	is_object( $Doc2->schild(0)->parent, $Doc2, 'Basic parent links stay intact after ->clone' );
 	is_object( $Doc2->schild(0)->schild(3)->start->document, $Doc2,
 		'Clone goes deep, and Structure braces get relinked properly' );
@@ -409,7 +409,7 @@ ok( ! defined $Braces->parent, "Braces are detached from parent" );
 
 # Start with DESTROY for an element that never has a parent
 SCOPE: {
-	my $Token = PPI::Token::Whitespace->new( ' ' );
+	my $Token = PPI::Future::Token::Whitespace->new( ' ' );
 	my $k1 = scalar keys %_PARENT;
 	$Token->DESTROY;
 	my $k2 = scalar keys %_PARENT;
@@ -422,8 +422,8 @@ SCOPE: {
 	my $k2;
 	my $k3;
 	SCOPE: {
-		my $Token     = PPI::Token::Number->new( '1' );
-		my $Statement = PPI::Statement->new;
+		my $Token     = PPI::Future::Token::Number->new( '1' );
+		my $Statement = PPI::Future::Statement->new;
 		$Statement->add_element( $Token );
 		$k2 = scalar keys %_PARENT;
 		is( $k2, $k1 + 1, 'PARENT keys increases after adding element' );
@@ -440,8 +440,8 @@ SCOPE: {
 	my $k2;
 	my $k3;
 	SCOPE: {
-		my $NodeDocument = PPI::Document->new( $INC{"PPI/Node.pm"} );
-		isa_ok( $NodeDocument, 'PPI::Document' );
+		my $NodeDocument = PPI::Future::Document->new( $INC{"PPI::Future/Node.pm"} );
+		isa_ok( $NodeDocument, 'PPI::Future::Document' );
 		$k2 = scalar keys %_PARENT;
 		ok( $k2 > ($k1 + 3000), 'PARENT keys increases after loading document' );
 		$NodeDocument->DESTROY;
@@ -457,8 +457,8 @@ SCOPE: {
 	my $k2;
 	my $k3;
 	SCOPE: {
-		my $NodeDocument = PPI::Document->new( $INC{"PPI/Node.pm"} );
-		isa_ok( $NodeDocument, 'PPI::Document' );
+		my $NodeDocument = PPI::Future::Document->new( $INC{"PPI::Future/Node.pm"} );
+		isa_ok( $NodeDocument, 'PPI::Future::Document' );
 		$k2 = scalar keys %_PARENT;
 		ok( $k2 > ($k1 + 3000), 'PARENT keys increases after loading document' );
 	}
@@ -488,23 +488,23 @@ END_PERL
 	$code =~ s/\s+$//s;
 
 	# Create the document
-	my $doc = PPI::Document->new( \$code );
-	isa_ok( $doc, 'PPI::Document' );
+	my $doc = PPI::Future::Document->new( \$code );
+	isa_ok( $doc, 'PPI::Future::Document' );
 
 	# Basic first_token and last_token using a single non-trival sample
 	### FIXME - Make this more thorough
 	my $first_token = $doc->first_token;
-	isa_ok( $first_token, 'PPI::Token::Word' );
+	isa_ok( $first_token, 'PPI::Future::Token::Word' );
 	is( $first_token->content, 'my', '->first_token works as expected' );
 	my $last_token = $doc->last_token;
-	isa_ok( $last_token, 'PPI::Token::Structure' );
+	isa_ok( $last_token, 'PPI::Future::Token::Structure' );
 	is( $last_token->content, '}', '->last_token works as expected' );
 
 	# Test next_token
 	is( $last_token->next_token, '', 'last->next_token returns false' );
 	is( $doc->next_token,        '', 'doc->next_token returns false'  );
 	my $next_token = $first_token->next_token;
-	isa_ok( $next_token, 'PPI::Token::Whitespace' );
+	isa_ok( $next_token, 'PPI::Future::Token::Whitespace' );
 	is( $next_token->content, ' ', 'Trivial ->next_token works as expected' );
 	my $counter = 1;
 	my $token   = $first_token;
@@ -518,7 +518,7 @@ END_PERL
 	is( $first_token->previous_token, '', 'last->previous_token returns false' );
 	is( $doc->previous_token,         '', 'doc->previous_token returns false'  );
 	my $previous_token = $last_token->previous_token;
-	isa_ok( $previous_token, 'PPI::Token::Whitespace' );
+	isa_ok( $previous_token, 'PPI::Future::Token::Whitespace' );
 	is( $previous_token->content, "\n", 'Trivial ->previous_token works as expected' );
 	$counter = 1;
 	$token   = $last_token;
@@ -536,8 +536,8 @@ END_PERL
 
 SCOPE: {
    my $source   = '1;';
-   my $Document = PPI::Lexer->lex_source( $source );
-   isa_ok( $Document, 'PPI::Document' );
+   my $Document = PPI::Future::Lexer->lex_source( $source );
+   isa_ok( $Document, 'PPI::Future::Document' );
    ok($Document eq $source, 'overload eq');
    ok($Document ne 'foo', 'overload ne');
    ok($Document == $Document, 'overload ==');

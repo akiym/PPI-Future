@@ -1,13 +1,13 @@
-PPI::Document
-  PPI::Statement
-    PPI::Token::Word  	'sub'
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::Block  	{ ... }
-      PPI::Token::Whitespace  	' '
-      PPI::Statement::Break
-        PPI::Token::Word  	'goto'
-        PPI::Token::Whitespace  	' '
-        PPI::Token::Word  	'FOO'
-        PPI::Token::Structure  	';'
-      PPI::Token::Whitespace  	' '
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement
+    PPI::Future::Token::Word  	'sub'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::Block  	{ ... }
+      PPI::Future::Token::Whitespace  	' '
+      PPI::Future::Statement::Break
+        PPI::Future::Token::Word  	'goto'
+        PPI::Future::Token::Whitespace  	' '
+        PPI::Future::Token::Word  	'FOO'
+        PPI::Future::Token::Structure  	';'
+      PPI::Future::Token::Whitespace  	' '
+  PPI::Future::Token::Whitespace  	'\n'

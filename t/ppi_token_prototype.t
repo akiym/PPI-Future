@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 
-# Unit testing for PPI::Token::Prototype
+# Unit testing for PPI::Future::Token::Prototype
 
 use lib 't/lib';
-use PPI::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 800 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
-use PPI;
+use PPI::Future;
 
 
 PARSING: {
@@ -38,10 +38,10 @@ PARSING: {
 			) {
 				my ( $code_prototype, $expected_content, $expected_prototype ) = @$proto_and_expected;
 				my $code = "$name$code_prototype$block";
-				my $document = PPI::Document->new( \$code );
-				isa_ok( $document, 'PPI::Document', $code );
+				my $document = PPI::Future::Document->new( \$code );
+				isa_ok( $document, 'PPI::Future::Document', $code );
 
-				my $all_prototypes = $document->find( 'PPI::Token::Prototype' );
+				my $all_prototypes = $document->find( 'PPI::Future::Token::Prototype' );
 				if ( $code_prototype eq '' ) {
 					is( $all_prototypes, "", "$code: got no prototypes" );
 				}

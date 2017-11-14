@@ -1,14 +1,14 @@
-PPI::Document
-  PPI::Statement::Compound
-    PPI::Token::Word  	'for'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Word  	'our'
-    PPI::Token::Whitespace  	' '
-    PPI::Token::Symbol  	'$k'
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::List  	( ... )
-      PPI::Statement
-        PPI::Token::Symbol  	'@foo'
-    PPI::Token::Whitespace  	' '
-    PPI::Structure::Block  	{ ... }
-  PPI::Token::Whitespace  	'\n'
+PPI::Future::Document
+  PPI::Future::Statement::Compound
+    PPI::Future::Token::Word  	'for'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Word  	'our'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Token::Symbol  	'$k'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::List  	( ... )
+      PPI::Future::Statement
+        PPI::Future::Token::Symbol  	'@foo'
+    PPI::Future::Token::Whitespace  	' '
+    PPI::Future::Structure::Block  	{ ... }
+  PPI::Future::Token::Whitespace  	'\n'
