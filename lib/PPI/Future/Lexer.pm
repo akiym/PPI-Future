@@ -442,9 +442,9 @@ sub _statement {
 			# Lexical subroutine
 			if (
 				$Token->content =~ /^(?:my|our|state)$/
-				and $Next->isa( 'PPI::Token::Word' ) and $Next->content eq 'sub'
+				and $Next->isa( 'PPI::Future::Token::Word' ) and $Next->content eq 'sub'
 			) {
-				# This should be PPI::Statement::Sub rather than PPI::Statement::Variable
+				# This should be PPI::Future::Statement::Sub rather than PPI::Statement::Variable
 				$class = undef;
 				$is_lexsub = 1;
 				last;

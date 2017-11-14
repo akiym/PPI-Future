@@ -55,11 +55,11 @@ LEXSUB: {
 		my $code = $test->{code};
 		my $type = $test->{type};
 
-		my $Document = PPI::Document->new( \$code );
-		isa_ok( $Document, 'PPI::Document', "$code: got document" );
+		my $Document = PPI::Future::Document->new( \$code );
+		isa_ok( $Document, 'PPI::Future::Document', "$code: got document" );
 
 		my ( $sub_statement, $dummy ) = $Document->schildren();
-		isa_ok( $sub_statement, 'PPI::Statement::Sub', "$code: document child is a sub" );
+		isa_ok( $sub_statement, 'PPI::Future::Statement::Sub', "$code: document child is a sub" );
 		is( $dummy, undef, "$code: document has exactly one child" );
 		is( $sub_statement->type, $type, "$code: type matches" );
 	}
@@ -121,7 +121,7 @@ PROTOTYPE: {
 
 PROTOTYPE_LEXSUB: {
 	# Doesn't have to be as thorough as ppi_token_prototype.t, since
-	# we're just making sure PPI::Token::Prototype->prototype gets
+	# we're just making sure PPI::Future::Token::Prototype->prototype gets
 	# passed through correctly.
 	for my $test (
 		[ '',         undef ],
@@ -130,11 +130,11 @@ PROTOTYPE_LEXSUB: {
 	) {
 		my ( $proto_text, $expected ) = @$test;
 
-		my $Document = PPI::Document->new( \"my sub foo $proto_text {}" );
-		isa_ok( $Document, 'PPI::Document', "$proto_text got document" );
+		my $Document = PPI::Future::Document->new( \"my sub foo $proto_text {}" );
+		isa_ok( $Document, 'PPI::Future::Document', "$proto_text got document" );
 
 		my ( $sub_statement, $dummy ) = $Document->schildren();
-		isa_ok( $sub_statement, 'PPI::Statement::Sub', "$proto_text document child is a sub" );
+		isa_ok( $sub_statement, 'PPI::Future::Statement::Sub', "$proto_text document child is a sub" );
 		is( $dummy, undef, "$proto_text document has exactly one child" );
 		is( $sub_statement->prototype, $expected, "$proto_text: prototype matches" );
 	}

@@ -188,10 +188,10 @@ sub type {
 	my @schild = grep { $_->significant } $self->children;
 
 	# Ignore labels
-	shift @schild if _INSTANCE($schild[0], 'PPI::Token::Label');
+	shift @schild if _INSTANCE($schild[0], 'PPI::Future::Token::Label');
 
 	# Get the type
-	(_INSTANCE($schild[0], 'PPI::Token::Word') and $schild[0]->content =~ /^(my|our|state)$/)
+	(_INSTANCE($schild[0], 'PPI::Future::Token::Word') and $schild[0]->content =~ /^(my|our|state)$/)
 		? $schild[0]->content
 		: undef;
 }

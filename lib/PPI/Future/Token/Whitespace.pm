@@ -239,7 +239,7 @@ sub __TOKENIZER__on_char {
 				)
 				or (
 					# Lexical subroutine
-					$p2->isa('PPI::Token::Word')
+					$p2->isa('PPI::Future::Token::Word')
 					and
 					$p2->content =~ /^(?:my|our|state)$/
 				)
