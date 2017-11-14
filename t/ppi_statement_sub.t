@@ -3,7 +3,7 @@
 # Test PPI::Future::Statement::Sub
 
 use lib 't/lib';
-use PPI::Fture::Test::pragmas;
+use PPI::Future::Test::pragmas;
 use Test::More tests => 1240 + ($ENV{AUTHOR_TESTING} ? 1 : 0);
 
 use PPI::Future;
