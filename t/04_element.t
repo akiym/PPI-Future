@@ -440,7 +440,7 @@ SCOPE: {
 	my $k2;
 	my $k3;
 	SCOPE: {
-		my $NodeDocument = PPI::Future::Document->new( $INC{"PPI::Future/Node.pm"} );
+		my $NodeDocument = PPI::Future::Document->new( $INC{"PPI/Future/Node.pm"} );
 		isa_ok( $NodeDocument, 'PPI::Future::Document' );
 		$k2 = scalar keys %_PARENT;
 		ok( $k2 > ($k1 + 3000), 'PARENT keys increases after loading document' );
@@ -457,7 +457,7 @@ SCOPE: {
 	my $k2;
 	my $k3;
 	SCOPE: {
-		my $NodeDocument = PPI::Future::Document->new( $INC{"PPI::Future/Node.pm"} );
+		my $NodeDocument = PPI::Future::Document->new( $INC{"PPI/Future/Node.pm"} );
 		isa_ok( $NodeDocument, 'PPI::Future::Document' );
 		$k2 = scalar keys %_PARENT;
 		ok( $k2 > ($k1 + 3000), 'PARENT keys increases after loading document' );

@@ -27,7 +27,7 @@ use constant CI => 'Class::Inspector';
 # Prepare
 
 # Find all of the files to be checked
-my %tests = map { $_ => $INC{$_} } grep { ! /\bXS\.pm/ } grep { /^PPI::Future\b/ } keys %INC;
+my %tests = map { $_ => $INC{$_} } grep { ! /\bXS\.pm/ } grep { m!^PPI/Future\b! } keys %INC;
 unless ( %tests ) {
 	Test::More::plan( tests => 1 + ($ENV{AUTHOR_TESTING} ? 1 : 0) );
 	ok( undef, "Failed to find any files to test" );
