@@ -1,5 +1,7 @@
 Revision history for Perl extension PPI
 
+{{$NEXT}}
+
 1.236 Thu 22 June 2017
 	Summary:
 	- prevent Node->child from proceeding without a valid argument

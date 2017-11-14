@@ -1,0 +1,6 @@
+name = "PPI-Future"
+badges = ["travis"]
+authority="cpan:AKIYM"
+
+module_maker="ModuleBuildTiny"
+

@@ -1,0 +1,112 @@
+{
+   "abstract" : "Parse, Analyze and Manipulate Perl (without perl)",
+   "author" : [
+      "Adam Kennedy <adamk@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minilla/v3.0.13, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "PPI-Future",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples",
+         "author",
+         "builder"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build::Tiny" : "0.035"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion::Fast" : "0.04",
+            "Test::PAUSE::Permissions" : "0.04",
+            "Test::Pod" : "1.41",
+            "Test::Spellunker" : "v0.2.7"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Clone" : "0.30",
+            "Digest::MD5" : "2.35",
+            "File::Spec" : "3.2701",
+            "IO::String" : "1.07",
+            "List::Util" : "1.33",
+            "Params::Util" : "1.00",
+            "Storable" : "2.17",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Class::Inspector" : "1.22",
+            "File::Remove" : "1.42",
+            "Test::Deep" : "0",
+            "Test::More" : "0.86",
+            "Test::Object" : "0.07",
+            "Test::SubCalls" : "1.07"
+         }
+      }
+   },
+   "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/akiym/PPI-Future/issues"
+      },
+      "homepage" : "https://github.com/akiym/PPI-Future",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/akiym/PPI-Future.git",
+         "web" : "https://github.com/akiym/PPI-Future"
+      }
+   },
+   "version" : "1.236",
+   "x_authority" : "cpan:AKIYM",
+   "x_contributors" : [
+      "Adam Kennedy <adam@ali.as>",
+      "Chas. J. Owens IV <chas.owens@gmail.com>",
+      "Chris Capaci <chris.capaci@gmail.com>",
+      "Chris Dolan <chris+github@chrisdolan.net>",
+      "Christian Walde <walde.christian@gmail.com>",
+      "Christian Walde <walde.christian@googlemail.com>",
+      "Damyan Ivanov <dam@modsoftsys.com>",
+      "Dan Book <grinnz@grinnz.com>",
+      "David Steinbrunner <dsteinbrunner@pobox.com>",
+      "Elliot Shank <elliotjs@cpan.org>",
+      "Gabor Szabo <szabgab@gmail.com>",
+      "Graham Ollis <plicease@cpan.org>",
+      "Guillaume Aubert <aubertg@cpan.org>",
+      "Joel Maslak <jmaslak@antelope.net>",
+      "Julian Fondren <ayrnieu@gmail.com>",
+      "Karen Etheridge <ether@cpan.org>",
+      "Kent Fredric <kentfredric@gmail.com>",
+      "Matthew Horsfall <WolfSage@gmail.com>",
+      "Matthew Horsfall <wolfsage@gmail.com>",
+      "Mike O'Regan <moregan@stresscafe.com>",
+      "Olivier Mengué <dolmen@cpan.org>",
+      "Reini Urban <rurban@cpan.org>",
+      "Shmuel Fomberg <shmuelf@cpan.org>",
+      "Steffen Müller <smueller@cpan.org>",
+      "Takumi Akiyama <t.akiym@gmail.com>",
+      "Thomas Sibley <tsibley@cpan.org>",
+      "Tom Wyant <wyant@cpan.org>",
+      "bowtie <bowtie@cpan.org>",
+      "brian d foy <brian.f.foy@gmail.com>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

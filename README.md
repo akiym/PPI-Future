@@ -1,31 +1,32 @@
+[![Build Status](https://travis-ci.org/akiym/PPI-Future.svg?branch=master)](https://travis-ci.org/akiym/PPI-Future)
 # NAME
 
-PPI - Parse, Analyze and Manipulate Perl (without perl)
+PPI::Future - Parse, Analyze and Manipulate Perl (without perl)
 
 # SYNOPSIS
 
-    use PPI;
+    use PPI::Future;
     
     # Create a new empty document
-    my $Document = PPI::Document->new;
+    my $Document = PPI::Future::Document->new;
     
     # Create a document from source
-    $Document = PPI::Document->new(\'print "Hello World!\n"');
+    $Document = PPI::Future::Document->new(\'print "Hello World!\n"');
     
     # Load a Document from a file
-    $Document = PPI::Document->new('Module.pm');
+    $Document = PPI::Future::Document->new('Module.pm');
     
     # Does it contain any POD?
-    if ( $Document->find_any('PPI::Token::Pod') ) {
+    if ( $Document->find_any('PPI::Future::Token::Pod') ) {
         print "Module contains POD\n";
     }
     
     # Get the name of the main package
-    $pkg = $Document->find_first('PPI::Statement::Package')->namespace;
+    $pkg = $Document->find_first('PPI::Future::Statement::Package')->namespace;
     
     # Remove all that nasty documentation
-    $Document->prune('PPI::Token::Pod');
-    $Document->prune('PPI::Token::Comment');
+    $Document->prune('PPI::Future::Token::Pod');
+    $Document->prune('PPI::Future::Token::Comment');
     
     # Save the file
     $Document->save('Module.pm.stripped');
@@ -34,7 +35,7 @@ PPI - Parse, Analyze and Manipulate Perl (without perl)
 
 ## About this Document
 
-This is the PPI manual. It describes its reason for existing, its general
+This is the PPI::Future manual. It describes its reason for existing, its general
 structure, its use, an overview of the API, and provides a few
 implementation samples.
 
@@ -90,7 +91,7 @@ Schwartz's seminal response to the question of "Why can't you parse Perl".
 
 [http://www.perlmonks.org/index.pl?node\_id=44722](http://www.perlmonks.org/index.pl?node_id=44722)
 
-The purpose of PPI is **not** to parse Perl _Code_, but to parse Perl
+The purpose of PPI::Future is **not** to parse Perl _Code_, but to parse Perl
 _Documents_. By treating the problem this way, we are able to parse a
 single file containing Perl source code "isolated" from any other
 resources, such as libraries upon which the code may depend, and
@@ -101,15 +102,15 @@ the most likely avenue for finding a solution to parsing Perl. It has been
 investigated from time to time, but attempts have generally failed or
 suffered from sufficiently bad corner cases that they were abandoned.
 
-## What Does PPI Stand For?
+## What Does PPI::Future Stand For?
 
-`PPI` is an acronym for the longer original module name
+`PPI::Future` is an acronym for the longer original module name
 `Parse::Perl::Isolated`. And in the spirit or the silly acronym games
 played by certain unnamed Open Source projects you may have _hurd_ of,
 it also a reverse backronym of "I Parse Perl".
 
 Of course, I could just be lying and have just made that second bit up
-10 minutes before the release of PPI 1.000. Besides, **all** the cool
+10 minutes before the release of PPI::Future 1.000. Besides, **all** the cool
 Perl packages have TLAs (Three Letter Acronyms). It's a rule or something.
 
 Why don't you just think of it as the **Perl Parsing Interface** for simplicity.
@@ -150,7 +151,7 @@ What are the things that people might want a "Perl parser" for.
     Index functions, variables and packages within Perl code, and doing search
     and graph (in the node/edge sense) analysis of large code bases.
 
-    [Perl::Critic](https://metacpan.org/pod/Perl::Critic), based on PPI, is a large, thriving tool for bug detection
+    [Perl::Critic](https://metacpan.org/pod/Perl::Critic), based on PPI::Future, is a large, thriving tool for bug detection
     and style analysis of Perl code.
 
 - Refactoring
@@ -178,11 +179,11 @@ for how good a Perl parser needs to be.
 
 ## How good is Good Enough(TM)
 
-PPI seeks to be good enough to achieve all of the above tasks, or to provide
+PPI::Future seeks to be good enough to achieve all of the above tasks, or to provide
 a sufficiently good API on which to allow others to implement modules in
 these and related areas.
 
-However, there are going to be limits to this process. Because PPI cannot
+However, there are going to be limits to this process. Because PPI::Future cannot
 adapt to changing grammars, any code written using source filters should not
 be assumed to be parsable.
 
@@ -192,36 +193,36 @@ able to always parse code using these modules, although as long as it still
 follows a format that looks like Perl syntax, it may be possible to extend
 the lexer to handle them.
 
-The ability to extend PPI to handle lexical additions to the language is on
+The ability to extend PPI::Future to handle lexical additions to the language is on
 the drawing board to be done some time post-1.0
 
 The goal for success was originally to be able to successfully parse 99% of
 all Perl documents contained in CPAN. This means the entire file in each
 case.
 
-PPI has succeeded in this goal far beyond the expectations of even the
+PPI::Future has succeeded in this goal far beyond the expectations of even the
 author. At time of writing there are only 28 non-Acme Perl modules in CPAN
-that PPI is incapable of parsing. Most of these are so badly broken they
+that PPI::Future is incapable of parsing. Most of these are so badly broken they
 do not compile as Perl code anyway.
 
-So unless you are actively going out of your way to break PPI, you should
+So unless you are actively going out of your way to break PPI::Future, you should
 expect that it will handle your code just fine.
 
 ## Internationalisation
 
-PPI provides partial support for internationalisation and localisation.
+PPI::Future provides partial support for internationalisation and localisation.
 
 Specifically, it allows the use characters from the Latin-1 character
 set to be used in quotes, comments, and POD. Primarily, this covers
 languages from Europe and South America.
 
-PPI does **not** currently provide support for Unicode.
+PPI::Future does **not** currently provide support for Unicode.
 If you need Unicode support and would like to help,
 contact the author. (contact details below)
 
 ## Round Trip Safe
 
-When PPI parses a file it builds **everything** into the model, including
+When PPI::Future parses a file it builds **everything** into the model, including
 whitespace. This is needed in order to make the Document fully "Round Trip"
 safe.
 
@@ -233,13 +234,13 @@ repairing the parser's mistake as it heads back out to the file.
 
 The end result is that if you parse in a file and serialize it back out
 without changing the tree, you are guaranteed to get the same file you
-started with. PPI does this correctly and reliably for 100% of all known
+started with. PPI::Future does this correctly and reliably for 100% of all known
 cases.
 
 **What goes in, will come out. Every time.**
 
 The one minor exception at this time is that if the newlines for your file
-are wrong (meaning not matching the platform newline format), PPI will
+are wrong (meaning not matching the platform newline format), PPI::Future will
 localise them for you. (It isn't to be convenient, supporting
 arbitrary newlines would make some of the code more complicated)
 
@@ -250,8 +251,8 @@ anyone wanting to help out is encouraged to contact the author.
 
 ## General Layout
 
-PPI is built upon two primary "parsing" components, [PPI::Tokenizer](https://metacpan.org/pod/PPI::Tokenizer)
-and [PPI::Lexer](https://metacpan.org/pod/PPI::Lexer), and a large tree of about 50 classes which implement
+PPI::Future is built upon two primary "parsing" components, [PPI::Future::Tokenizer](https://metacpan.org/pod/PPI::Future::Tokenizer)
+and [PPI::Future::Lexer](https://metacpan.org/pod/PPI::Future::Lexer), and a large tree of about 50 classes which implement
 the various the _Perl Document Object Model_ (PDOM).
 
 The PDOM is conceptually similar in style and intent to the regular DOM or
@@ -273,7 +274,7 @@ This is primarily because of the sheer volume of accumulated cruft that
 exists in Perl. Not even perl itself is capable of parsing Perl documents
 (remember, it just parses and executes it as code).
 
-As a result, PPI needed to be cruftier than perl itself. Feel free to
+As a result, PPI::Future needed to be cruftier than perl itself. Feel free to
 shudder at this point, and hope you never have to understand the Tokenizer
 codebase. Speaking of which...
 
@@ -294,20 +295,20 @@ character cursor itself is only about 5% - 10% higher than the number of
 tokens contained in the file. This makes it about as optimal as it can be
 made without implementing it in something other than Perl.
 
-In 2001 when PPI was started, this structure made PPI quite slow, and not
+In 2001 when PPI::Future was started, this structure made PPI::Future quite slow, and not
 really suitable for interactive tasks. This situation has improved greatly
 with multi-gigahertz processors, but can still be painful when working with
 very large files.
 
-The target parsing rate for PPI is about 5000 lines per gigacycle. It is
+The target parsing rate for PPI::Future is about 5000 lines per gigacycle. It is
 currently believed to be at about 1500, and main avenue for making it to
-the target speed has now become [PPI::XS](https://metacpan.org/pod/PPI::XS), a drop-in XS accelerator for
-PPI.
+the target speed has now become [PPI::Future::XS](https://metacpan.org/pod/PPI::Future::XS), a drop-in XS accelerator for
+PPI::Future.
 
-Since [PPI::XS](https://metacpan.org/pod/PPI::XS) has only just gotten off the ground and is currently only
+Since [PPI::Future::XS](https://metacpan.org/pod/PPI::Future::XS) has only just gotten off the ground and is currently only
 at proof-of-concept stage, this may take a little while. Anyone interested
-in helping out with [PPI::XS](https://metacpan.org/pod/PPI::XS) is **highly** encouraged to contact the
-author. In fact, the design of [PPI::XS](https://metacpan.org/pod/PPI::XS) means it's possible to port
+in helping out with [PPI::Future::XS](https://metacpan.org/pod/PPI::Future::XS) is **highly** encouraged to contact the
+author. In fact, the design of [PPI::Future::XS](https://metacpan.org/pod/PPI::Future::XS) means it's possible to port
 one function at a time safely and reliably. So every little bit will help.
 
 ## The Lexer
@@ -317,10 +318,10 @@ we are parsing Perl **documents** this includes whitespace, comments, and
 all number of weird things that have no relevance when code is actually
 executed.
 
-An instantiated [PPI::Lexer](https://metacpan.org/pod/PPI::Lexer) consumes [PPI::Tokenizer](https://metacpan.org/pod/PPI::Tokenizer) objects and
-produces [PPI::Document](https://metacpan.org/pod/PPI::Document) objects. However you should probably never be
+An instantiated [PPI::Future::Lexer](https://metacpan.org/pod/PPI::Future::Lexer) consumes [PPI::Future::Tokenizer](https://metacpan.org/pod/PPI::Future::Tokenizer) objects and
+produces [PPI::Future::Document](https://metacpan.org/pod/PPI::Future::Document) objects. However you should probably never be
 working with the Lexer directly. You should just be able to create
-[PPI::Document](https://metacpan.org/pod/PPI::Document) objects and work with them directly.
+[PPI::Future::Document](https://metacpan.org/pod/PPI::Future::Document) objects and work with them directly.
 
 ## The Perl Document Object Model
 
@@ -333,113 +334,113 @@ syntax.
 The following lists all of the 67 current PDOM classes, listing with indentation
 based on inheritance.
 
-    PPI::Element
-       PPI::Node
-          PPI::Document
-             PPI::Document::Fragment
-          PPI::Statement
-             PPI::Statement::Package
-             PPI::Statement::Include
-             PPI::Statement::Sub
-                PPI::Statement::Scheduled
-             PPI::Statement::Compound
-             PPI::Statement::Break
-             PPI::Statement::Given
-             PPI::Statement::When
-             PPI::Statement::Data
-             PPI::Statement::End
-             PPI::Statement::Expression
-                PPI::Statement::Variable
-             PPI::Statement::Null
-             PPI::Statement::UnmatchedBrace
-             PPI::Statement::Unknown
-          PPI::Structure
-             PPI::Structure::Block
-             PPI::Structure::Subscript
-             PPI::Structure::Constructor
-             PPI::Structure::Condition
-             PPI::Structure::List
-             PPI::Structure::For
-             PPI::Structure::Given
-             PPI::Structure::When
-             PPI::Structure::Unknown
-       PPI::Token
-          PPI::Token::Whitespace
-          PPI::Token::Comment
-          PPI::Token::Pod
-          PPI::Token::Number
-             PPI::Token::Number::Binary
-             PPI::Token::Number::Octal
-             PPI::Token::Number::Hex
-             PPI::Token::Number::Float
-                PPI::Token::Number::Exp
-             PPI::Token::Number::Version
-          PPI::Token::Word
-          PPI::Token::DashedWord
-          PPI::Token::Symbol
-             PPI::Token::Magic
-          PPI::Token::ArrayIndex
-          PPI::Token::Operator
-          PPI::Token::Quote
-             PPI::Token::Quote::Single
-             PPI::Token::Quote::Double
-             PPI::Token::Quote::Literal
-             PPI::Token::Quote::Interpolate
-          PPI::Token::QuoteLike
-             PPI::Token::QuoteLike::Backtick
-             PPI::Token::QuoteLike::Command
-             PPI::Token::QuoteLike::Regexp
-             PPI::Token::QuoteLike::Words
-             PPI::Token::QuoteLike::Readline
-          PPI::Token::Regexp
-             PPI::Token::Regexp::Match
-             PPI::Token::Regexp::Substitute
-             PPI::Token::Regexp::Transliterate
-          PPI::Token::HereDoc
-          PPI::Token::Cast
-          PPI::Token::Structure
-          PPI::Token::Label
-          PPI::Token::Separator
-          PPI::Token::Data
-          PPI::Token::End
-          PPI::Token::Prototype
-          PPI::Token::Attribute
-          PPI::Token::Unknown
+    PPI::Future::Element
+       PPI::Future::Node
+          PPI::Future::Document
+             PPI::Future::Document::Fragment
+          PPI::Future::Statement
+             PPI::Future::Statement::Package
+             PPI::Future::Statement::Include
+             PPI::Future::Statement::Sub
+                PPI::Future::Statement::Scheduled
+             PPI::Future::Statement::Compound
+             PPI::Future::Statement::Break
+             PPI::Future::Statement::Given
+             PPI::Future::Statement::When
+             PPI::Future::Statement::Data
+             PPI::Future::Statement::End
+             PPI::Future::Statement::Expression
+                PPI::Future::Statement::Variable
+             PPI::Future::Statement::Null
+             PPI::Future::Statement::UnmatchedBrace
+             PPI::Future::Statement::Unknown
+          PPI::Future::Structure
+             PPI::Future::Structure::Block
+             PPI::Future::Structure::Subscript
+             PPI::Future::Structure::Constructor
+             PPI::Future::Structure::Condition
+             PPI::Future::Structure::List
+             PPI::Future::Structure::For
+             PPI::Future::Structure::Given
+             PPI::Future::Structure::When
+             PPI::Future::Structure::Unknown
+       PPI::Future::Token
+          PPI::Future::Token::Whitespace
+          PPI::Future::Token::Comment
+          PPI::Future::Token::Pod
+          PPI::Future::Token::Number
+             PPI::Future::Token::Number::Binary
+             PPI::Future::Token::Number::Octal
+             PPI::Future::Token::Number::Hex
+             PPI::Future::Token::Number::Float
+                PPI::Future::Token::Number::Exp
+             PPI::Future::Token::Number::Version
+          PPI::Future::Token::Word
+          PPI::Future::Token::DashedWord
+          PPI::Future::Token::Symbol
+             PPI::Future::Token::Magic
+          PPI::Future::Token::ArrayIndex
+          PPI::Future::Token::Operator
+          PPI::Future::Token::Quote
+             PPI::Future::Token::Quote::Single
+             PPI::Future::Token::Quote::Double
+             PPI::Future::Token::Quote::Literal
+             PPI::Future::Token::Quote::Interpolate
+          PPI::Future::Token::QuoteLike
+             PPI::Future::Token::QuoteLike::Backtick
+             PPI::Future::Token::QuoteLike::Command
+             PPI::Future::Token::QuoteLike::Regexp
+             PPI::Future::Token::QuoteLike::Words
+             PPI::Future::Token::QuoteLike::Readline
+          PPI::Future::Token::Regexp
+             PPI::Future::Token::Regexp::Match
+             PPI::Future::Token::Regexp::Substitute
+             PPI::Future::Token::Regexp::Transliterate
+          PPI::Future::Token::HereDoc
+          PPI::Future::Token::Cast
+          PPI::Future::Token::Structure
+          PPI::Future::Token::Label
+          PPI::Future::Token::Separator
+          PPI::Future::Token::Data
+          PPI::Future::Token::End
+          PPI::Future::Token::Prototype
+          PPI::Future::Token::Attribute
+          PPI::Future::Token::Unknown
 
 To summarize the above layout, all PDOM objects inherit from the
-[PPI::Element](https://metacpan.org/pod/PPI::Element) class.
+[PPI::Future::Element](https://metacpan.org/pod/PPI::Future::Element) class.
 
-Under this are [PPI::Token](https://metacpan.org/pod/PPI::Token), strings of content with a known type,
-and [PPI::Node](https://metacpan.org/pod/PPI::Node), syntactically significant containers that hold other
+Under this are [PPI::Future::Token](https://metacpan.org/pod/PPI::Future::Token), strings of content with a known type,
+and [PPI::Future::Node](https://metacpan.org/pod/PPI::Future::Node), syntactically significant containers that hold other
 Elements.
 
-The three most important of these are the [PPI::Document](https://metacpan.org/pod/PPI::Document), the
-[PPI::Statement](https://metacpan.org/pod/PPI::Statement) and the [PPI::Structure](https://metacpan.org/pod/PPI::Structure) classes.
+The three most important of these are the [PPI::Future::Document](https://metacpan.org/pod/PPI::Future::Document), the
+[PPI::Future::Statement](https://metacpan.org/pod/PPI::Future::Statement) and the [PPI::Future::Structure](https://metacpan.org/pod/PPI::Future::Structure) classes.
 
 ## The Document, Statement and Structure
 
-At the top of all complete PDOM trees is a [PPI::Document](https://metacpan.org/pod/PPI::Document) object. It
+At the top of all complete PDOM trees is a [PPI::Future::Document](https://metacpan.org/pod/PPI::Future::Document) object. It
 represents a complete file of Perl source code as you might find it on
 disk.
 
-There are some specialised types of document, such as [PPI::Document::File](https://metacpan.org/pod/PPI::Document::File)
-and [PPI::Document::Normalized](https://metacpan.org/pod/PPI::Document::Normalized) but for the purposes of the PDOM they are
+There are some specialised types of document, such as [PPI::Future::Document::File](https://metacpan.org/pod/PPI::Future::Document::File)
+and [PPI::Future::Document::Normalized](https://metacpan.org/pod/PPI::Future::Document::Normalized) but for the purposes of the PDOM they are
 all just considered to be the same thing.
 
 Each Document will contain a number of **Statements**, **Structures** and
 **Tokens**.
 
-A [PPI::Statement](https://metacpan.org/pod/PPI::Statement) is any series of Tokens and Structures that are treated
+A [PPI::Future::Statement](https://metacpan.org/pod/PPI::Future::Statement) is any series of Tokens and Structures that are treated
 as a single contiguous statement by perl itself. You should note that a
-Statement is as close as PPI can get to "parsing" the code in the sense that
+Statement is as close as PPI::Future can get to "parsing" the code in the sense that
 perl-itself parses Perl code when it is building the op-tree.
 
 Because of the isolation and Perl's syntax, it is provably impossible for
-PPI to accurately determine precedence of operators or which tokens are
+PPI::Future to accurately determine precedence of operators or which tokens are
 implicit arguments to a sub call.
 
 So rather than lead you on with a bad guess that has a strong chance of
-being wrong, PPI does not attempt to determine precedence or sub parameters
+being wrong, PPI::Future does not attempt to determine precedence or sub parameters
 at all.
 
 At a fundamental level, it only knows that this series of elements
@@ -448,9 +449,9 @@ enough certainty that it can be trusted.
 
 However, for specific Statement types the PDOM is able to derive additional
 useful information about their meaning. For the best, most useful, and most
-heavily used example, see [PPI::Statement::Include](https://metacpan.org/pod/PPI::Statement::Include).
+heavily used example, see [PPI::Future::Statement::Include](https://metacpan.org/pod/PPI::Future::Statement::Include).
 
-A [PPI::Structure](https://metacpan.org/pod/PPI::Structure) is any series of tokens contained within matching braces.
+A [PPI::Future::Structure](https://metacpan.org/pod/PPI::Future::Structure) is any series of tokens contained within matching braces.
 This includes code blocks, conditions, function argument braces, anonymous
 array and hash constructors, lists, scoping braces and all other syntactic
 structures represented by a matching pair of braces, including (although it
@@ -478,48 +479,48 @@ tree might look for the following chunk of simple Perl code.
     exit();
 
 Translated into a PDOM tree it would have the following structure (as shown
-via the included [PPI::Dumper](https://metacpan.org/pod/PPI::Dumper)).
+via the included [PPI::Future::Dumper](https://metacpan.org/pod/PPI::Future::Dumper)).
 
-    PPI::Document
-      PPI::Token::Comment                '#!/usr/bin/perl\n'
-      PPI::Token::Whitespace             '\n'
-      PPI::Statement
-        PPI::Token::Word                 'print'
-        PPI::Structure::List             ( ... )
-          PPI::Token::Whitespace         ' '
-          PPI::Statement::Expression
-            PPI::Token::Quote::Double    '"Hello World!"'
-          PPI::Token::Whitespace         ' '
-        PPI::Token::Structure            ';'
-      PPI::Token::Whitespace             '\n'
-      PPI::Token::Whitespace             '\n'
-      PPI::Statement
-        PPI::Token::Word                 'exit'
-        PPI::Structure::List             ( ... )
-        PPI::Token::Structure            ';'
-      PPI::Token::Whitespace             '\n'
+    PPI::Future::Document
+      PPI::Future::Token::Comment                '#!/usr/bin/perl\n'
+      PPI::Future::Token::Whitespace             '\n'
+      PPI::Future::Statement
+        PPI::Future::Token::Word                 'print'
+        PPI::Future::Structure::List             ( ... )
+          PPI::Future::Token::Whitespace         ' '
+          PPI::Future::Statement::Expression
+            PPI::Future::Token::Quote::Double    '"Hello World!"'
+          PPI::Future::Token::Whitespace         ' '
+        PPI::Future::Token::Structure            ';'
+      PPI::Future::Token::Whitespace             '\n'
+      PPI::Future::Token::Whitespace             '\n'
+      PPI::Future::Statement
+        PPI::Future::Token::Word                 'exit'
+        PPI::Future::Structure::List             ( ... )
+        PPI::Future::Token::Structure            ';'
+      PPI::Future::Token::Whitespace             '\n'
 
 Please note that in this example, strings are only listed for the
-**actual** [PPI::Token](https://metacpan.org/pod/PPI::Token) that contains that string. Structures are listed
+**actual** [PPI::Future::Token](https://metacpan.org/pod/PPI::Future::Token) that contains that string. Structures are listed
 with the type of brace characters it represents noted.
 
-The [PPI::Dumper](https://metacpan.org/pod/PPI::Dumper) module can be used to generate similar trees yourself.
+The [PPI::Future::Dumper](https://metacpan.org/pod/PPI::Future::Dumper) module can be used to generate similar trees yourself.
 
 We can make that PDOM dump a little easier to read if we strip out all the
 whitespace. Here it is again, sans the distracting whitespace tokens.
 
-    PPI::Document
-      PPI::Token::Comment                '#!/usr/bin/perl\n'
-      PPI::Statement
-        PPI::Token::Word                 'print'
-        PPI::Structure::List             ( ... )
-          PPI::Statement::Expression
-            PPI::Token::Quote::Double    '"Hello World!"'
-        PPI::Token::Structure            ';'
-      PPI::Statement
-        PPI::Token::Word                 'exit'
-        PPI::Structure::List             ( ... )
-        PPI::Token::Structure            ';'
+    PPI::Future::Document
+      PPI::Future::Token::Comment                '#!/usr/bin/perl\n'
+      PPI::Future::Statement
+        PPI::Future::Token::Word                 'print'
+        PPI::Future::Structure::List             ( ... )
+          PPI::Future::Statement::Expression
+            PPI::Future::Token::Quote::Double    '"Hello World!"'
+        PPI::Future::Token::Structure            ';'
+      PPI::Future::Statement
+        PPI::Future::Token::Word                 'exit'
+        PPI::Future::Structure::List             ( ... )
+        PPI::Future::Token::Structure            ';'
 
 As you can see, the tree can get fairly deep at time, especially when every
 isolated token in a bracket becomes its own statement. This is needed to
@@ -532,50 +533,50 @@ PDOM trees do normal tasks relatively quickly and efficiently.
 
 ## Overview of the Primary Classes
 
-The main PPI classes, and links to their own documentation, are listed
+The main PPI::Future classes, and links to their own documentation, are listed
 here in alphabetical order.
 
-- [PPI::Document](https://metacpan.org/pod/PPI::Document)
+- [PPI::Future::Document](https://metacpan.org/pod/PPI::Future::Document)
 
     The Document object, the root of the PDOM.
 
-- [PPI::Document::Fragment](https://metacpan.org/pod/PPI::Document::Fragment)
+- [PPI::Future::Document::Fragment](https://metacpan.org/pod/PPI::Future::Document::Fragment)
 
     A cohesive fragment of a larger Document. Although not of any real current
     use, it is needed for use in certain internal tree manipulation
     algorithms.
 
     For example, doing things like cut/copy/paste etc. Very similar to a
-    [PPI::Document](https://metacpan.org/pod/PPI::Document), but has some additional methods and does not represent
+    [PPI::Future::Document](https://metacpan.org/pod/PPI::Future::Document), but has some additional methods and does not represent
     a lexical scope boundary.
 
     A document fragment is also non-serializable, and so cannot be written out
     to a file.
 
-- [PPI::Dumper](https://metacpan.org/pod/PPI::Dumper)
+- [PPI::Future::Dumper](https://metacpan.org/pod/PPI::Future::Dumper)
 
     A simple class for dumping readable debugging versions of PDOM structures,
     such as in the demonstration above.
 
-- [PPI::Element](https://metacpan.org/pod/PPI::Element)
+- [PPI::Future::Element](https://metacpan.org/pod/PPI::Future::Element)
 
     The Element class is the abstract base class for all objects within the PDOM
 
-- [PPI::Find](https://metacpan.org/pod/PPI::Find)
+- [PPI::Future::Find](https://metacpan.org/pod/PPI::Future::Find)
 
     Implements an instantiable object form of a PDOM tree search.
 
-- [PPI::Lexer](https://metacpan.org/pod/PPI::Lexer)
+- [PPI::Future::Lexer](https://metacpan.org/pod/PPI::Future::Lexer)
 
-    The PPI Lexer. Converts Token streams into PDOM trees.
+    The PPI::Future Lexer. Converts Token streams into PDOM trees.
 
-- [PPI::Node](https://metacpan.org/pod/PPI::Node)
+- [PPI::Future::Node](https://metacpan.org/pod/PPI::Future::Node)
 
     The Node object, the abstract base class for all PDOM objects that can
     contain other Elements, such as the Document, Statement and Structure
     objects.
 
-- [PPI::Statement](https://metacpan.org/pod/PPI::Statement)
+- [PPI::Future::Statement](https://metacpan.org/pod/PPI::Future::Statement)
 
     The base class for all Perl statements. Generic "evaluate for side-effects"
     statements are of this actual type. Other more interesting statement types
@@ -584,35 +585,35 @@ here in alphabetical order.
     See its own documentation for a longer description and list of all of the
     different statement types and sub-classes.
 
-- [PPI::Structure](https://metacpan.org/pod/PPI::Structure)
+- [PPI::Future::Structure](https://metacpan.org/pod/PPI::Future::Structure)
 
     The abstract base class for all structures. A Structure is a language
     construct consisting of matching braces containing a set of other elements.
 
-    See the [PPI::Structure](https://metacpan.org/pod/PPI::Structure) documentation for a description and
+    See the [PPI::Future::Structure](https://metacpan.org/pod/PPI::Future::Structure) documentation for a description and
     list of all of the different structure types and sub-classes.
 
-- [PPI::Token](https://metacpan.org/pod/PPI::Token)
+- [PPI::Future::Token](https://metacpan.org/pod/PPI::Future::Token)
 
     A token is the basic unit of content. At its most basic, a Token is just
     a string tagged with metadata (its class, and some additional flags in
     some cases).
 
-- [PPI::Token::\_QuoteEngine](https://metacpan.org/pod/PPI::Token::_QuoteEngine)
+- [PPI::Future::Token::\_QuoteEngine](https://metacpan.org/pod/PPI::Future::Token::_QuoteEngine)
 
-    The [PPI::Token::Quote](https://metacpan.org/pod/PPI::Token::Quote) and [PPI::Token::QuoteLike](https://metacpan.org/pod/PPI::Token::QuoteLike) classes provide
+    The [PPI::Future::Token::Quote](https://metacpan.org/pod/PPI::Future::Token::Quote) and [PPI::Future::Token::QuoteLike](https://metacpan.org/pod/PPI::Future::Token::QuoteLike) classes provide
     abstract base classes for the many and varied types of quote and
     quote-like things in Perl. However, much of the actual quote login is
     implemented in a separate quote engine, based at
-    [PPI::Token::\_QuoteEngine](https://metacpan.org/pod/PPI::Token::_QuoteEngine).
+    [PPI::Future::Token::\_QuoteEngine](https://metacpan.org/pod/PPI::Future::Token::_QuoteEngine).
 
-    Classes that inherit from [PPI::Token::Quote](https://metacpan.org/pod/PPI::Token::Quote), [PPI::Token::QuoteLike](https://metacpan.org/pod/PPI::Token::QuoteLike)
-    and [PPI::Token::Regexp](https://metacpan.org/pod/PPI::Token::Regexp) are generally parsed only by the Quote Engine.
+    Classes that inherit from [PPI::Future::Token::Quote](https://metacpan.org/pod/PPI::Future::Token::Quote), [PPI::Future::Token::QuoteLike](https://metacpan.org/pod/PPI::Future::Token::QuoteLike)
+    and [PPI::Future::Token::Regexp](https://metacpan.org/pod/PPI::Future::Token::Regexp) are generally parsed only by the Quote Engine.
 
-- [PPI::Tokenizer](https://metacpan.org/pod/PPI::Tokenizer)
+- [PPI::Future::Tokenizer](https://metacpan.org/pod/PPI::Future::Tokenizer)
 
-    The PPI Tokenizer. One Tokenizer consumes a chunk of text and provides
-    access to a stream of [PPI::Token](https://metacpan.org/pod/PPI::Token) objects.
+    The PPI::Future Tokenizer. One Tokenizer consumes a chunk of text and provides
+    access to a stream of [PPI::Future::Token](https://metacpan.org/pod/PPI::Future::Token) objects.
 
     The Tokenizer is very very complicated, to the point where even the author
     treads carefully when working with it.
@@ -621,14 +622,14 @@ here in alphabetical order.
     the tokenization speed, at the expense of maintainability. We cope with the
     spaghetti by heavily commenting everything.
 
-- [PPI::Transform](https://metacpan.org/pod/PPI::Transform)
+- [PPI::Future::Transform](https://metacpan.org/pod/PPI::Future::Transform)
 
     The Perl Document Transformation API. Provides a standard interface and
     abstract base class for objects and classes that manipulate Documents.
 
 # INSTALLING
 
-The core PPI distribution is pure Perl and has been kept as tight as
+The core PPI::Future distribution is pure Perl and has been kept as tight as
 possible and with as few dependencies as possible.
 
 It should download and install normally on any platform from within
@@ -637,29 +638,29 @@ tarball. If installing by hand, you may need to install a few small
 utility modules first. The exact ones will depend on your version of
 perl.
 
-There are no special install instructions for PPI, and the normal
+There are no special install instructions for PPI::Future, and the normal
 `Perl Makefile.PL`, `make`, `make test`, `make install` instructions
 apply.
 
 # EXTENDING
 
-The PPI namespace itself is reserved for use by PPI itself.
-You are recommended to use the PPIx:: namespace for PPI-specific
+The PPI::Future namespace itself is reserved for use by PPI::Future itself.
+You are recommended to use the PPI::Futurex:: namespace for PPI::Future-specific
 modifications or prototypes thereof, or Perl:: for modules which provide
 a general Perl language-related functions.
 
-If what you wish to implement looks like it fits into the PPIx:: namespace,
-you should consider contacting the PPI maintainers on GitHub first, as what
+If what you wish to implement looks like it fits into the PPI::Futurex:: namespace,
+you should consider contacting the PPI::Future maintainers on GitHub first, as what
 you want may already be in progress, or you may wish to consider contributing
-to PPI itself.
+to PPI::Future itself.
 
 # TO DO
 
 \- Many more analysis and utility methods for PDOM classes
 
-\- Creation of a PPI::Tutorial document
+\- Creation of a PPI::Future::Tutorial document
 
-\- Add many more key functions to PPI::XS
+\- Add many more key functions to PPI::Future::XS
 
 \- We can **always** write more and better unit tests
 
@@ -669,13 +670,13 @@ to PPI itself.
 
 # SUPPORT
 
-The most recent version of PPI is available at the following address.
+The most recent version of PPI::Future is available at the following address.
 
-[http://search.cpan.org/~mithaldu/PPI/](http://search.cpan.org/~mithaldu/PPI/)
+[http://search.cpan.org/~mithaldu/PPI::Future/](http://search.cpan.org/~mithaldu/PPI::Future/)
 
-PPI source is maintained in a GitHub repository at the following address.
+PPI::Future source is maintained in a GitHub repository at the following address.
 
-[https://github.com/adamkennedy/PPI](https://github.com/adamkennedy/PPI)
+[https://github.com/adamkennedy/PPI::Future](https://github.com/adamkennedy/PPI::Future)
 
 Contributions via GitHub pull request are welcome.
 
@@ -687,10 +688,10 @@ If you cannot provide a test or fix, or don't have time to do so,
 then regular bug reports are still accepted and appreciated via the
 GitHub bug tracker.
 
-[https://github.com/adamkennedy/PPI/issues](https://github.com/adamkennedy/PPI/issues)
+[https://github.com/adamkennedy/PPI::Future/issues](https://github.com/adamkennedy/PPI::Future/issues)
 
 The `ppidump` utility that is part of the [Perl::Critic](https://metacpan.org/pod/Perl::Critic) distribution
-is a useful tool for demonstrating how PPI is parsing (or misparsing)
+is a useful tool for demonstrating how PPI::Future is parsing (or misparsing)
 small code snippets, and for providing information for bug reports.
 
 For other issues, questions, or commercial or media-related enquiries,
@@ -714,13 +715,13 @@ Also, to the various co-maintainers that have contributed both large and
 small with tests and patches and especially to those rare few who have
 deep-dived into the guts to (gasp) add a feature.
 
-    - Dan Brook       : PPIx::XPath, Acme::PerlML
+    - Dan Brook       : PPI::Futurex::XPath, Acme::PerlML
     - Audrey Tang     : "Line Noise" Testing
     - Arjen Laarhoven : Three-element ->location support
     - Elliot Shank    : Perl 5.10 support, five-element ->location
 
 And finally, thanks to those brave ( and foolish :) ) souls willing to dive
-in and use, test drive and provide feedback on PPI before version 1.000,
+in and use, test drive and provide feedback on PPI::Future before version 1.000,
 in some cases before it made it to beta quality, and still did extremely
 distasteful things (like eating 50 meg of RAM a second).
 
